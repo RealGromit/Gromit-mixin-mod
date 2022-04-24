@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.7.10",
+  "package": "com.gromit.gromitmod.mixin",
+  "refmap": "mixins.gromitmod.refmap.json",
+  "target": "@env(DEFAULT)",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "ExplosionMixin"
+  ]
+}
