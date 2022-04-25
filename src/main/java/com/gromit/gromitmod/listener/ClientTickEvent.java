@@ -19,7 +19,7 @@ public class ClientTickEvent {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        ColorUtils.colorTask();
+        ColorUtils.refreshColors();
         if (minecraft.theWorld == null || minecraft.thePlayer == null) return;
         if (event.phase == TickEvent.Phase.START) return;
         if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) && minecraft.currentScreen == null) minecraft.displayGuiScreen(gromitMod.getMainGui());

@@ -2,6 +2,7 @@ package com.gromit.gromitmod;
 
 import com.gromit.gromitmod.gui.MainGui;
 import com.gromit.gromitmod.listener.ClientTickEvent;
+import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -16,6 +17,7 @@ public class GromitMod {
     @Mod.EventHandler
     public void onPostInit(FMLPostInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new ClientTickEvent(this));
+        FontUtil.bootstrap();
     }
 
     public Minecraft getMinecraft() {return minecraft;}
