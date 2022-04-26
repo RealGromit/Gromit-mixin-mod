@@ -1,7 +1,7 @@
 package com.gromit.gromitmod;
 
-import com.gromit.gromitmod.gui.MainGui;
 import com.gromit.gromitmod.listener.ClientTickEvent;
+import com.gromit.gromitmod.utils.GuiManager;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
@@ -12,17 +12,18 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 public class GromitMod {
 
     private final Minecraft minecraft = Minecraft.getMinecraft();
-    private final MainGui mainGui = new MainGui(this);
+    private GuiManager guiManager;
 
     @Mod.EventHandler
     public void onPostInit(FMLPostInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new ClientTickEvent(this));
         FontUtil.bootstrap();
+        guiManager = new GuiManager(this);
+        MinecraftForge.EVENT_BUS.register(new ClientTickEvent(this));
     }
 
     public Minecraft getMinecraft() {return minecraft;}
 
-    public MainGui getMainGui() {
-        return mainGui;
+    public GuiManager getGuiManager() {
+        return guiManager;
     }
 }

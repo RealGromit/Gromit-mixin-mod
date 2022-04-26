@@ -1,4 +1,4 @@
-package com.gromit.gromitmod.gui;
+package com.gromit.gromitmod.gui.button;
 
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
@@ -10,8 +10,9 @@ import java.awt.*;
 
 public class TextButton extends GuiButton {
 
-    private final double guiScale;
-    private final OnMousePress onMousePress;
+    protected double guiScale;
+    protected final OnMousePress onMousePress;
+    protected boolean state = false;
 
     public TextButton(int buttonId, int x, int y, int width, int height, String buttonText, double guiScale, OnMousePress onMousePress) {
         super(buttonId, x, y, width, height, buttonText);
@@ -25,9 +26,9 @@ public class TextButton extends GuiButton {
             hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
             if (hovered) {
                 FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, ColorUtils.getRGB());
-            } else {
-                FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, Color.WHITE.getRGB());
-            }
+            } else if (isState()) {
+                FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, ColorUtils.getRGB());
+            } else FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, Color.WHITE.getRGB());
         }
     }
 
@@ -36,8 +37,8 @@ public class TextButton extends GuiButton {
 
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= guiScale;
-        mouseY /= guiScale;
+        mouseX /= getGuiScale();
+        mouseY /= getGuiScale();
         if (enabled && visible && mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
             onMousePress.onMousePress();
             return true;
@@ -47,5 +48,21 @@ public class TextButton extends GuiButton {
 
     public interface OnMousePress {
         void onMousePress();
+    }
+
+    public boolean isState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    public double getGuiScale() {
+        return guiScale;
+    }
+
+    public void setGuiScale(double guiScale) {
+        this.guiScale = guiScale;
     }
 }
