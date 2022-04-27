@@ -21,7 +21,7 @@ public class ChangeableButton extends TextButton {
 
     @Override
     public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-        if (enabled) {
+        if (visible) {
             mouseX /= guiScale;
             mouseY /= guiScale;
             hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;

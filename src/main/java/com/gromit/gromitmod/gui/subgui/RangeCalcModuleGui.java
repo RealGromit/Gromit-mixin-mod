@@ -13,7 +13,7 @@ import java.awt.*;
 public class RangeCalcModuleGui extends AbstractModuleGui {
 
     public final ChangeableButton changeableButton = new ChangeableButton(3, mainGuiPointX + 82, mainGuiPointY + 53, (int) FontUtil.normal.getStringWidth("disabled") / 2, 4, "disabled", "enabled", guiScale, () -> {}, () -> {});
-    public final Slider rangeCalcSlider = new Slider(mainGuiPointX + 74, mainGuiPointY + 95, 79, 2, 1, 1, 80, 100);
+    public final Slider rangeCalcSlider = new Slider(4, mainGuiPointX + 71, mainGuiPointY + 93, 80, 2, "", 1, 100, guiScale);
 
     public RangeCalcModuleGui(GromitMod gromitMod) {
         super(gromitMod);
@@ -24,9 +24,9 @@ public class RangeCalcModuleGui extends AbstractModuleGui {
         super.initGui();
 
         updateTextButton(changeableButton, mainGuiPointX + 82, mainGuiPointY + 53);
-        updateSlider(rangeCalcSlider, mainGuiPointX + 74, mainGuiPointY + 95);
+        updateSlider(rangeCalcSlider, mainGuiPointX + 71, mainGuiPointY + 93);
         buttonList.add(changeableButton);
-        sliderList.add(rangeCalcSlider);
+        buttonList.add(rangeCalcSlider);
         rangeCalc.setState(true);
     }
 
@@ -41,9 +41,6 @@ public class RangeCalcModuleGui extends AbstractModuleGui {
         for (GuiButton textButton : buttonList) {
             if (textButton instanceof ScrollableButton) continue;
             textButton.drawButton(minecraft, mouseX, mouseY);
-        }
-        for (Slider slider : sliderList) {
-            slider.drawSlider(mouseX, mouseY);
         }
     }
 

@@ -13,8 +13,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class AbstractGui extends GuiScreen {
 
@@ -23,7 +21,6 @@ public abstract class AbstractGui extends GuiScreen {
     protected final int guiWidth = 270, guiHeight = 150;
     protected int mainGuiPointX, mainGuiPointY;
     protected double guiScale;
-    protected final List<Slider> sliderList = new ArrayList<>();
 
     private final ResourceLocation bounds = new ResourceLocation("astrix", "border.png");
     private final ResourceLocation gromit = new ResourceLocation("astrix", "gromit.png");
@@ -46,7 +43,6 @@ public abstract class AbstractGui extends GuiScreen {
         mainGuiPointX = (int) ((width / guiScale - guiWidth) / 2);
         mainGuiPointY = (int) ((height / guiScale - guiHeight) / 2);
         buttonList.clear();
-        sliderList.clear();
         updateTextButton(modules, mainGuiPointX + 90, mainGuiPointY + 16);
         updateTextButton(settings, mainGuiPointX + 170, mainGuiPointY + 16);
         buttonList.add(modules);

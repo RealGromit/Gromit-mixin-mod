@@ -16,7 +16,7 @@ public class ScrollableButton extends TextButton {
 
     @Override
     public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-        if (enabled) {
+        if (visible) {
             mouseX /= guiScale;
             mouseY /= guiScale;
             hovered = mouseX >= xPosition && mouseY >= yPosition - scroll && mouseX < xPosition + width && mouseY < yPosition - scroll + height;
