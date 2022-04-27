@@ -59,6 +59,6 @@ public abstract class AbstractModuleGui extends AbstractGui {
     public void handleMouseInput() throws IOException {
         super.handleMouseInput();
 
-        scroll += Mouse.getEventDWheel() / 60;
+        if (Mouse.getX() >= 460 && Mouse.getY() >= 290 && Mouse.getX() < 460 + 199 && Mouse.getY() < 290 + 398) scroll += Mouse.getEventDWheel() / 60;
     }
 }
