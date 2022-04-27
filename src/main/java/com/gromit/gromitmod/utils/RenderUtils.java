@@ -66,7 +66,7 @@ public class RenderUtils {
         tessellator.draw();
     }
 
-    public static void drawCircle(double x1, double y1, double radius, float pointSize, int iterations, int red, int green, int blue, int alpha) {
+    public static void drawCircleOutline(double x1, double y1, double radius, float pointSize, int iterations, int red, int green, int blue, int alpha) {
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -79,6 +79,51 @@ public class RenderUtils {
         }
         tessellator.draw();
         glDisable(GL_POINT_SMOOTH);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+    }
+
+    public static void drawCircleFilled(double x1, double y1, double radius, int iterations, int color) {
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.color((float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f, (float) (color >> 24 & 255) / 255f);
+        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_POLYGON_SMOOTH);
+        worldRenderer.begin(GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION);
+        for (int i = 0; i < iterations; i++) {
+            double angle = PI * 2 * i / iterations;
+            worldRenderer.pos(x1 + Math.sin(angle) * radius, y1 + Math.cos(angle) * radius, 0).endVertex();
+        }
+        tessellator.draw();
+        glDisable(GL_POLYGON_SMOOTH);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+
+    }
+
+    public static void drawRoundedThinRectangle(int x1, int y1, int width, int height, int iterations, int color) {
+        int radius = height / 2;
+        int circleDrawPoint = y1 + radius;
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.color((float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f, (float) (color >> 24 & 255) / 255f);
+        glEnable(GL_POLYGON_SMOOTH);
+        worldRenderer.begin(GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(x1 + radius, y1, 0).endVertex();
+        for (int i = 0; i < iterations; i++) {
+            double angle = PI * i / iterations;
+            worldRenderer.pos(x1 + width - radius + Math.sin(angle) * radius, circleDrawPoint + Math.cos(angle) * radius, 0).endVertex();
+        }
+        tessellator.draw();
+        worldRenderer.begin(GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION);
+        worldRenderer.pos(x1 + width - radius, y1 + height, 0).endVertex();
+        for (int i = 0; i < iterations; i++) {
+            double angle = - PI * i / iterations;
+            worldRenderer.pos(x1 + radius + Math.sin(angle) * radius, circleDrawPoint - Math.cos(angle) * radius, 0).endVertex();
+        }
+        tessellator.draw();
+        glDisable(GL_POLYGON_SMOOTH);
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
     }

@@ -41,10 +41,10 @@ public abstract class AbstractModuleGui extends AbstractGui {
         glEnable(GL_SCISSOR_TEST);
         glScissor(460, 290, 199, 398);
         for (GuiButton textButton : buttonList) {
-            if (textButton instanceof ScrollableButton) {
-                ((ScrollableButton) textButton).setScrollOffset(scroll);
-                textButton.drawButton(minecraft, mouseX, mouseY);
-            }
+            if (!(textButton instanceof ScrollableButton)) continue;
+            ((ScrollableButton) textButton).setScrollOffset(scroll);
+            textButton.drawButton(minecraft, mouseX, mouseY);
+
         }
         glDisable(GL_SCISSOR_TEST);
         RenderUtils.drawLine(mainGuiPointX + 10, mainGuiPointY + 37, 50, 0, 2, 255, 255, 255, 255);

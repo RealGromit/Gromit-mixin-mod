@@ -10,8 +10,8 @@ public class ScrollableButton extends TextButton {
 
     private int scroll;
 
-    public ScrollableButton(int buttonId, int x, int y, int width, int height, String buttonText, double guiScale, OnMousePress onMousePress) {
-        super(buttonId, x, y, width, height, buttonText, guiScale, onMousePress);
+    public ScrollableButton(int buttonId, int x, int y, int width, int height, String buttonText, double guiScale, OnEnable onEnable) {
+        super(buttonId, x, y, width, height, buttonText, guiScale, onEnable);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ScrollableButton extends TextButton {
         mouseX /= guiScale;
         mouseY /= guiScale;
         if (enabled && visible && mouseX >= xPosition && mouseY >= yPosition - scroll && mouseX < xPosition + width && mouseY < yPosition - scroll + height) {
-            onMousePress.onMousePress();
+            onEnable.onEnable();
             return true;
         }
         return false;

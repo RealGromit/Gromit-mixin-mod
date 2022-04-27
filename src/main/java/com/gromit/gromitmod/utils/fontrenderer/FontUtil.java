@@ -15,6 +15,8 @@ public class FontUtil {
     public static volatile int completed;
     public static CustomFontRenderer normal;
     private static Font normal_;
+    public static CustomFontRenderer title;
+    private static Font title_;
 
     private static Font getFont(Map<String, Font> locationMap, String location, int size) {
         Font font = null;
@@ -47,6 +49,7 @@ public class FontUtil {
         {
             Map<String, Font> locationMap = new HashMap<>();
             normal_ = getFont(locationMap, "font.otf", 19);
+            title_ = getFont(locationMap, "font.otf", 26);
             completed++;
         }).start();
         new Thread(() ->
@@ -70,5 +73,6 @@ public class FontUtil {
         }
 
         normal = new CustomFontRenderer(normal_, true, true);
+        title = new CustomFontRenderer(title_, true, true);
     }
 }
