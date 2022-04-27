@@ -2,6 +2,7 @@ package com.gromit.gromitmod.listener;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.utils.ColorUtils;
+import com.gromit.gromitmod.utils.Saver;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -22,6 +23,7 @@ public class ClientTickEvent {
         ColorUtils.refreshColors();
         if (minecraft.theWorld == null || minecraft.thePlayer == null) return;
         if (event.phase == TickEvent.Phase.START) return;
-        if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) && minecraft.currentScreen == null) minecraft.displayGuiScreen(gromitMod.getGuiManager().getMainGui());
+        if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) && Saver.getLastScreen() != null) minecraft.displayGuiScreen(Saver.getLastScreen());
+        else if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) && minecraft.currentScreen == null) minecraft.displayGuiScreen(gromitMod.getGuiManager().getMainGui());
     }
 }

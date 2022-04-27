@@ -15,7 +15,7 @@ public abstract class AbstractModuleGui extends AbstractGui {
 
     private int scroll;
 
-    protected final ScrollableButton rangeCalc;
+    public final ScrollableButton rangeCalc;
 
     public AbstractModuleGui(GromitMod gromitMod) {
         super(gromitMod);
@@ -31,6 +31,7 @@ public abstract class AbstractModuleGui extends AbstractGui {
         scroll = 0;
         updateTextButton(rangeCalc, mainGuiPointX + 11, mainGuiPointY + 39);
         buttonList.add(rangeCalc);
+        modules.setState(true);
     }
 
     @Override
@@ -57,5 +58,10 @@ public abstract class AbstractModuleGui extends AbstractGui {
         super.handleMouseInput();
 
         if (Mouse.getX() >= 460 && Mouse.getY() >= 290 && Mouse.getX() < 460 + 199 && Mouse.getY() < 290 + 398) scroll += Mouse.getEventDWheel() / 60;
+    }
+
+    @Override
+    public void onGuiClosed() {
+        modules.setState(false);
     }
 }

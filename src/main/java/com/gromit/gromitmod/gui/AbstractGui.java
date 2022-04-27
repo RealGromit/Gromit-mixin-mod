@@ -5,12 +5,15 @@ import com.gromit.gromitmod.gui.button.ScrollableButton;
 import com.gromit.gromitmod.gui.button.TextButton;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
+import com.gromit.gromitmod.utils.Saver;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
+
+import java.io.IOException;
 
 public abstract class AbstractGui extends GuiScreen {
 
@@ -23,8 +26,8 @@ public abstract class AbstractGui extends GuiScreen {
     private final ResourceLocation bounds = new ResourceLocation("astrix", "border.png");
     private final ResourceLocation gromit = new ResourceLocation("astrix", "gromit.png");
 
-    private final TextButton modules;
-    private final TextButton settings;
+    public final TextButton modules;
+    public final TextButton settings;
 
     public AbstractGui(GromitMod gromitMod) {
         this.gromitMod = gromitMod;
@@ -72,5 +75,16 @@ public abstract class AbstractGui extends GuiScreen {
         button.setGuiScale(guiScale);
         button.xPosition = x1;
         button.yPosition = y1;
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        if (keyCode == 1) {
+            Saver.setLastScreen(this);
+            this.mc.displayGuiScreen(null);
+            if (this.mc.currentScreen == null) {
+                this.mc.setIngameFocus();
+            }
+        }
     }
 }
