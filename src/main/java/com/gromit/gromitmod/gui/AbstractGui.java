@@ -29,10 +29,10 @@ public abstract class AbstractGui extends GuiScreen {
     public AbstractGui(GromitMod gromitMod) {
         this.gromitMod = gromitMod;
         minecraft = gromitMod.getMinecraft();
-        modules = new TextButton(0, mainGuiPointX + 90, mainGuiPointY + 16, (int) (FontUtil.normal.getStringWidth("Modules") / 1.9), 4, "Modules", guiScale, () -> {
-            minecraft.displayGuiScreen(gromitMod.getGuiManager().getModuleGui());
-        });
-        settings = new TextButton(1, mainGuiPointX + 170, mainGuiPointY + 16, (int) ((int) FontUtil.normal.getStringWidth("Settings") / 1.9), 4, "Settings", guiScale, () -> minecraft.thePlayer.sendChatMessage("settings!!!"));
+        modules = new TextButton(0, mainGuiPointX + 90, mainGuiPointY + 16, (int) (FontUtil.normal.getStringWidth("Modules") / 1.9), 4, "Modules", guiScale, () ->
+            minecraft.displayGuiScreen(gromitMod.getGuiManager().getModuleGui()));
+        settings = new TextButton(1, mainGuiPointX + 170, mainGuiPointY + 16, (int) ((int) FontUtil.normal.getStringWidth("Settings") / 1.9), 4, "Settings", guiScale, () ->
+            minecraft.displayGuiScreen(gromitMod.getGuiManager().getSettingsGui()));
     }
 
     @Override
@@ -49,8 +49,6 @@ public abstract class AbstractGui extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        mouseX /= guiScale;
-        mouseY /= guiScale;
         GlStateManager.scale(guiScale, guiScale, guiScale);
         minecraft.getTextureManager().bindTexture(bounds);
         RenderUtils.drawTextureColor(mainGuiPointX - 1, mainGuiPointY - 1, guiWidth + 2, guiHeight + 2, 0, 0, 1, 1, ColorUtils.getRed(), ColorUtils.getGreen(), ColorUtils.getBlue(), 255);

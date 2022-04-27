@@ -37,9 +37,6 @@ public abstract class AbstractModuleGui extends AbstractGui {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        mouseX /= guiScale;
-        mouseY /= guiScale;
-
         glEnable(GL_SCISSOR_TEST);
         glScissor(460, 290, 199, 398);
         for (GuiButton textButton : buttonList) {

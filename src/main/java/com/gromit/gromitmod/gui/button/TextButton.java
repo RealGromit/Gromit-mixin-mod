@@ -23,6 +23,8 @@ public class TextButton extends GuiButton {
     @Override
     public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
         if (enabled) {
+            mouseX /= guiScale;
+            mouseY /= guiScale;
             hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
             if (hovered) {
                 FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, ColorUtils.getRGB());
