@@ -1,6 +1,7 @@
 package com.gromit.gromitmod;
 
 import com.gromit.gromitmod.listener.ClientTickEvent;
+import com.gromit.gromitmod.utils.ButtonWrapper;
 import com.gromit.gromitmod.utils.GuiManager;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import net.minecraft.client.Minecraft;
@@ -13,10 +14,12 @@ public class GromitMod {
 
     private final Minecraft minecraft = Minecraft.getMinecraft();
     private GuiManager guiManager;
+    private ButtonWrapper buttonWrapper;
 
     @Mod.EventHandler
     public void onPostInit(FMLPostInitializationEvent event) {
         FontUtil.bootstrap();
+        buttonWrapper = new ButtonWrapper(this);
         guiManager = new GuiManager(this);
         MinecraftForge.EVENT_BUS.register(new ClientTickEvent(this));
     }
@@ -25,5 +28,9 @@ public class GromitMod {
 
     public GuiManager getGuiManager() {
         return guiManager;
+    }
+
+    public ButtonWrapper getButtonWrapper() {
+        return buttonWrapper;
     }
 }

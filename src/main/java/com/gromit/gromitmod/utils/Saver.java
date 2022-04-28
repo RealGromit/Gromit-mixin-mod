@@ -1,16 +1,26 @@
 package com.gromit.gromitmod.utils;
 
-import net.minecraft.client.gui.GuiScreen;
+import com.gromit.gromitmod.gui.AbstractGui;
+import com.gromit.gromitmod.gui.AbstractModuleGui;
 
 public class Saver {
 
-    private static GuiScreen lastScreen;
+    private static AbstractGui lastScreen;
+    private static AbstractModuleGui lastModuleScreen;
 
-    public static GuiScreen getLastScreen() {
+    public static AbstractGui getLastScreen() {
         return lastScreen;
     }
 
-    public static void setLastScreen(GuiScreen lastScreen) {
+    public static void setLastScreen(AbstractGui lastScreen) {
         Saver.lastScreen = lastScreen;
+    }
+
+    public static AbstractModuleGui getLastModuleScreen() {
+        return lastModuleScreen;
+    }
+
+    public static void setLastModuleScreen(AbstractModuleGui lastModuleScreen) {
+        Saver.lastModuleScreen = lastModuleScreen;
     }
 }

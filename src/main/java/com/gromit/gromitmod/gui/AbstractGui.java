@@ -6,7 +6,6 @@ import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
 import com.gromit.gromitmod.utils.Saver;
-import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -25,16 +24,14 @@ public abstract class AbstractGui extends GuiScreen {
     private final ResourceLocation bounds = new ResourceLocation("astrix", "border.png");
     private final ResourceLocation gromit = new ResourceLocation("astrix", "gromit.png");
 
-    public final TextButton modules;
-    public final TextButton settings;
+    protected final TextButton modules;
+    protected final TextButton settings;
 
     public AbstractGui(GromitMod gromitMod) {
         this.gromitMod = gromitMod;
         minecraft = gromitMod.getMinecraft();
-        modules = new TextButton(0, mainGuiPointX + 90, mainGuiPointY + 16, (int) (FontUtil.normal.getStringWidth("Modules") / 1.9), 4, "Modules", guiScale, () ->
-            minecraft.displayGuiScreen(gromitMod.getGuiManager().getModuleGui()));
-        settings = new TextButton(1, mainGuiPointX + 170, mainGuiPointY + 16, (int) ((int) FontUtil.normal.getStringWidth("Settings") / 1.9), 4, "Settings", guiScale, () ->
-            minecraft.displayGuiScreen(gromitMod.getGuiManager().getSettingsGui()));
+        modules = gromitMod.getButtonWrapper().getAbstractGuiButtons().getModules();
+        settings = gromitMod.getButtonWrapper().getAbstractGuiButtons().getSettings();
     }
 
     @Override
@@ -59,6 +56,8 @@ public abstract class AbstractGui extends GuiScreen {
         minecraft.getTextureManager().bindTexture(gromit);
         RenderUtils.drawCircleOutline(mainGuiPointX + 21, mainGuiPointY + 18, 11, 3, 200, ColorUtils.getRed(), ColorUtils.getGreen(), ColorUtils.getBlue(), 255);
         RenderUtils.drawTexture(mainGuiPointX + 5, mainGuiPointY + 5, 33, 25, 0, 0, 1, 1);
+        modules.drawButton(minecraft, mouseX, mouseY);
+        settings.drawButton(minecraft, mouseX, mouseY);
     }
 
     @Override

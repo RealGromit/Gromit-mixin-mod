@@ -12,7 +12,7 @@ public class Slider extends GuiButton {
 
     private final int minValue;
     private int currentProgress;
-    private int currentValue;
+    public int currentValue;
     private final int iterations;
     public double guiScale;
     private boolean dragging;
@@ -33,6 +33,7 @@ public class Slider extends GuiButton {
         RenderUtils.drawRoundedThinRectangle(xPosition, yPosition, width, height, iterations, Color.WHITE.getRGB());
         RenderUtils.drawCircleFilled(xPosition + currentProgress + 0.5, yPosition + height / 2.0, 2, 200, ColorUtils.getRGB());
         currentValue = currentProgress + minValue;
+        displayString = String.valueOf(currentProgress + minValue);
     }
 
     @Override
