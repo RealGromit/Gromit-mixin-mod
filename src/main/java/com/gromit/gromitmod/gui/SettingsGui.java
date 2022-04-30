@@ -1,12 +1,11 @@
-package com.gromit.gromitmod.gui.maingui;
+package com.gromit.gromitmod.gui;
 
 import com.gromit.gromitmod.GromitMod;
-import com.gromit.gromitmod.gui.AbstractGui;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 
 import java.awt.*;
 
-public class SettingsGui extends AbstractGui {
+public class SettingsGui extends MainGui {
 
     public SettingsGui(GromitMod gromitMod) {
         super(gromitMod);

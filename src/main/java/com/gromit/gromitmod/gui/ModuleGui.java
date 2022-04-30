@@ -10,13 +10,13 @@ import java.io.IOException;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public abstract class AbstractModuleGui extends AbstractGui {
+public class ModuleGui extends MainGui {
 
     private int scroll;
 
     protected final ScrollableButton rangeCalc;
 
-    public AbstractModuleGui(GromitMod gromitMod) {
+    public ModuleGui(GromitMod gromitMod) {
         super(gromitMod);
         rangeCalc = ButtonHandler.getRangeCalc();
     }

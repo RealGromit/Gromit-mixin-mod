@@ -1,26 +1,26 @@
 package com.gromit.gromitmod.handler;
 
-import com.gromit.gromitmod.gui.AbstractGui;
-import com.gromit.gromitmod.gui.AbstractModuleGui;
+import com.gromit.gromitmod.gui.MainGui;
+import com.gromit.gromitmod.gui.ModuleGui;
 
 public class Saver {
 
-    private static AbstractGui lastScreen;
-    private static AbstractModuleGui lastModuleScreen;
+    private static MainGui lastScreen;
+    private static ModuleGui lastModuleScreen;
 
-    public static AbstractGui getLastScreen() {
+    public static MainGui getLastScreen() {
         return lastScreen;
     }
 
-    public static void setLastScreen(AbstractGui lastScreen) {
+    public static void setLastScreen(MainGui lastScreen) {
         Saver.lastScreen = lastScreen;
     }
 
-    public static AbstractModuleGui getLastModuleScreen() {
+    public static ModuleGui getLastModuleScreen() {
         return lastModuleScreen;
     }
 
-    public static void setLastModuleScreen(AbstractModuleGui lastModuleScreen) {
+    public static void setLastModuleScreen(ModuleGui lastModuleScreen) {
         Saver.lastModuleScreen = lastModuleScreen;
     }
 }

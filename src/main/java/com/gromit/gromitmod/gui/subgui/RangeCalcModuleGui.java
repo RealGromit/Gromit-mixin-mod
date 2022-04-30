@@ -1,7 +1,7 @@
 package com.gromit.gromitmod.gui.subgui;
 
 import com.gromit.gromitmod.GromitMod;
-import com.gromit.gromitmod.gui.AbstractModuleGui;
+import com.gromit.gromitmod.gui.ModuleGui;
 import com.gromit.gromitmod.gui.button.ChangeableButton;
 import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.handler.ButtonHandler;
@@ -10,7 +10,7 @@ import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 
 import java.awt.*;
 
-public class RangeCalcModuleGui extends AbstractModuleGui {
+public class RangeCalcModuleGui extends ModuleGui {
 
     private final ChangeableButton stateButton;
     private final Slider slider;

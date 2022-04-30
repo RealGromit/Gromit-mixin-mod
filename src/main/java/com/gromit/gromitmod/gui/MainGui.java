@@ -12,7 +12,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 
-public abstract class AbstractGui extends GuiScreen {
+public class MainGui extends GuiScreen {
 
     protected final GromitMod gromitMod;
     protected final Minecraft minecraft;
@@ -26,7 +26,7 @@ public abstract class AbstractGui extends GuiScreen {
     protected final TextButton modules;
     protected final TextButton settings;
 
-    public AbstractGui(GromitMod gromitMod) {
+    public MainGui(GromitMod gromitMod) {
         this.gromitMod = gromitMod;
         minecraft = gromitMod.getMinecraft();
         modules = ButtonHandler.getModules();

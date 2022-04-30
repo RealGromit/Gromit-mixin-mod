@@ -1,9 +1,9 @@
 package com.gromit.gromitmod.handler;
 
 import com.gromit.gromitmod.GromitMod;
-import com.gromit.gromitmod.gui.maingui.MainGui;
-import com.gromit.gromitmod.gui.maingui.ModuleGui;
-import com.gromit.gromitmod.gui.maingui.SettingsGui;
+import com.gromit.gromitmod.gui.MainGui;
+import com.gromit.gromitmod.gui.ModuleGui;
+import com.gromit.gromitmod.gui.SettingsGui;
 import com.gromit.gromitmod.gui.subgui.RangeCalcModuleGui;
 
 public class GuiHandler {
