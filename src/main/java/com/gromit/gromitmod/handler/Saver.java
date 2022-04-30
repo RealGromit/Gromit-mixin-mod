@@ -1,4 +1,4 @@
-package com.gromit.gromitmod.utils;
+package com.gromit.gromitmod.handler;
 
 import com.gromit.gromitmod.gui.AbstractGui;
 import com.gromit.gromitmod.gui.AbstractModuleGui;

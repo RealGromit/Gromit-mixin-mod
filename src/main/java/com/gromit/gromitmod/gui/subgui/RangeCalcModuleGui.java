@@ -4,7 +4,7 @@ import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.AbstractModuleGui;
 import com.gromit.gromitmod.gui.button.ChangeableButton;
 import com.gromit.gromitmod.gui.slider.Slider;
-import com.gromit.gromitmod.utils.Saver;
+import com.gromit.gromitmod.handler.Saver;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 
 import java.awt.*;
@@ -25,7 +25,7 @@ public class RangeCalcModuleGui extends AbstractModuleGui {
         super.initGui();
 
         updateTextButton(stateButton, mainGuiPointX + 82, mainGuiPointY + 53);
-        updateSlider(slider, mainGuiPointX + 69, mainGuiPointY + 93);
+        updateSlider(slider, mainGuiPointX + 69, mainGuiPointY + 77);
         buttonList.add(stateButton);
         buttonList.add(slider);
         rangeCalc.setState(true);
@@ -39,10 +39,10 @@ public class RangeCalcModuleGui extends AbstractModuleGui {
         FontUtil.title.drawString("Cannon range calculator", mainGuiPointX + 68, mainGuiPointY + 39, Color.WHITE.getRGB());
         FontUtil.normal.drawString("Calculate range by right clicking a power dispenser with gold ingot", mainGuiPointX + 68, mainGuiPointY + 46, Color.WHITE.getRGB());
         FontUtil.normal.drawString("State:", mainGuiPointX + 68, mainGuiPointY + 55, Color.WHITE.getRGB());
-        FontUtil.normal.drawString("Amount of entity flight in ticks:", mainGuiPointX + 68, mainGuiPointY + 86, Color.WHITE.getRGB());
+        FontUtil.normal.drawString("Amount of entity flight in ticks:", mainGuiPointX + 68, mainGuiPointY + 70, Color.WHITE.getRGB());
         stateButton.drawButton(minecraft, mouseX, mouseY);
         slider.drawButton(minecraft, mouseX, mouseY);
-        FontUtil.normal.drawString(slider.displayString, mainGuiPointX + 140, mainGuiPointY + 86, Color.WHITE.getRGB());
+        FontUtil.normal.drawString(slider.displayString, mainGuiPointX + 140, mainGuiPointY + 70, Color.WHITE.getRGB());
     }
 
     @Override

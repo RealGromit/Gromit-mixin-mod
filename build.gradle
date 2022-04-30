@@ -49,6 +49,11 @@ minecraft {
 	clientJvmArgs += '-Dfml.coreMods.load=com.gromit.gromitmod.injection.MixinLoader'
 }
 
+configurations {
+    embed
+    compile.extendsFrom embed
+}
+
 repositories {
     maven {
         name = 'sponge'
@@ -57,7 +62,16 @@ repositories {
 }
 
 dependencies {
-	compile 'org.spongepowered:mixin:0.7.11-SNAPSHOT'
+	embed ("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+        exclude module: 'gson'
+        exclude module: 'guava'
+        exclude module: 'jarjar'
+        exclude module: 'commons-codec'
+        exclude module: 'commons-io'
+        exclude module: 'launchwrapper'
+        exclude module: 'asm-commons'
+        exclude module: 'slf4j-api'
+    }
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
@@ -86,6 +100,15 @@ mixin {
 }
 
 jar {
+    from(configurations.embed.collect {
+        it.isDirectory() ? it : zipTree(it)
+    }) {
+        exclude 'dummyThing',
+                'LICENSE.txt',
+                'META-INF/MUMFREY.RSA',
+                'META-INF/maven/**',
+                'org/**/*.html'
+    }
     manifest.attributes(
         'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
         'TweakOrder': 0,

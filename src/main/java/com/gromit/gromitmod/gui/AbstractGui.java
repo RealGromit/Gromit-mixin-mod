@@ -5,13 +5,11 @@ import com.gromit.gromitmod.gui.button.TextButton;
 import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
-import com.gromit.gromitmod.utils.Saver;
+import com.gromit.gromitmod.handler.Saver;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-
-import java.io.IOException;
 
 public abstract class AbstractGui extends GuiScreen {
 
@@ -66,7 +64,7 @@ public abstract class AbstractGui extends GuiScreen {
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    protected void keyTyped(char typedChar, int keyCode) {
         if (keyCode == 1) {
             Saver.setLastScreen(this);
             this.mc.displayGuiScreen(null);
