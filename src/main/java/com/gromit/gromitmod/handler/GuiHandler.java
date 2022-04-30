@@ -8,31 +8,26 @@ import com.gromit.gromitmod.gui.subgui.RangeCalcModuleGui;
 
 public class GuiHandler {
 
-    private final MainGui mainGui;
-    private final SettingsGui settingsGui;
-    private final ModuleGui moduleGui;
-    private final RangeCalcModuleGui rangeCalcModuleGui;
+    private static final GromitMod gromitMod = GromitMod.INSTANCE;
 
-    public GuiHandler(GromitMod gromitMod) {
-        mainGui = new MainGui(gromitMod);
-        settingsGui = new SettingsGui(gromitMod);
-        moduleGui = new ModuleGui(gromitMod);
-        rangeCalcModuleGui = new RangeCalcModuleGui(gromitMod);
-    }
+    private static final MainGui mainGui = new MainGui(gromitMod);
+    private static final SettingsGui settingsGui = new SettingsGui(gromitMod);
+    private static final ModuleGui moduleGui = new ModuleGui(gromitMod);
+    private static final RangeCalcModuleGui rangeCalcModuleGui = new RangeCalcModuleGui(gromitMod);
 
-    public MainGui getMainGui() {
+    public static MainGui getMainGui() {
         return mainGui;
     }
 
-    public SettingsGui getSettingsGui() {
+    public static SettingsGui getSettingsGui() {
         return settingsGui;
     }
 
-    public ModuleGui getModuleGui() {
+    public static ModuleGui getModuleGui() {
         return moduleGui;
     }
 
-    public RangeCalcModuleGui getRangeCalcModuleGui() {
+    public static RangeCalcModuleGui getRangeCalcModuleGui() {
         return rangeCalcModuleGui;
     }
 }

@@ -5,16 +5,11 @@ import com.gromit.gromitmod.module.other.RangeCalcModule;
 
 public class ModuleHandler {
 
-    private final GromitMod gromitMod;
+    private static final GromitMod gromitMod = GromitMod.INSTANCE;
 
-    private final RangeCalcModule rangeCalcModule;
+    private static final RangeCalcModule rangeCalcModule = new RangeCalcModule(gromitMod);
 
-    public ModuleHandler(GromitMod gromitMod) {
-        this.gromitMod = gromitMod;
-        rangeCalcModule = new RangeCalcModule(gromitMod);
-    }
-
-    public RangeCalcModule getRangeCalcModule() {
+    public static RangeCalcModule getRangeCalcModule() {
         return rangeCalcModule;
     }
 }

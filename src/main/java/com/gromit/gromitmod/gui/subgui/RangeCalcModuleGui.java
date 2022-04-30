@@ -4,6 +4,7 @@ import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.AbstractModuleGui;
 import com.gromit.gromitmod.gui.button.ChangeableButton;
 import com.gromit.gromitmod.gui.slider.Slider;
+import com.gromit.gromitmod.handler.ButtonHandler;
 import com.gromit.gromitmod.handler.Saver;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 
@@ -16,8 +17,8 @@ public class RangeCalcModuleGui extends AbstractModuleGui {
 
     public RangeCalcModuleGui(GromitMod gromitMod) {
         super(gromitMod);
-        stateButton = gromitMod.getButtonWrapper().getRangeCalcModuleGuiButtons().getStateButton();
-        slider = gromitMod.getButtonWrapper().getRangeCalcModuleGuiButtons().getSlider();
+        stateButton = ButtonHandler.getStateButton();
+        slider = ButtonHandler.getSlider();
     }
 
     @Override

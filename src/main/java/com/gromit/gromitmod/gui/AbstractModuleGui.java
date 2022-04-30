@@ -2,6 +2,7 @@ package com.gromit.gromitmod.gui;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.button.ScrollableButton;
+import com.gromit.gromitmod.handler.ButtonHandler;
 import com.gromit.gromitmod.utils.RenderUtils;
 import org.lwjgl.input.Mouse;
 
@@ -17,7 +18,7 @@ public abstract class AbstractModuleGui extends AbstractGui {
 
     public AbstractModuleGui(GromitMod gromitMod) {
         super(gromitMod);
-        rangeCalc = gromitMod.getButtonWrapper().getAbstractModuleGuiButtons().getRangeCalc();
+        rangeCalc = ButtonHandler.getRangeCalc();
     }
 
     @Override

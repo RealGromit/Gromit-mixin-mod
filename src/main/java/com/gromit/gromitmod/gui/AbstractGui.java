@@ -3,6 +3,7 @@ package com.gromit.gromitmod.gui;
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.button.TextButton;
 import com.gromit.gromitmod.gui.slider.Slider;
+import com.gromit.gromitmod.handler.ButtonHandler;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
 import com.gromit.gromitmod.handler.Saver;
@@ -28,8 +29,8 @@ public abstract class AbstractGui extends GuiScreen {
     public AbstractGui(GromitMod gromitMod) {
         this.gromitMod = gromitMod;
         minecraft = gromitMod.getMinecraft();
-        modules = gromitMod.getButtonWrapper().getAbstractGuiButtons().getModules();
-        settings = gromitMod.getButtonWrapper().getAbstractGuiButtons().getSettings();
+        modules = ButtonHandler.getModules();
+        settings = ButtonHandler.getSettings();
     }
 
     @Override

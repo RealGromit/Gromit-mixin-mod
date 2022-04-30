@@ -1,6 +1,7 @@
 package com.gromit.gromitmod.listener;
 
 import com.gromit.gromitmod.GromitMod;
+import com.gromit.gromitmod.handler.GuiHandler;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.handler.Saver;
 import net.minecraft.client.Minecraft;
@@ -24,6 +25,6 @@ public class ClientTickEvent {
         if (minecraft.theWorld == null || minecraft.thePlayer == null) return;
         if (event.phase == TickEvent.Phase.START) return;
         if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) && Saver.getLastScreen() != null) minecraft.displayGuiScreen(Saver.getLastScreen());
-        else if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) && minecraft.currentScreen == null) minecraft.displayGuiScreen(gromitMod.getGuiManager().getMainGui());
+        else if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) && minecraft.currentScreen == null) minecraft.displayGuiScreen(GuiHandler.getMainGui());
     }
 }
