@@ -3,10 +3,10 @@ package com.gromit.gromitmod.gui;
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.button.TextButton;
 import com.gromit.gromitmod.gui.slider.Slider;
-import com.gromit.gromitmod.handler.ButtonHandler;
+import com.gromit.gromitmod.handler.Saver;
+import com.gromit.gromitmod.handler.buttonhandler.MainGuiButtons;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
-import com.gromit.gromitmod.handler.Saver;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -29,8 +29,8 @@ public class MainGui extends GuiScreen {
     public MainGui(GromitMod gromitMod) {
         this.gromitMod = gromitMod;
         minecraft = gromitMod.getMinecraft();
-        modules = ButtonHandler.getModules();
-        settings = ButtonHandler.getSettings();
+        modules = MainGuiButtons.getModules();
+        settings = MainGuiButtons.getSettings();
     }
 
     @Override
