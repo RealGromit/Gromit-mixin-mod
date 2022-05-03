@@ -3,10 +3,15 @@ package com.gromit.gromitmod.gui;
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.button.TextButton;
 import com.gromit.gromitmod.gui.slider.Slider;
+import com.gromit.gromitmod.gui.subgui.CrumbsModuleGui;
+import com.gromit.gromitmod.gui.subgui.FpsModuleGui;
+import com.gromit.gromitmod.gui.subgui.FunModuleGui;
+import com.gromit.gromitmod.gui.subgui.RenderModuleGui;
+import com.gromit.gromitmod.handler.GuiHandler;
 import com.gromit.gromitmod.handler.Saver;
-import com.gromit.gromitmod.handler.buttonhandler.MainGuiButtons;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
+import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,22 +20,22 @@ import net.minecraft.util.ResourceLocation;
 public class MainGui extends GuiScreen {
 
     protected final GromitMod gromitMod;
-    protected final Minecraft minecraft;
-    protected final int guiWidth = 270, guiHeight = 150;
+    protected static final Minecraft minecraft = GromitMod.INSTANCE.getMinecraft();
+    private final int guiWidth = 270, guiHeight = 150;
     protected int mainGuiPointX, mainGuiPointY;
-    protected double guiScale;
+    private double guiScale;
 
     private final ResourceLocation bounds = new ResourceLocation("astrix", "border.png");
     private final ResourceLocation gromit = new ResourceLocation("astrix", "gromit.png");
 
-    protected final TextButton modules;
-    protected final TextButton settings;
+    protected static final TextButton modules = new TextButton(0, 0, 0, (int) (FontUtil.normal.getStringWidth("Modules") / 2), 4, "Modules", 1,
+            () -> minecraft.displayGuiScreen(GuiHandler.getModuleGui()));
+
+    protected static final TextButton settings = new TextButton(1, 0, 0, (int) FontUtil.normal.getStringWidth("Settings") / 2, 4, "Settings", 1,
+            () -> minecraft.displayGuiScreen(GuiHandler.getSettingsGui()));
 
     public MainGui(GromitMod gromitMod) {
         this.gromitMod = gromitMod;
-        minecraft = gromitMod.getMinecraft();
-        modules = MainGuiButtons.getModules();
-        settings = MainGuiButtons.getSettings();
     }
 
     @Override
@@ -39,8 +44,8 @@ public class MainGui extends GuiScreen {
         mainGuiPointX = (int) ((width / guiScale - guiWidth) / 2);
         mainGuiPointY = (int) ((height / guiScale - guiHeight) / 2);
         buttonList.clear();
-        updateTextButton(modules, mainGuiPointX + 90, mainGuiPointY + 16);
-        updateTextButton(settings, mainGuiPointX + 170, mainGuiPointY + 16);
+        updateTextButton(modules, mainGuiPointX + 96, mainGuiPointY + 16);
+        updateTextButton(settings, mainGuiPointX + 176, mainGuiPointY + 16);
         buttonList.add(modules);
         buttonList.add(settings);
     }
@@ -67,6 +72,10 @@ public class MainGui extends GuiScreen {
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
         if (keyCode == 1) {
+            if (this instanceof RenderModuleGui) Saver.setRenderModuleGui((RenderModuleGui) this);
+            if (this instanceof FpsModuleGui) Saver.setFpsModuleGui((FpsModuleGui) this);
+            if (this instanceof CrumbsModuleGui) Saver.setCrumbsModuleGui((CrumbsModuleGui) this);
+            if (this instanceof FunModuleGui) Saver.setFunModuleGui((FunModuleGui) this);
             Saver.setLastScreen(this);
             this.mc.displayGuiScreen(null);
             if (this.mc.currentScreen == null) {

@@ -15,7 +15,6 @@ public class SettingsGui extends MainGui {
     public void initGui() {
         super.initGui();
 
-        modules.setState(false);
         settings.setState(true);
     }
 

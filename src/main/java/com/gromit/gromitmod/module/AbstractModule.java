@@ -18,9 +18,9 @@ public abstract class AbstractModule {
         state = false;
     }
 
-    public void onEnable() {}
+    protected void onEnable() {}
 
-    public void onDisable() {}
+    protected void onDisable() {}
 
     public boolean isState() {return state;}
 
