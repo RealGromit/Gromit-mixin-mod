@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 public class ClientTickEvent {
 
@@ -24,7 +25,17 @@ public class ClientTickEvent {
         ColorUtils.refreshColors();
         if (minecraft.theWorld == null || minecraft.thePlayer == null) return;
         if (event.phase == TickEvent.Phase.START) return;
-        if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) && Saver.getLastScreen() != null) minecraft.displayGuiScreen(Saver.getLastScreen());
-        else if (Keyboard.isKeyDown(Keyboard.KEY_LMENU) && minecraft.currentScreen == null) minecraft.displayGuiScreen(GuiHandler.getMainGui());
+        if (Saver.getOpenGuiButton() != -1) {
+            if (Keyboard.isKeyDown(Saver.getOpenGuiButton())) {
+                if (minecraft.currentScreen == null && Saver.getLastScreen() != null) minecraft.displayGuiScreen(Saver.getLastScreen());
+                else if (minecraft.currentScreen == null) minecraft.displayGuiScreen(GuiHandler.getMainGui());
+            } else if (Mouse.isButtonDown(Saver.getOpenGuiButton())) {
+                if (minecraft.currentScreen == null && Saver.getLastScreen() != null) minecraft.displayGuiScreen(Saver.getLastScreen());
+                else if (minecraft.currentScreen == null) minecraft.displayGuiScreen(GuiHandler.getMainGui());
+            }
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
+            if (minecraft.currentScreen == null && Saver.getLastScreen() != null) minecraft.displayGuiScreen(Saver.getLastScreen());
+            else if (minecraft.currentScreen == null) minecraft.displayGuiScreen(GuiHandler.getMainGui());
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.gromit.gromitmod.gui.subgui;
+package com.gromit.gromitmod.gui.module;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.ModuleGui;
@@ -9,9 +9,9 @@ import java.io.IOException;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class CrumbsModuleGui extends ModuleGui {
+public class FunModuleGui extends ModuleGui {
 
-    public CrumbsModuleGui(GromitMod gromitMod) {
+    public FunModuleGui(GromitMod gromitMod) {
         super(gromitMod);
     }
 
@@ -19,7 +19,7 @@ public class CrumbsModuleGui extends ModuleGui {
     public void initGui() {
         super.initGui();
 
-        crumbs.setState(true);
+        fun.setState(true);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class CrumbsModuleGui extends ModuleGui {
 
     @Override
     public void onGuiClosed() {
-        crumbs.setState(false);
+        fun.setState(false);
     }
 
     @Override

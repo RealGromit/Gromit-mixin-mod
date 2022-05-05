@@ -4,10 +4,10 @@ import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.MainGui;
 import com.gromit.gromitmod.gui.ModuleGui;
 import com.gromit.gromitmod.gui.SettingsGui;
-import com.gromit.gromitmod.gui.subgui.CrumbsModuleGui;
-import com.gromit.gromitmod.gui.subgui.FpsModuleGui;
-import com.gromit.gromitmod.gui.subgui.FunModuleGui;
-import com.gromit.gromitmod.gui.subgui.RenderModuleGui;
+import com.gromit.gromitmod.gui.module.CrumbsModuleGui;
+import com.gromit.gromitmod.gui.module.FpsModuleGui;
+import com.gromit.gromitmod.gui.module.FunModuleGui;
+import com.gromit.gromitmod.gui.module.RenderModuleGui;
 
 public class GuiHandler {
 

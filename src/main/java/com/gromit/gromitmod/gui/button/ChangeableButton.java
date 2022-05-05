@@ -34,10 +34,10 @@ public class ChangeableButton extends TextButton {
 
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= getGuiScale();
-        mouseY /= getGuiScale();
+        mouseX /= guiScale;
+        mouseY /= guiScale;
         if (enabled && visible && mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
-            if (isState()) {
+            if (state) {
                 onDisable.onDisable();
                 displayString = disabledState;
                 width = (int) (FontUtil.normal.getStringWidth(displayString) / 2);

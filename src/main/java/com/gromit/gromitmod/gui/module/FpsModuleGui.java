@@ -1,4 +1,4 @@
-package com.gromit.gromitmod.gui.subgui;
+package com.gromit.gromitmod.gui.module;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.ModuleGui;

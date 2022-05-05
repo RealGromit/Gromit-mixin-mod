@@ -42,10 +42,10 @@ public class ModuleGui extends MainGui {
     public void initGui() {
         super.initGui();
 
-        updateTextButton(render, mainGuiPointX + 87, mainGuiPointY + 26);
-        updateTextButton(fps, mainGuiPointX + 126, mainGuiPointY + 26);
-        updateTextButton(crumbs, mainGuiPointX + 156, mainGuiPointY + 26);
-        updateTextButton(fun, mainGuiPointX + 198, mainGuiPointY + 26);
+        render.updateButton(mainGuiPointX + 87, mainGuiPointY + 26, guiScale);
+        fps.updateButton(mainGuiPointX + 126, mainGuiPointY + 26, guiScale);
+        crumbs.updateButton(mainGuiPointX + 156, mainGuiPointY + 26, guiScale);
+        fun.updateButton(mainGuiPointX + 198, mainGuiPointY + 26, guiScale);
         buttonList.add(render);
         buttonList.add(fps);
         buttonList.add(crumbs);

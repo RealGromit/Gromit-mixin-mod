@@ -14,7 +14,7 @@ public class Slider extends GuiButton {
     private int currentProgress;
     public int currentValue;
     private final int iterations;
-    public double guiScale;
+    private double guiScale;
     private boolean dragging;
 
     public Slider(int buttonId, int x, int y, int width, int height, String buttonText, int minValue, int iterations, double guiScale) {
@@ -58,4 +58,14 @@ public class Slider extends GuiButton {
 
     @Override
     public void playPressSound(SoundHandler p_playPressSound_1_) {}
+
+    public void setGuiScale(double guiScale) {
+        this.guiScale = guiScale;
+    }
+
+    public void updateSlider(int x1, int y1, double guiScale) {
+        setGuiScale(guiScale);
+        xPosition = x1;
+        yPosition = y1;
+    }
 }

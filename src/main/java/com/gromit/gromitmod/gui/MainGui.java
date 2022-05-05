@@ -2,11 +2,10 @@ package com.gromit.gromitmod.gui;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.button.TextButton;
-import com.gromit.gromitmod.gui.slider.Slider;
-import com.gromit.gromitmod.gui.subgui.CrumbsModuleGui;
-import com.gromit.gromitmod.gui.subgui.FpsModuleGui;
-import com.gromit.gromitmod.gui.subgui.FunModuleGui;
-import com.gromit.gromitmod.gui.subgui.RenderModuleGui;
+import com.gromit.gromitmod.gui.module.CrumbsModuleGui;
+import com.gromit.gromitmod.gui.module.FpsModuleGui;
+import com.gromit.gromitmod.gui.module.FunModuleGui;
+import com.gromit.gromitmod.gui.module.RenderModuleGui;
 import com.gromit.gromitmod.handler.GuiHandler;
 import com.gromit.gromitmod.handler.Saver;
 import com.gromit.gromitmod.utils.ColorUtils;
@@ -23,7 +22,7 @@ public class MainGui extends GuiScreen {
     protected static final Minecraft minecraft = GromitMod.INSTANCE.getMinecraft();
     private final int guiWidth = 270, guiHeight = 150;
     protected int mainGuiPointX, mainGuiPointY;
-    private double guiScale;
+    protected double guiScale;
 
     private final ResourceLocation bounds = new ResourceLocation("astrix", "border.png");
     private final ResourceLocation gromit = new ResourceLocation("astrix", "gromit.png");
@@ -44,8 +43,8 @@ public class MainGui extends GuiScreen {
         mainGuiPointX = (int) ((width / guiScale - guiWidth) / 2);
         mainGuiPointY = (int) ((height / guiScale - guiHeight) / 2);
         buttonList.clear();
-        updateTextButton(modules, mainGuiPointX + 96, mainGuiPointY + 16);
-        updateTextButton(settings, mainGuiPointX + 176, mainGuiPointY + 16);
+        modules.updateButton(mainGuiPointX + 96, mainGuiPointY + 16, guiScale);
+        settings.updateButton(mainGuiPointX + 176, mainGuiPointY + 16, guiScale);
         buttonList.add(modules);
         buttonList.add(settings);
     }
@@ -82,17 +81,5 @@ public class MainGui extends GuiScreen {
                 this.mc.setIngameFocus();
             }
         }
-    }
-
-    protected <T extends TextButton> void updateTextButton(T button, int x1, int y1) {
-        button.setGuiScale(guiScale);
-        button.xPosition = x1;
-        button.yPosition = y1;
-    }
-
-    protected void updateSlider(Slider slider, int x1, int y1) {
-        slider.guiScale = guiScale;
-        slider.xPosition = x1;
-        slider.yPosition = y1;
     }
 }

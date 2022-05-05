@@ -8,16 +8,13 @@ import net.minecraft.client.gui.GuiButton;
 
 import java.awt.*;
 
-public class TextButton extends GuiButton {
+public class KeyBindButton extends GuiButton {
 
-    protected double guiScale;
-    protected final OnEnable onEnable;
-    protected boolean state = false;
+    private double guiScale;
+    private boolean detectingKeybind = false;
 
-    public TextButton(int buttonId, int x, int y, int width, int height, String buttonText, double guiScale, OnEnable onEnable) {
-        super(buttonId, x, y, width, height, buttonText);
-        this.guiScale = guiScale;
-        this.onEnable = onEnable;
+    public KeyBindButton(int buttonId, int x, int y, int width, int height, String displayString) {
+        super(buttonId, x, y, width, height, displayString);
     }
 
     @Override
@@ -28,42 +25,43 @@ public class TextButton extends GuiButton {
             hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
             if (hovered) {
                 FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, ColorUtils.getRGB());
-            } else if (state) {
-                FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, ColorUtils.getRGB());
             } else FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, Color.WHITE.getRGB());
         }
-    }
-
-    @Override
-    public void playPressSound(SoundHandler p_playPressSound_1_) {
     }
 
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
         mouseX /= guiScale;
         mouseY /= guiScale;
-        if (enabled && visible && mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
-            onEnable.onEnable();
+        if (enabled && visible && !detectingKeybind && mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
+            displayString = "...";
+            width = (int) (FontUtil.normal.getStringWidth(displayString) / 2);
+            detectingKeybind = true;
             return true;
         }
         return false;
     }
 
-    public interface OnEnable {
-        void onEnable();
-    }
 
-    public void setState(boolean state) {
-        this.state = state;
-    }
+
+    @Override
+    public void playPressSound(SoundHandler p_playPressSound_1_) {}
 
     public void setGuiScale(double guiScale) {
         this.guiScale = guiScale;
     }
 
+    public void setDetectingKeybind(boolean detectingKeybind) {
+        this.detectingKeybind = detectingKeybind;
+    }
+
+    public boolean isDetectingKeybind() {
+        return detectingKeybind;
+    }
+
     public void updateButton(int x1, int y1, double guiScale) {
         setGuiScale(guiScale);
-        xPosition = x1;
-        yPosition = y1;
+        this.xPosition = x1;
+        this.yPosition = y1;
     }
 }
