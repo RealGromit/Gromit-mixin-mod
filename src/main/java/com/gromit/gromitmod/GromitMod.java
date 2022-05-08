@@ -1,6 +1,8 @@
 package com.gromit.gromitmod;
 
 import com.gromit.gromitmod.listener.ClientTickEvent;
+import com.gromit.gromitmod.module.render.ExplosionBoxes;
+import com.gromit.gromitmod.network.NetworkManager;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,6 +20,8 @@ public class GromitMod {
         INSTANCE = this;
         FontUtil.bootstrap();
         MinecraftForge.EVENT_BUS.register(new ClientTickEvent(this));
+        new NetworkManager();
+        new ExplosionBoxes();
     }
 
     public Minecraft getMinecraft() {return minecraft;}

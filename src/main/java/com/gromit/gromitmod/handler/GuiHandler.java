@@ -2,7 +2,6 @@ package com.gromit.gromitmod.handler;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.MainGui;
-import com.gromit.gromitmod.gui.ModuleGui;
 import com.gromit.gromitmod.gui.SettingsGui;
 import com.gromit.gromitmod.gui.module.CrumbsModuleGui;
 import com.gromit.gromitmod.gui.module.FpsModuleGui;
@@ -15,7 +14,6 @@ public class GuiHandler {
 
     private static final MainGui mainGui = new MainGui(gromitMod);
     private static final SettingsGui settingsGui = new SettingsGui(gromitMod);
-    private static final ModuleGui moduleGui = new ModuleGui(gromitMod);
     private static final RenderModuleGui renderModuleGui = new RenderModuleGui(gromitMod);
     private static final FpsModuleGui fpsModuleGui = new FpsModuleGui(gromitMod);
     private static final CrumbsModuleGui crumbsModuleGui = new CrumbsModuleGui(gromitMod);
@@ -27,10 +25,6 @@ public class GuiHandler {
 
     public static SettingsGui getSettingsGui() {
         return settingsGui;
-    }
-
-    public static ModuleGui getModuleGui() {
-        return moduleGui;
     }
 
     public static RenderModuleGui getRenderModuleGui() {

@@ -13,7 +13,7 @@ public class Saver {
     private static FpsModuleGui fpsModuleGui;
     private static CrumbsModuleGui crumbsModuleGui;
     private static FunModuleGui funModuleGui;
-    private static int openGuiButton = -1;
+    private static int openGuiButton = 0x38;
 
     public static MainGui getLastScreen() {
         return lastScreen;

@@ -4,36 +4,35 @@ import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import net.minecraft.client.Minecraft;
 
-import java.awt.*;
+import java.awt.Color;
 
-public class ScrollableButton extends TextButton {
+public class ScrollableButton extends AbstractBaseButton {
 
     private int scroll;
 
-    public ScrollableButton(int buttonId, int x, int y, int width, int height, String buttonText, double guiScale, OnEnable onEnable) {
-        super(buttonId, x, y, width, height, buttonText, guiScale, onEnable);
+    public ScrollableButton(int buttonId, int x, int y, int height, String displayString, OnEnable onEnable, OnDisable onDisable) {
+        super(buttonId, x, y, (int) (FontUtil.normal.getStringWidth(displayString) / 2), height, displayString, onEnable, onDisable);
     }
 
     @Override
     public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-        if (visible) {
-            mouseX /= guiScale;
-            mouseY /= guiScale;
-            hovered = mouseX >= xPosition && mouseY >= yPosition - scroll && mouseX < xPosition + width && mouseY < yPosition - scroll + height;
-            if (hovered) {
-                FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2 - scroll, ColorUtils.getRGB());
-            } else if (state) {
-                FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2 - scroll, ColorUtils.getRGB());
-            } else FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2 - scroll, Color.WHITE.getRGB());
-        }
+        mouseX /= getGuiScale();
+        mouseY /= getGuiScale();
+        hovered = mouseX >= xPosition && mouseY >= yPosition - scroll && mouseX < xPosition + width && mouseY < yPosition - scroll + height;
+        if (isState()) {
+            FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2 - scroll, ColorUtils.getRGB());
+        } else if (isMouseOver()) {
+            FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2 - scroll, ColorUtils.getRGB());
+        } else FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2 - scroll, Color.WHITE.getRGB());
     }
 
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= guiScale;
-        mouseY /= guiScale;
-        if (enabled && visible && mouseX >= xPosition && mouseY >= yPosition - scroll && mouseX < xPosition + width && mouseY < yPosition - scroll + height) {
-            onEnable.onEnable();
+        mouseX /= getGuiScale();
+        mouseY /= getGuiScale();
+        if (mouseX >= xPosition && mouseY >= yPosition - scroll && mouseX < xPosition + width && mouseY < yPosition - scroll + height) {
+            if (isState()) getOnDisable().onDisable();
+            else getOnEnable().onEnable();
             return true;
         }
         return false;

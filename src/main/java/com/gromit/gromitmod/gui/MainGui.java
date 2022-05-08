@@ -10,7 +10,6 @@ import com.gromit.gromitmod.handler.GuiHandler;
 import com.gromit.gromitmod.handler.Saver;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
-import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -27,11 +26,33 @@ public class MainGui extends GuiScreen {
     private final ResourceLocation bounds = new ResourceLocation("astrix", "border.png");
     private final ResourceLocation gromit = new ResourceLocation("astrix", "gromit.png");
 
-    protected static final TextButton modules = new TextButton(0, 0, 0, (int) (FontUtil.normal.getStringWidth("Modules") / 2), 4, "Modules", 1,
-            () -> minecraft.displayGuiScreen(GuiHandler.getModuleGui()));
+    protected static final TextButton render = new TextButton(0, 0, 0, 4, "Render",
+            () -> {
+                if (Saver.getRenderModuleGui() != null) minecraft.displayGuiScreen(Saver.getRenderModuleGui());
+                else minecraft.displayGuiScreen(GuiHandler.getRenderModuleGui());
+            }, () -> minecraft.displayGuiScreen(GuiHandler.getMainGui()));
 
-    protected static final TextButton settings = new TextButton(1, 0, 0, (int) FontUtil.normal.getStringWidth("Settings") / 2, 4, "Settings", 1,
-            () -> minecraft.displayGuiScreen(GuiHandler.getSettingsGui()));
+    protected static final TextButton fps = new TextButton(1, 0, 0, 4, "Fps",
+            () -> {
+                if (Saver.getFpsModuleGui() != null) minecraft.displayGuiScreen(Saver.getFpsModuleGui());
+                else minecraft.displayGuiScreen(GuiHandler.getFpsModuleGui());
+            }, () -> minecraft.displayGuiScreen(GuiHandler.getMainGui()));
+
+    protected static final TextButton crumbs = new TextButton(2, 0, 0, 4, "Crumbs",
+            () -> {
+                if (Saver.getCrumbsModuleGui() != null) minecraft.displayGuiScreen(Saver.getCrumbsModuleGui());
+                else minecraft.displayGuiScreen(GuiHandler.getCrumbsModuleGui());
+            }, () -> minecraft.displayGuiScreen(GuiHandler.getMainGui()));
+
+    protected static final TextButton fun = new TextButton(3, 0, 0, 4, "Fun",
+            () -> {
+                if (Saver.getFunModuleGui() != null) minecraft.displayGuiScreen(Saver.getFunModuleGui());
+                else minecraft.displayGuiScreen(GuiHandler.getFunModuleGui());
+            }, () -> minecraft.displayGuiScreen(GuiHandler.getMainGui()));
+
+    protected static final TextButton settings = new TextButton(4, 0, 0, 4, "Settings",
+            () -> minecraft.displayGuiScreen(GuiHandler.getSettingsGui()),
+            () -> minecraft.displayGuiScreen(GuiHandler.getMainGui()));
 
     public MainGui(GromitMod gromitMod) {
         this.gromitMod = gromitMod;
@@ -43,9 +64,15 @@ public class MainGui extends GuiScreen {
         mainGuiPointX = (int) ((width / guiScale - guiWidth) / 2);
         mainGuiPointY = (int) ((height / guiScale - guiHeight) / 2);
         buttonList.clear();
-        modules.updateButton(mainGuiPointX + 96, mainGuiPointY + 16, guiScale);
-        settings.updateButton(mainGuiPointX + 176, mainGuiPointY + 16, guiScale);
-        buttonList.add(modules);
+        render.updateButton(mainGuiPointX + 63, mainGuiPointY + 16, guiScale);
+        fps.updateButton(mainGuiPointX + 63 + 16 + 25, mainGuiPointY + 16, guiScale);
+        crumbs.updateButton(mainGuiPointX + 63 + 16 + 8  + 50, mainGuiPointY + 16, guiScale);
+        fun.updateButton(mainGuiPointX + 63 + 16 + 8 + 18  + 75, mainGuiPointY + 16, guiScale);
+        settings.updateButton(mainGuiPointX + 63 + 16 + 8 + 18 + 8  + 100, mainGuiPointY + 16, guiScale);
+        buttonList.add(render);
+        buttonList.add(fps);
+        buttonList.add(crumbs);
+        buttonList.add(fun);
         buttonList.add(settings);
     }
 
@@ -59,7 +86,10 @@ public class MainGui extends GuiScreen {
         minecraft.getTextureManager().bindTexture(gromit);
         RenderUtils.drawCircleOutline(mainGuiPointX + 21, mainGuiPointY + 18, 11, 3, 200, ColorUtils.getRed(), ColorUtils.getGreen(), ColorUtils.getBlue(), 255);
         RenderUtils.drawTexture(mainGuiPointX + 5, mainGuiPointY + 5, 33, 25, 0, 0, 1, 1);
-        modules.drawButton(minecraft, mouseX, mouseY);
+        render.drawButton(minecraft, mouseX, mouseY);
+        fps.drawButton(minecraft, mouseX, mouseY);
+        crumbs.drawButton(minecraft, mouseX, mouseY);
+        fun.drawButton(minecraft, mouseX, mouseY);
         settings.drawButton(minecraft, mouseX, mouseY);
     }
 

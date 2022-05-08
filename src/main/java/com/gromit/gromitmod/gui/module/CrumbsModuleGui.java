@@ -1,7 +1,7 @@
 package com.gromit.gromitmod.gui.module;
 
 import com.gromit.gromitmod.GromitMod;
-import com.gromit.gromitmod.gui.ModuleGui;
+import com.gromit.gromitmod.gui.MainGui;
 import com.gromit.gromitmod.utils.RenderUtils;
 import org.lwjgl.input.Mouse;
 
@@ -9,7 +9,9 @@ import java.io.IOException;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class CrumbsModuleGui extends ModuleGui {
+public class CrumbsModuleGui extends MainGui {
+
+    private int scroll;
 
     public CrumbsModuleGui(GromitMod gromitMod) {
         super(gromitMod);

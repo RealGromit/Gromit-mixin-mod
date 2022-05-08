@@ -25,15 +25,7 @@ public class ClientTickEvent {
         ColorUtils.refreshColors();
         if (minecraft.theWorld == null || minecraft.thePlayer == null) return;
         if (event.phase == TickEvent.Phase.START) return;
-        if (Saver.getOpenGuiButton() != -1) {
-            if (Keyboard.isKeyDown(Saver.getOpenGuiButton())) {
-                if (minecraft.currentScreen == null && Saver.getLastScreen() != null) minecraft.displayGuiScreen(Saver.getLastScreen());
-                else if (minecraft.currentScreen == null) minecraft.displayGuiScreen(GuiHandler.getMainGui());
-            } else if (Mouse.isButtonDown(Saver.getOpenGuiButton())) {
-                if (minecraft.currentScreen == null && Saver.getLastScreen() != null) minecraft.displayGuiScreen(Saver.getLastScreen());
-                else if (minecraft.currentScreen == null) minecraft.displayGuiScreen(GuiHandler.getMainGui());
-            }
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
+        if (Keyboard.isKeyDown(Saver.getOpenGuiButton()) || Mouse.isButtonDown(Saver.getOpenGuiButton())) {
             if (minecraft.currentScreen == null && Saver.getLastScreen() != null) minecraft.displayGuiScreen(Saver.getLastScreen());
             else if (minecraft.currentScreen == null) minecraft.displayGuiScreen(GuiHandler.getMainGui());
         }

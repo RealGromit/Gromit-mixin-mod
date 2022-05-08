@@ -6,15 +6,12 @@ import net.minecraft.client.Minecraft;
 
 import java.awt.Color;
 
-public class ChangeableButton extends AbstractBaseButton {
+public class KeybindButton extends AbstractBaseButton {
 
-    private final String disabledState;
-    private final String enabledState;
+    private boolean detectingInput = false;
 
-    public ChangeableButton(int buttonId, int x, int y, int height, String disabledState, String enabledState, OnEnable onEnable, OnDisable onDisable) {
-        super(buttonId, x, y, (int) (FontUtil.normal.getStringWidth(disabledState) / 2), height, disabledState, onEnable, onDisable);
-        this.disabledState = disabledState;
-        this.enabledState = enabledState;
+    public KeybindButton(int buttonId, int x, int y, int height, String displayString) {
+        super(buttonId, x, y, (int) (FontUtil.normal.getStringWidth(displayString) / 2), height, displayString);
     }
 
     @Override
@@ -25,26 +22,31 @@ public class ChangeableButton extends AbstractBaseButton {
         if (isMouseOver()) {
             FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, ColorUtils.getRGB());
         } else FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, Color.WHITE.getRGB());
-
     }
 
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
         mouseX /= getGuiScale();
         mouseY /= getGuiScale();
-        if (mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
-            if (isState()) {
-                getOnDisable().onDisable();
-                displayString = disabledState;
-                setState(false);
-            } else {
-                getOnEnable().onEnable();
-                displayString = enabledState;
-                setState(true);
-            }
+        if (!isDetectingInput() && mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
+            displayString = "...";
             width = (int) (FontUtil.normal.getStringWidth(displayString) / 2);
+            setDetectingInput(true);
             return true;
-        }
-        return false;
+        } return false;
+    }
+
+    public void updateKeybind(String displayString, int width) {
+        this.displayString = displayString;
+        this.width = width;
+        setDetectingInput(false);
+    }
+
+    public boolean isDetectingInput() {
+        return detectingInput;
+    }
+
+    public void setDetectingInput(boolean detectingInput) {
+        this.detectingInput = detectingInput;
     }
 }
