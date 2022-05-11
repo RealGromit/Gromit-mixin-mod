@@ -2,11 +2,10 @@ package com.gromit.gromitmod.gui;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.button.TextButton;
-import com.gromit.gromitmod.gui.module.CrumbsModuleGui;
 import com.gromit.gromitmod.gui.module.FpsModuleGui;
 import com.gromit.gromitmod.gui.module.FunModuleGui;
 import com.gromit.gromitmod.gui.module.RenderModuleGui;
-import com.gromit.gromitmod.handler.GuiHandler;
+import com.gromit.gromitmod.gui.module.crumbs.CrumbsModuleGui;
 import com.gromit.gromitmod.handler.Saver;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
@@ -17,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class MainGui extends GuiScreen {
 
+    private static MainGui instance;
     protected final GromitMod gromitMod;
     protected static final Minecraft minecraft = GromitMod.INSTANCE.getMinecraft();
     private final int guiWidth = 270, guiHeight = 150;
@@ -29,32 +29,33 @@ public class MainGui extends GuiScreen {
     protected static final TextButton render = new TextButton(0, 0, 0, 4, "Render",
             () -> {
                 if (Saver.getRenderModuleGui() != null) minecraft.displayGuiScreen(Saver.getRenderModuleGui());
-                else minecraft.displayGuiScreen(GuiHandler.getRenderModuleGui());
-            }, () -> minecraft.displayGuiScreen(GuiHandler.getMainGui()));
+                else minecraft.displayGuiScreen(RenderModuleGui.getInstance());
+            }, () -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
     protected static final TextButton fps = new TextButton(1, 0, 0, 4, "Fps",
             () -> {
                 if (Saver.getFpsModuleGui() != null) minecraft.displayGuiScreen(Saver.getFpsModuleGui());
-                else minecraft.displayGuiScreen(GuiHandler.getFpsModuleGui());
-            }, () -> minecraft.displayGuiScreen(GuiHandler.getMainGui()));
+                else minecraft.displayGuiScreen(FpsModuleGui.getInstance());
+            }, () -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
     protected static final TextButton crumbs = new TextButton(2, 0, 0, 4, "Crumbs",
             () -> {
                 if (Saver.getCrumbsModuleGui() != null) minecraft.displayGuiScreen(Saver.getCrumbsModuleGui());
-                else minecraft.displayGuiScreen(GuiHandler.getCrumbsModuleGui());
-            }, () -> minecraft.displayGuiScreen(GuiHandler.getMainGui()));
+                else minecraft.displayGuiScreen(CrumbsModuleGui.getInstance());
+            }, () -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
     protected static final TextButton fun = new TextButton(3, 0, 0, 4, "Fun",
             () -> {
                 if (Saver.getFunModuleGui() != null) minecraft.displayGuiScreen(Saver.getFunModuleGui());
-                else minecraft.displayGuiScreen(GuiHandler.getFunModuleGui());
-            }, () -> minecraft.displayGuiScreen(GuiHandler.getMainGui()));
+                else minecraft.displayGuiScreen(FunModuleGui.getInstance());
+            }, () -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
     protected static final TextButton settings = new TextButton(4, 0, 0, 4, "Settings",
-            () -> minecraft.displayGuiScreen(GuiHandler.getSettingsGui()),
-            () -> minecraft.displayGuiScreen(GuiHandler.getMainGui()));
+            () -> minecraft.displayGuiScreen(SettingsGui.getInstance()),
+            () -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
     public MainGui(GromitMod gromitMod) {
+        instance = this;
         this.gromitMod = gromitMod;
     }
 
@@ -111,5 +112,9 @@ public class MainGui extends GuiScreen {
                 this.mc.setIngameFocus();
             }
         }
+    }
+
+    public static MainGui getInstance() {
+        return instance;
     }
 }

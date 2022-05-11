@@ -22,6 +22,9 @@ public class FpsModuleGui extends MainGui {
         super.initGui();
 
         fps.setState(true);
+        crumbs.setState(false);
+        fun.setState(false);
+        render.setState(false);
     }
 
     @Override

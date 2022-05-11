@@ -1,10 +1,11 @@
 package com.gromit.gromitmod.listener;
 
 import com.gromit.gromitmod.GromitMod;
-import com.gromit.gromitmod.handler.GuiHandler;
-import com.gromit.gromitmod.utils.ColorUtils;
+import com.gromit.gromitmod.gui.MainGui;
 import com.gromit.gromitmod.handler.Saver;
+import com.gromit.gromitmod.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
@@ -16,6 +17,7 @@ public class ClientTickEvent {
     private final Minecraft minecraft;
 
     public ClientTickEvent(GromitMod gromitMod) {
+        MinecraftForge.EVENT_BUS.register(this);
         this.gromitMod = gromitMod;
         minecraft = gromitMod.getMinecraft();
     }
@@ -25,9 +27,10 @@ public class ClientTickEvent {
         ColorUtils.refreshColors();
         if (minecraft.theWorld == null || minecraft.thePlayer == null) return;
         if (event.phase == TickEvent.Phase.START) return;
+        if (minecraft.pointedEntity != null) minecraft.thePlayer.sendChatMessage(minecraft.pointedEntity.getName());
         if (Keyboard.isKeyDown(Saver.getOpenGuiButton()) || Mouse.isButtonDown(Saver.getOpenGuiButton())) {
             if (minecraft.currentScreen == null && Saver.getLastScreen() != null) minecraft.displayGuiScreen(Saver.getLastScreen());
-            else if (minecraft.currentScreen == null) minecraft.displayGuiScreen(GuiHandler.getMainGui());
+            else if (minecraft.currentScreen == null) minecraft.displayGuiScreen(MainGui.getInstance());
         }
     }
 }

@@ -22,6 +22,9 @@ public class RenderModuleGui extends MainGui {
         super.initGui();
 
         render.setState(true);
+        crumbs.setState(false);
+        fps.setState(false);
+        fun.setState(false);
     }
 
     @Override

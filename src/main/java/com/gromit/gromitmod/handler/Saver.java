@@ -1,7 +1,7 @@
 package com.gromit.gromitmod.handler;
 
 import com.gromit.gromitmod.gui.MainGui;
-import com.gromit.gromitmod.gui.module.CrumbsModuleGui;
+import com.gromit.gromitmod.gui.module.crumbs.CrumbsModuleGui;
 import com.gromit.gromitmod.gui.module.FpsModuleGui;
 import com.gromit.gromitmod.gui.module.FunModuleGui;
 import com.gromit.gromitmod.gui.module.RenderModuleGui;

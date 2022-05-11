@@ -26,6 +26,10 @@ public class SettingsGui extends MainGui {
         openGui.updateButton(mainGuiPointX + 110, mainGuiPointY + 39, guiScale);
         buttonList.add(openGui);
         settings.setState(true);
+        crumbs.setState(false);
+        fps.setState(false);
+        fun.setState(false);
+        render.setState(false);
     }
 
     @Override
