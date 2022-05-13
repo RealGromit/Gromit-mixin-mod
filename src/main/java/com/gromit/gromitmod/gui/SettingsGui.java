@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class SettingsGui extends MainGui {
 
+    private static SettingsGui instance;
     private static final KeybindButton openGui = new KeybindButton(5, 0, 0, 4, "Left alt");
 
     public SettingsGui(GromitMod gromitMod) {
@@ -72,5 +73,14 @@ public class SettingsGui extends MainGui {
             keybindButton.updateKeybind(displayString, (int) (FontUtil.normal.getStringWidth(displayString) / 2));
             Saver.setOpenGuiButton(Mouse.getEventButton());
         }
+    }
+
+    @Override
+    protected void setInstance() {
+        instance = this;
+    }
+
+    public static SettingsGui getInstance() {
+        return instance;
     }
 }

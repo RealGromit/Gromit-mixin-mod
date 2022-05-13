@@ -55,10 +55,10 @@ public abstract class AbstractBaseButton extends GuiButton {
     }
 
     public interface OnEnable {
-        void onEnable();
+        void onEnable(AbstractBaseButton baseButton);
     }
 
     public interface OnDisable {
-        void onDisable();
+        void onDisable(AbstractBaseButton baseButton);
     }
 }

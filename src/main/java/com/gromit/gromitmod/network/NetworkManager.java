@@ -21,6 +21,7 @@ public class NetworkManager extends ChannelDuplexHandler {
         if (pipeline.get("packet_handler") == null) return;
         if (pipeline.get("gromitmod") != null) return;
         pipeline.addBefore("packet_handler", "gromitmod", this);
+        System.out.println(pipeline.toMap().toString());
     }
 
     @SubscribeEvent

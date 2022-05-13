@@ -34,13 +34,11 @@ public class ChangeableButton extends AbstractBaseButton {
         mouseY /= getGuiScale();
         if (mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
             if (isState()) {
-                getOnDisable().onDisable();
+                getOnDisable().onDisable(this);
                 displayString = disabledState;
-                setState(false);
             } else {
-                getOnEnable().onEnable();
+                getOnEnable().onEnable(this);
                 displayString = enabledState;
-                setState(true);
             }
             width = (int) (FontUtil.normal.getStringWidth(displayString) / 2);
             return true;

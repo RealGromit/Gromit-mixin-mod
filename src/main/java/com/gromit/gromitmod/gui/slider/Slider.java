@@ -6,12 +6,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.GuiButton;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class Slider extends GuiButton {
 
     private final int minValue;
-    private final int maxValue;
     private final int steps;
     private int currentProgress;
     public int currentValue;
@@ -22,7 +21,6 @@ public class Slider extends GuiButton {
     public Slider(int buttonId, int x, int y, int width, int height, String buttonText, int minValue, int maxValue, int iterations) {
         super(buttonId, x, y, width, height, buttonText);
         this.minValue = minValue;
-        this.maxValue = maxValue;
         steps = width / (maxValue - minValue);
         this.iterations = iterations;
     }
@@ -43,7 +41,7 @@ public class Slider extends GuiButton {
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
         mouseX /= guiScale;
         if (hovered) {
-            closestStep(mouseX - xPosition);
+            currentProgress = Math.round((float) (mouseX - xPosition) / steps) * steps;
             dragging = true;
             return true;
         } else return false;
@@ -53,43 +51,22 @@ public class Slider extends GuiButton {
     protected void mouseDragged(Minecraft minecraft, int mouseX, int mouseY) {
         if (dragging && hovered) {
             int pos = mouseX - xPosition;
-            if (pos == 0) currentProgress = pos;
+            if (pos == 0) currentProgress = 0;
             if (pos % steps == 0) currentProgress = pos;
         }
     }
 
     @Override
-    public void mouseReleased(int mouseX, int mouseY) {
-        dragging = false;
-    }
+    public void mouseReleased(int mouseX, int mouseY) {dragging = false;}
 
     @Override
     public void playPressSound(SoundHandler p_playPressSound_1_) {}
 
-    public void setGuiScale(double guiScale) {
-        this.guiScale = guiScale;
-    }
+    public void setGuiScale(double guiScale) {this.guiScale = guiScale;}
 
     public void updateSlider(int x1, int y1, double guiScale) {
         setGuiScale(guiScale);
         xPosition = x1;
         yPosition = y1;
-    }
-
-    private void closestStep(int pos) {
-        int positiveCount = 0;
-        int remainingPossibleValues = width - pos;
-        for (int i = 1; i <= remainingPossibleValues; i++) {
-            positiveCount++;
-            if ((pos + i) % steps == 0) break;
-        }
-        int negativeCount = 0;
-        remainingPossibleValues = -width + remainingPossibleValues;
-        for (int i = -1; i >= remainingPossibleValues; i--) {
-            negativeCount--;
-            if ((pos + i) % steps == 0) break;
-        }
-        if (positiveCount <= Math.abs(negativeCount)) currentProgress = pos + positiveCount;
-        if (positiveCount >= Math.abs(negativeCount)) currentProgress = pos + negativeCount;
     }
 }

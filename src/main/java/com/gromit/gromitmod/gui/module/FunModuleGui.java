@@ -2,6 +2,7 @@ package com.gromit.gromitmod.gui.module;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.MainGui;
+import com.gromit.gromitmod.handler.Saver;
 import com.gromit.gromitmod.utils.RenderUtils;
 import org.lwjgl.input.Mouse;
 
@@ -11,6 +12,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class FunModuleGui extends MainGui {
 
+    private static FunModuleGui instance;
     private int scroll;
 
     public FunModuleGui(GromitMod gromitMod) {
@@ -21,6 +23,7 @@ public class FunModuleGui extends MainGui {
     public void initGui() {
         super.initGui();
 
+        Saver.setFunModuleGui(this);
         fun.setState(true);
         crumbs.setState(false);
         fps.setState(false);
@@ -43,7 +46,7 @@ public class FunModuleGui extends MainGui {
 
     @Override
     public void onGuiClosed() {
-        fun.setState(false);
+
     }
 
     @Override
@@ -51,5 +54,14 @@ public class FunModuleGui extends MainGui {
         super.handleMouseInput();
 
         if (Mouse.getX() >= 460 && Mouse.getY() >= 290 && Mouse.getX() < 460 + 199 && Mouse.getY() < 290 + 398) scroll += Mouse.getEventDWheel() / 60;
+    }
+
+    @Override
+    protected void setInstance() {
+        instance = this;
+    }
+
+    public static FunModuleGui getInstance() {
+        return instance;
     }
 }

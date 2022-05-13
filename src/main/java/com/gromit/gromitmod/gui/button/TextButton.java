@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import java.awt.Color;
 
 public class TextButton extends AbstractBaseButton {
+
     public TextButton(int buttonId, int x, int y, int height, String displayString, OnEnable onEnable, OnDisable onDisable) {
         super(buttonId, x, y, (int) (FontUtil.normal.getStringWidth(displayString) / 2), height, displayString, onEnable, onDisable);
     }
@@ -28,8 +29,8 @@ public class TextButton extends AbstractBaseButton {
         mouseX /= getGuiScale();
         mouseY /= getGuiScale();
         if (mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
-            if (isState()) getOnDisable().onDisable();
-            else getOnEnable().onEnable();
+            if (isState()) getOnDisable().onDisable(this);
+            else getOnEnable().onEnable(this);
             return true;
         }
         return false;

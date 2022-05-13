@@ -12,12 +12,12 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 @Mod(modid = "GromitMod", version = "1.0")
 public class GromitMod {
 
-    public static GromitMod INSTANCE;
+    private static GromitMod instance;
     private final Minecraft minecraft = Minecraft.getMinecraft();
 
     @Mod.EventHandler
     public void onPostInit(FMLPostInitializationEvent event) {
-        INSTANCE = this;
+        instance = this;
         FontUtil.bootstrap();
         new GuiHandler(this);
         new ModuleHandler(this);
@@ -26,4 +26,8 @@ public class GromitMod {
     }
 
     public Minecraft getMinecraft() {return minecraft;}
+
+    public static GromitMod getInstance() {
+        return instance;
+    }
 }

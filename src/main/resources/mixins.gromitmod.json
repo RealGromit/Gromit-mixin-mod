@@ -6,9 +6,7 @@
   "target": "@env(DEFAULT)",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "EntityTntPrimedMixin"
-  ],
-  "client": [
-    "EntityRendererMixin"
+    "EntityTntPrimedMixin",
+    "ExplosionMixin"
   ]
 }

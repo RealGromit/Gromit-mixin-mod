@@ -4,12 +4,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 public abstract class AbstractModule {
 
-    private static AbstractModule instance;
     private boolean state = false;
-
-    public AbstractModule() {
-        instance = this;
-    }
 
     public void register() {
         MinecraftForge.EVENT_BUS.register(this);
@@ -30,8 +25,4 @@ public abstract class AbstractModule {
     public boolean isState() {return state;}
 
     public void setState(boolean state) {this.state = state;}
-
-    public static AbstractModule getInstance() {
-        return instance;
-    }
 }

@@ -31,8 +31,8 @@ public class ScrollableButton extends AbstractBaseButton {
         mouseX /= getGuiScale();
         mouseY /= getGuiScale();
         if (mouseX >= xPosition && mouseY >= yPosition - scroll && mouseX < xPosition + width && mouseY < yPosition - scroll + height) {
-            if (isState()) getOnDisable().onDisable();
-            else getOnEnable().onEnable();
+            if (isState()) getOnDisable().onDisable(this);
+            else getOnEnable().onEnable(this);
             return true;
         }
         return false;

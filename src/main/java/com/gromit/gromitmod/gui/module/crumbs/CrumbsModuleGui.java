@@ -3,6 +3,7 @@ package com.gromit.gromitmod.gui.module.crumbs;
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.MainGui;
 import com.gromit.gromitmod.gui.button.TextButton;
+import com.gromit.gromitmod.handler.Saver;
 import com.gromit.gromitmod.utils.RenderUtils;
 import org.lwjgl.input.Mouse;
 
@@ -12,11 +13,18 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class CrumbsModuleGui extends MainGui {
 
+    private static CrumbsModuleGui instance;
     private int scroll;
 
     protected static final TextButton explosionBox = new TextButton(6, 0, 0, 4, "Explosion Box",
-            () -> minecraft.displayGuiScreen(ExplosionBoxGui.getInstance()),
-            () -> minecraft.displayGuiScreen(CrumbsModuleGui.getInstance()));
+            (button) -> {
+                minecraft.displayGuiScreen(ExplosionBoxGui.getInstance());
+                button.setState(true);
+            },
+            (button) -> {
+                minecraft.displayGuiScreen(CrumbsModuleGui.getInstance());
+                button.setState(false);
+            });
 
     public CrumbsModuleGui(GromitMod gromitMod) {
         super(gromitMod);
@@ -26,6 +34,7 @@ public class CrumbsModuleGui extends MainGui {
     public void initGui() {
         super.initGui();
 
+        Saver.setCrumbsModuleGui(this);
         explosionBox.updateButton(mainGuiPointX + 11, mainGuiPointY + 38, guiScale);
         buttonList.add(explosionBox);
         crumbs.setState(true);
@@ -51,7 +60,6 @@ public class CrumbsModuleGui extends MainGui {
 
     @Override
     public void onGuiClosed() {
-        crumbs.setState(false);
     }
 
     @Override
@@ -59,5 +67,14 @@ public class CrumbsModuleGui extends MainGui {
         super.handleMouseInput();
 
         if (Mouse.getX() >= 460 && Mouse.getY() >= 290 && Mouse.getX() < 460 + 199 && Mouse.getY() < 290 + 398) scroll += Mouse.getEventDWheel() / 60;
+    }
+
+    @Override
+    protected void setInstance() {
+        instance = this;
+    }
+
+    public static CrumbsModuleGui getInstance() {
+        return instance;
     }
 }
