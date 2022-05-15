@@ -38,10 +38,12 @@ public class RenderUtils {
         GlStateManager.disableTexture2D();
         GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glLineWidth(lineWidth);
+        glEnable(GL_LINE_SMOOTH);
         worldRenderer.begin(GL_LINES, DefaultVertexFormats.POSITION_COLOR);
         worldRenderer.pos(x1, y1, 0).color(red, green, blue, alpha).endVertex();
         worldRenderer.pos(x1 + x2, y1 + y2, 0).color(red, green, blue, alpha).endVertex();
         tessellator.draw();
+        glDisable(GL_LINE_SMOOTH);
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
     }
@@ -125,6 +127,54 @@ public class RenderUtils {
         }
         tessellator.draw();
         glDisable(GL_POLYGON_SMOOTH);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+    }
+
+    public static void drawShadingRectangle(double x1, double y1, double width, double height, int red, int green, int blue, int alpha) {
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glShadeModel(GL_SMOOTH);
+        RenderUtils.worldRenderer.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        RenderUtils.worldRenderer.pos(x1, y1, 0).color(255, 255, 255, 255).endVertex();
+        RenderUtils.worldRenderer.pos(x1, y1 + height, 0).color(0, 0, 0, 255).endVertex();
+        RenderUtils.worldRenderer.pos(x1 + width, y1 + height, 0).color(0, 0, 0, 255).endVertex();
+        RenderUtils.worldRenderer.pos(x1 + width, y1, 0).color(red, green, blue, alpha).endVertex();
+        RenderUtils.tessellator.draw();
+        glShadeModel(GL_FLAT);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+    }
+
+    public static void drawShadingRectangleWidthGradient(double x1, double y1, double width, double height, int red, int green, int blue, int alpha, int red1, int green1, int blue1, int alpha1) {
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glShadeModel(GL_SMOOTH);
+        RenderUtils.worldRenderer.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        RenderUtils.worldRenderer.pos(x1, y1, 0).color(red, green, blue, alpha).endVertex();
+        RenderUtils.worldRenderer.pos(x1, y1 + height, 0).color(red1, green1, blue1, alpha1).endVertex();
+        RenderUtils.worldRenderer.pos(x1 + width, y1 + height, 0).color(red1, green1, blue1, alpha1).endVertex();
+        RenderUtils.worldRenderer.pos(x1 + width, y1, 0).color(red, green, blue, alpha).endVertex();
+        RenderUtils.tessellator.draw();
+        glShadeModel(GL_FLAT);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+    }
+
+    public static void drawShadingRectangleHeightGradient(double x1, double y1, double width, double height, int red, int green, int blue, int alpha, int red1, int green1, int blue1, int alpha1) {
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glShadeModel(GL_SMOOTH);
+        RenderUtils.worldRenderer.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        RenderUtils.worldRenderer.pos(x1, y1, 0).color(red, green, blue, alpha).endVertex();
+        RenderUtils.worldRenderer.pos(x1, y1 + height, 0).color(red, green, blue, alpha).endVertex();
+        RenderUtils.worldRenderer.pos(x1 + width, y1 + height, 0).color(red1, green1, blue1, alpha1).endVertex();
+        RenderUtils.worldRenderer.pos(x1 + width, y1, 0).color(red1, green1, blue1, alpha1).endVertex();
+        RenderUtils.tessellator.draw();
+        glShadeModel(GL_FLAT);
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
     }

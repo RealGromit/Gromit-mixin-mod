@@ -2,6 +2,7 @@ package com.gromit.gromitmod.module.render;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.event.network.InboundPacket;
+import com.gromit.gromitmod.gui.button.ColorButton;
 import com.gromit.gromitmod.gui.module.crumbs.ExplosionBoxGui;
 import com.gromit.gromitmod.module.AbstractModule;
 import com.gromit.gromitmod.utils.AxisAlignedBBTime;
@@ -21,6 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ExplosionBox extends AbstractModule {
 
     private static ExplosionBox instance;
+    private static ColorButton colorButton = ExplosionBoxGui.colorButton;
     private final RenderManager renderManager;
     private final Set<AxisAlignedBBTime> boxSet = ConcurrentHashMap.newKeySet();
     private final Minecraft minecraft;
@@ -61,7 +63,7 @@ public class ExplosionBox extends AbstractModule {
         GlStateManager.pushMatrix();
         GlStateManager.translate(-renderManager.viewerPosX, -renderManager.viewerPosY, -renderManager.viewerPosZ);
         for (AxisAlignedBBTime box : boxSet) {
-            RenderUtils.drawAABB(box, ColorUtils.getRed(), ColorUtils.getGreen(), ColorUtils.getBlue(), 90);
+            RenderUtils.drawAABB(box, colorButton.getFinalRed(), colorButton.getFinalGreen(), colorButton.getFinalBlue(), colorButton.getFinalAlpha());
             RenderUtils.drawAABBOutline(box, 2, ColorUtils.getRed(), ColorUtils.getGreen(), ColorUtils.getBlue(), 255);
         }
         GlStateManager.popMatrix();
