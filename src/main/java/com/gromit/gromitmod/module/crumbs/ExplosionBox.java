@@ -2,6 +2,7 @@ package com.gromit.gromitmod.module.crumbs;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.event.network.InboundPacket;
+import com.gromit.gromitmod.gui.button.CheckboxButton;
 import com.gromit.gromitmod.gui.button.ColorButton;
 import com.gromit.gromitmod.gui.module.crumbs.ExplosionBoxGui;
 import com.gromit.gromitmod.module.AbstractModule;
@@ -23,6 +24,7 @@ public class ExplosionBox extends AbstractModule {
 
     private static ExplosionBox instance;
     private final ColorButton colorButton = ExplosionBoxGui.colorButton;
+    private final CheckboxButton precision = ExplosionBoxGui.precision;
     private final RenderManager renderManager;
     private final Set<AxisAlignedBBTime> boxSet = ConcurrentHashMap.newKeySet();
     private final Minecraft minecraft;
@@ -38,7 +40,7 @@ public class ExplosionBox extends AbstractModule {
         if (!(event.getPacket() instanceof S27PacketExplosion)) return;
         S27PacketExplosion explosion = (S27PacketExplosion) event.getPacket();
         AxisAlignedBBTime box;
-        if (ExplosionBoxGui.precision.isState()) box = new AxisAlignedBBTime(explosion.getX() - 0.1, explosion.getY() + 0.4 - 0.06125, explosion.getZ() - 0.1, explosion.getX() + 0.1, explosion.getY() + 0.6 - 0.06125, explosion.getZ() + 0.1, System.currentTimeMillis());
+        if (precision.isState()) box = new AxisAlignedBBTime(explosion.getX() - 0.1, explosion.getY() + 0.4 - 0.06125, explosion.getZ() - 0.1, explosion.getX() + 0.1, explosion.getY() + 0.6 - 0.06125, explosion.getZ() + 0.1, System.currentTimeMillis());
         else {
             double posX = Math.floor(explosion.getX());
             double posY = Math.floor(explosion.getY());

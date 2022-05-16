@@ -1,6 +1,8 @@
 package com.gromit.gromitmod.gui.button;
 
+import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
+import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.MathHelper;
 
@@ -18,6 +20,7 @@ public class ColorButton extends AbstractBaseButton {
     private boolean saturationDragging = false;
     private boolean alphaDragging = false;
     private float hue = 1, saturation = 1, brightness = 1;
+    private final CheckboxButton chroma = new CheckboxButton(11, 0, 0, 4, 4);
 
     public ColorButton(int buttonId, int x, int y, int width, int height, int boxX, int boxY, int boxWidth, int boxHeight) {
         super(buttonId, x, y, width, height, "");
@@ -33,6 +36,8 @@ public class ColorButton extends AbstractBaseButton {
 
     @Override
     public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
+        int ogMouseX = mouseX;
+        int ogMouseY = mouseY;
         mouseX /= guiScale;
         mouseY /= guiScale;
 
@@ -43,6 +48,18 @@ public class ColorButton extends AbstractBaseButton {
         RenderUtils.drawLine(xPosition, yPosition + height, width, 0, 2, 255, 255, 255, 255);
         RenderUtils.drawLine(xPosition, yPosition, 0, height, 2, 255, 255, 255, 255);
         RenderUtils.drawLine(xPosition + width, yPosition, 0, height, 2, 255, 255, 255, 255);
+        if (chroma.state) {
+            float[] hsb = Color.RGBtoHSB(ColorUtils.getRed(), ColorUtils.getGreen(), ColorUtils.getBlue(), null);
+            hue = hsb[0];
+            saturation = hsb[1];
+            brightness = hsb[2];
+            red = ColorUtils.getRed();
+            green = ColorUtils.getGreen();
+            blue = ColorUtils.getBlue();
+            satRed = red;
+            satGreen = green;
+            satBlue = blue;
+        }
         if (!state) return;
         saturationHovered = mouseX >= boxX && mouseY >= boxY && mouseX <= boxX + sectionX - 1.4 && mouseY <= boxY + sectionY - 1.4;
         hueHovered = mouseX >= boxX + sectionX && mouseY >= boxY && mouseX < boxX + sectionX + deltaSectionX - 1 && mouseY < boxY + sectionY - 1;
@@ -64,6 +81,8 @@ public class ColorButton extends AbstractBaseButton {
         RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + 33.8, deltaSectionX - 0.6, 6.7, 255, 0, 255, 255, 255, 20, 147, 255);
         RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + 40.5, deltaSectionX - 0.6, 6.9, 255, 20, 147, 255, 255, 0, 0, 255);
         RenderUtils.drawShadingRectangleHeightGradient(boxX + 0.3, boxY + sectionY + 0.3, boxWidth - 0.6, deltaSectionY - 0.6, 0, 0, 0, 0, red, green, blue, 255);
+        FontUtil.normal.drawString("Chroma rgb", boxX + 1, boxY + boxHeight + 6, Color.WHITE.getRGB());
+        chroma.drawButton(minecraft, ogMouseX, ogMouseY);
     }
 
     @Override
@@ -77,11 +96,13 @@ public class ColorButton extends AbstractBaseButton {
         if (hueHovered) {
             setHue(mouseY);
             hueDragging = true;
+            chroma.state = false;
             return true;
         }
         if (saturationHovered) {
             setSaturation(mouseX, mouseY);
             saturationDragging = true;
+            chroma.state = false;
             return true;
         }
         if (alphaHovered) {
@@ -114,7 +135,7 @@ public class ColorButton extends AbstractBaseButton {
     }
 
     private void setHue(int mouseY) {
-        hue = MathHelper.clamp_float((mouseY - boxY + 1) / 48f, 0, 1);
+        hue = MathHelper.clamp_float((mouseY - boxY) / 46f, 0, 1);
         int color = Color.HSBtoRGB(hue, 1, 1);
         satRed = color >> 16 & 255;
         satGreen = color >> 8 & 255;
@@ -123,13 +144,13 @@ public class ColorButton extends AbstractBaseButton {
     }
 
     private void setSaturation(int mouseX, int mouseY) {
-        saturation = MathHelper.clamp_float((mouseX - boxX + 1) / 48f, 0, 1);
-        brightness = MathHelper.clamp_float((boxY - mouseY + 48 - 1) / 48f, 0, 1);
+        saturation = MathHelper.clamp_float((mouseX - boxX) / 46f, 0, 1);
+        brightness = MathHelper.clamp_float((boxY - mouseY + 46) / 46f, 0, 1);
         updateColor();
     }
 
     private void setAlpha(int mouseX) {
-        alpha = (int) (MathHelper.clamp_float((mouseX - boxX + 1) / 60f, 0, 1) * 255);
+        alpha = (int) (MathHelper.clamp_float((mouseX - boxX) / 58f, 0, 1) * 255);
         updateColor();
     }
 
@@ -154,5 +175,9 @@ public class ColorButton extends AbstractBaseButton {
 
     public int getFinalAlpha() {
         return alpha;
+    }
+
+    public CheckboxButton getChroma() {
+        return chroma;
     }
 }

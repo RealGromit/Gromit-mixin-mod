@@ -8,7 +8,6 @@ import com.gromit.gromitmod.utils.RenderUtils;
 public class RenderModuleGui extends MainGui {
 
     private static RenderModuleGui instance;
-    private int scroll;
 
     public RenderModuleGui(GromitMod gromitMod) {
         super(gromitMod);
@@ -29,10 +28,7 @@ public class RenderModuleGui extends MainGui {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        RenderUtils.drawLine(mainGuiPointX + 10, mainGuiPointY + 37, 50, 0, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(mainGuiPointX + 60, mainGuiPointY + 37, 0, 101, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(mainGuiPointX + 10, mainGuiPointY + 138, 50, 0, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(mainGuiPointX + 10, mainGuiPointY + 37, 0, 101, 2, 255, 255, 255, 255);
+        RenderUtils.drawLine(mainGuiPointX + 60, mainGuiPointY + 37, 0, 101, 4, 255, 255, 255, 255);
     }
 
     @Override

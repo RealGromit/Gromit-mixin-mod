@@ -11,9 +11,9 @@ import java.awt.*;
 public class ExplosionBoxGui extends CrumbsModuleGui {
 
     private static ExplosionBoxGui instance;
-    public static final ColorButton colorButton = new ColorButton(7, 0, 0, 4, 4, 0, 0, 60, 60);
-    public static final Slider slider = new Slider(10, 0, 0, 95, 2, "", 1, 20, 100);
-    public static final CheckboxButton precision = new CheckboxButton(8, 0, 0, 4, 4,
+    public static final ColorButton colorButton = new ColorButton(8, 0, 0, 4, 4, 0, 0, 60, 60);
+    public static final Slider slider = new Slider(9, 0, 0, 95, 2, "", 1, 20, 100);
+    public static final CheckboxButton precision = new CheckboxButton(10, 0, 0, 4, 4,
             (button) -> {},
             (button) -> {});
 
@@ -26,11 +26,13 @@ public class ExplosionBoxGui extends CrumbsModuleGui {
         super.initGui();
 
         colorButton.updateColorButton(mainGuiPointX + 130, mainGuiPointY + 48, mainGuiPointX + guiWidth + 5, mainGuiPointY, guiScale);
+        colorButton.getChroma().updateButton(mainGuiPointX + guiWidth + 35, mainGuiPointY + 64, guiScale);
         precision.updateButton(mainGuiPointX + 130, mainGuiPointY + 55, guiScale);
         slider.updateSlider(mainGuiPointX + 68, mainGuiPointY + 80, guiScale);
         buttonList.add(colorButton);
         buttonList.add(slider);
         buttonList.add(precision);
+        buttonList.add(colorButton.getChroma());
         explosionBox.setState(true);
     }
 

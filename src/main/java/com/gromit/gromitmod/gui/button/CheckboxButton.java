@@ -11,6 +11,10 @@ public class CheckboxButton extends AbstractBaseButton {
         super(buttonId, x, y, width, height, "", onEnable, onDisable);
     }
 
+    public CheckboxButton(int buttonId, int x, int y, int width, int height) {
+        super(buttonId, x, y, width, height, "");
+    }
+
     @Override
     public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
         mouseX /= guiScale;
@@ -40,8 +44,8 @@ public class CheckboxButton extends AbstractBaseButton {
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
         if (hovered) {
-            if (state) onDisable.onDisable(this);
-            else onEnable.onEnable(this);
+            if (state && onDisable != null) onDisable.onDisable(this);
+            else if (!state && onEnable != null) onEnable.onEnable(this);
             state = !state;
             return true;
         } return false;

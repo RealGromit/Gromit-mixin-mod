@@ -16,7 +16,7 @@ public class CrumbsModuleGui extends MainGui {
             (button) -> minecraft.displayGuiScreen(ExplosionBoxGui.getInstance()),
             (button) -> minecraft.displayGuiScreen(CrumbsModuleGui.getInstance()));
 
-    private static final CheckboxButton checkbox = new CheckboxButton(11, 0, 0, 4, 4,
+    private static final CheckboxButton checkbox = new CheckboxButton(7, 0, 0, 4, 4,
             (button) -> ExplosionBox.getInstance().register(),
             (button) -> ExplosionBox.getInstance().unregister());
 
@@ -29,8 +29,8 @@ public class CrumbsModuleGui extends MainGui {
         super.initGui();
 
         Saver.setCrumbsModuleGui(this);
-        explosionBox.updateButton(mainGuiPointX + 12, mainGuiPointY + 39, guiScale);
-        checkbox.updateButton(mainGuiPointX + 54, mainGuiPointY + 39, guiScale);
+        explosionBox.updateButton(mainGuiPointX + 7, mainGuiPointY + 39, guiScale);
+        checkbox.updateButton(mainGuiPointX + 49, mainGuiPointY + 39, guiScale);
         buttonList.add(explosionBox);
         buttonList.add(checkbox);
         crumbs.setState(true);
@@ -46,10 +46,7 @@ public class CrumbsModuleGui extends MainGui {
         explosionBox.drawButton(minecraft, mouseX, mouseY);
         checkbox.drawButton(minecraft, mouseX, mouseY);
 
-        RenderUtils.drawLine(mainGuiPointX + 10, mainGuiPointY + 37, 50, 0, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(mainGuiPointX + 60, mainGuiPointY + 37, 0, 101, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(mainGuiPointX + 10, mainGuiPointY + 138, 50, 0, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(mainGuiPointX + 10, mainGuiPointY + 37, 0, 101, 2, 255, 255, 255, 255);
+        RenderUtils.drawLine(mainGuiPointX + 60, mainGuiPointY + 37, 0, 101, 4, 255, 255, 255, 255);
     }
     @Override
     protected void setInstance() {
