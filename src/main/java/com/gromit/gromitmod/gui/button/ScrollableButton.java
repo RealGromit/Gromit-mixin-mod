@@ -16,23 +16,27 @@ public class ScrollableButton extends AbstractBaseButton {
 
     @Override
     public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= getGuiScale();
-        mouseY /= getGuiScale();
+        mouseX /= guiScale;
+        mouseY /= guiScale;
         hovered = mouseX >= xPosition && mouseY >= yPosition - scroll && mouseX < xPosition + width && mouseY < yPosition - scroll + height;
-        if (isState()) {
+        if (state) {
             FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2 - scroll, ColorUtils.getRGB());
-        } else if (isMouseOver()) {
+        } else if (hovered) {
             FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2 - scroll, ColorUtils.getRGB());
         } else FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2 - scroll, Color.WHITE.getRGB());
     }
 
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= getGuiScale();
-        mouseY /= getGuiScale();
-        if (mouseX >= xPosition && mouseY >= yPosition - scroll && mouseX < xPosition + width && mouseY < yPosition - scroll + height) {
-            if (isState()) getOnDisable().onDisable(this);
-            else getOnEnable().onEnable(this);
+        if (hovered) {
+            if (state) {
+                onDisable.onDisable(this);
+                state = false;
+            }
+            else {
+                onEnable.onEnable(this);
+                state = true;
+            }
             return true;
         }
         return false;

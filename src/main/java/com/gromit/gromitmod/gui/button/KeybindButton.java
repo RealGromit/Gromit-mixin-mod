@@ -16,19 +16,17 @@ public class KeybindButton extends AbstractBaseButton {
 
     @Override
     public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= getGuiScale();
-        mouseY /= getGuiScale();
+        mouseX /= guiScale;
+        mouseY /= guiScale;
         hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
-        if (isMouseOver()) {
+        if (hovered) {
             FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, ColorUtils.getRGB());
         } else FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, Color.WHITE.getRGB());
     }
 
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= getGuiScale();
-        mouseY /= getGuiScale();
-        if (!isDetectingInput() && mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
+        if (!isDetectingInput() && hovered) {
             displayString = "...";
             width = (int) (FontUtil.normal.getStringWidth(displayString) / 2);
             setDetectingInput(true);

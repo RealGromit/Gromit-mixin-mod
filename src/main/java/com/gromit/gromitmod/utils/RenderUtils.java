@@ -33,6 +33,17 @@ public class RenderUtils {
         GlStateManager.disableBlend();
     }
 
+    public static void drawRectangleNoBlend(double x1, double y1, double x2, double y2, int red, int green, int blue, int alpha) {
+        GlStateManager.disableTexture2D();
+        worldRenderer.begin(GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        worldRenderer.pos(x1, y1, 0).color(red, green, blue, alpha).endVertex();
+        worldRenderer.pos(x1, y1 + y2, 0).color(red, green, blue, alpha).endVertex();
+        worldRenderer.pos(x1 + x2, y1 + y2, 0).color(red, green, blue, alpha).endVertex();
+        worldRenderer.pos(x1 + x2, y1, 0).color(red, green, blue, alpha).endVertex();
+        tessellator.draw();
+        GlStateManager.enableTexture2D();
+    }
+
     public static void drawLine(double x1, double y1, double x2, double y2, float lineWidth, int red, int green, int blue, int alpha) {
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();

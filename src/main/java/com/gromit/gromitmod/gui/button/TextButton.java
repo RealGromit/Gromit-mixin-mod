@@ -14,25 +14,27 @@ public class TextButton extends AbstractBaseButton {
 
     @Override
     public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= getGuiScale();
-        mouseY /= getGuiScale();
+        mouseX /= guiScale;
+        mouseY /= guiScale;
         hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
-        if (isState()) {
+        if (state) {
             FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, ColorUtils.getRGB());
-        } else if (isMouseOver()) {
+        } else if (hovered) {
             FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, ColorUtils.getRGB());
         } else FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, Color.WHITE.getRGB());
     }
 
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= getGuiScale();
-        mouseY /= getGuiScale();
-        if (mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height) {
-            if (isState()) getOnDisable().onDisable(this);
-            else getOnEnable().onEnable(this);
-            return true;
-        }
-        return false;
+        if (hovered) {
+            if (state) {
+                onDisable.onDisable(this);
+                state = false;
+            }
+            else {
+                onEnable.onEnable(this);
+                state = true;
+            } return true;
+        } return false;
     }
 }

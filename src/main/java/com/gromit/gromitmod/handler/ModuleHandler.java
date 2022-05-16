@@ -1,7 +1,7 @@
 package com.gromit.gromitmod.handler;
 
 import com.gromit.gromitmod.GromitMod;
-import com.gromit.gromitmod.module.render.ExplosionBox;
+import com.gromit.gromitmod.module.crumbs.ExplosionBox;
 
 public class ModuleHandler {
 

@@ -6,9 +6,9 @@ import net.minecraft.client.gui.GuiButton;
 public abstract class AbstractBaseButton extends GuiButton {
 
     protected double guiScale;
-    private boolean state = false;
-    private OnEnable onEnable;
-    private OnDisable onDisable;
+    protected boolean state = false;
+    protected OnEnable onEnable;
+    protected OnDisable onDisable;
 
     public AbstractBaseButton(int buttonId, int x, int y, int width, int height, String displayString, OnEnable onEnable, OnDisable onDisable) {
         super(buttonId, x, y, width, height, displayString);

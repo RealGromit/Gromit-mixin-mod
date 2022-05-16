@@ -1,4 +1,4 @@
-package com.gromit.gromitmod.module.render;
+package com.gromit.gromitmod.module.crumbs;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.event.network.InboundPacket;
@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ExplosionBox extends AbstractModule {
 
     private static ExplosionBox instance;
-    private static ColorButton colorButton = ExplosionBoxGui.colorButton;
+    private final ColorButton colorButton = ExplosionBoxGui.colorButton;
     private final RenderManager renderManager;
     private final Set<AxisAlignedBBTime> boxSet = ConcurrentHashMap.newKeySet();
     private final Minecraft minecraft;
@@ -38,7 +38,7 @@ public class ExplosionBox extends AbstractModule {
         if (!(event.getPacket() instanceof S27PacketExplosion)) return;
         S27PacketExplosion explosion = (S27PacketExplosion) event.getPacket();
         AxisAlignedBBTime box;
-        if (ExplosionBoxGui.precisionButton.isState()) box = new AxisAlignedBBTime(explosion.getX() - 0.1, explosion.getY() + 0.4 - 0.06125, explosion.getZ() - 0.1, explosion.getX() + 0.1, explosion.getY() + 0.6 - 0.06125, explosion.getZ() + 0.1, System.currentTimeMillis());
+        if (ExplosionBoxGui.precision.isState()) box = new AxisAlignedBBTime(explosion.getX() - 0.1, explosion.getY() + 0.4 - 0.06125, explosion.getZ() - 0.1, explosion.getX() + 0.1, explosion.getY() + 0.6 - 0.06125, explosion.getZ() + 0.1, System.currentTimeMillis());
         else {
             double posX = Math.floor(explosion.getX());
             double posY = Math.floor(explosion.getY());
@@ -65,8 +65,7 @@ public class ExplosionBox extends AbstractModule {
         for (AxisAlignedBBTime box : boxSet) {
             RenderUtils.drawAABB(box, colorButton.getFinalRed(), colorButton.getFinalGreen(), colorButton.getFinalBlue(), colorButton.getFinalAlpha());
             RenderUtils.drawAABBOutline(box, 2, ColorUtils.getRed(), ColorUtils.getGreen(), ColorUtils.getBlue(), 255);
-        }
-        GlStateManager.popMatrix();
+        } GlStateManager.popMatrix();
     }
 
     public static ExplosionBox getInstance() {

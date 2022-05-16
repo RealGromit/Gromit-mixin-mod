@@ -2,29 +2,23 @@ package com.gromit.gromitmod.gui.module.crumbs;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.MainGui;
+import com.gromit.gromitmod.gui.button.CheckboxButton;
 import com.gromit.gromitmod.gui.button.TextButton;
 import com.gromit.gromitmod.handler.Saver;
+import com.gromit.gromitmod.module.crumbs.ExplosionBox;
 import com.gromit.gromitmod.utils.RenderUtils;
-import org.lwjgl.input.Mouse;
-
-import java.io.IOException;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class CrumbsModuleGui extends MainGui {
 
     private static CrumbsModuleGui instance;
-    private int scroll;
 
     protected static final TextButton explosionBox = new TextButton(6, 0, 0, 4, "Explosion Box",
-            (button) -> {
-                minecraft.displayGuiScreen(ExplosionBoxGui.getInstance());
-                button.setState(true);
-            },
-            (button) -> {
-                minecraft.displayGuiScreen(CrumbsModuleGui.getInstance());
-                button.setState(false);
-            });
+            (button) -> minecraft.displayGuiScreen(ExplosionBoxGui.getInstance()),
+            (button) -> minecraft.displayGuiScreen(CrumbsModuleGui.getInstance()));
+
+    private static final CheckboxButton checkbox = new CheckboxButton(11, 0, 0, 4, 4,
+            (button) -> ExplosionBox.getInstance().register(),
+            (button) -> ExplosionBox.getInstance().unregister());
 
     public CrumbsModuleGui(GromitMod gromitMod) {
         super(gromitMod);
@@ -35,8 +29,10 @@ public class CrumbsModuleGui extends MainGui {
         super.initGui();
 
         Saver.setCrumbsModuleGui(this);
-        explosionBox.updateButton(mainGuiPointX + 11, mainGuiPointY + 38, guiScale);
+        explosionBox.updateButton(mainGuiPointX + 12, mainGuiPointY + 39, guiScale);
+        checkbox.updateButton(mainGuiPointX + 54, mainGuiPointY + 39, guiScale);
         buttonList.add(explosionBox);
+        buttonList.add(checkbox);
         crumbs.setState(true);
         fps.setState(false);
         fun.setState(false);
@@ -47,28 +43,14 @@ public class CrumbsModuleGui extends MainGui {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        glEnable(GL_SCISSOR_TEST);
-        glScissor(460, 290, 199, 398);
         explosionBox.drawButton(minecraft, mouseX, mouseY);
-        glDisable(GL_SCISSOR_TEST);
+        checkbox.drawButton(minecraft, mouseX, mouseY);
 
         RenderUtils.drawLine(mainGuiPointX + 10, mainGuiPointY + 37, 50, 0, 2, 255, 255, 255, 255);
         RenderUtils.drawLine(mainGuiPointX + 60, mainGuiPointY + 37, 0, 101, 2, 255, 255, 255, 255);
         RenderUtils.drawLine(mainGuiPointX + 10, mainGuiPointY + 138, 50, 0, 2, 255, 255, 255, 255);
         RenderUtils.drawLine(mainGuiPointX + 10, mainGuiPointY + 37, 0, 101, 2, 255, 255, 255, 255);
     }
-
-    @Override
-    public void onGuiClosed() {
-    }
-
-    @Override
-    public void handleMouseInput() throws IOException {
-        super.handleMouseInput();
-
-        if (Mouse.getX() >= 460 && Mouse.getY() >= 290 && Mouse.getX() < 460 + 199 && Mouse.getY() < 290 + 398) scroll += Mouse.getEventDWheel() / 60;
-    }
-
     @Override
     protected void setInstance() {
         instance = this;
