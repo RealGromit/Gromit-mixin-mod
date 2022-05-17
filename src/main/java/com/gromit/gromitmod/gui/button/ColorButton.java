@@ -32,6 +32,7 @@ public class ColorButton extends AbstractBaseButton {
         sectionY = (int) (boxHeight * 0.8);
         deltaSectionX = boxWidth - sectionX;
         deltaSectionY = boxHeight - sectionY;
+        ColorUtils.colorButtons.add(this);
     }
 
     @Override
@@ -43,23 +44,11 @@ public class ColorButton extends AbstractBaseButton {
 
         hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
 
-        RenderUtils.drawRectangleNoBlend(xPosition, yPosition, width, height, red, green, blue, alpha);
+        RenderUtils.drawRectangle(xPosition, yPosition, width, height, red, green, blue, alpha);
         RenderUtils.drawLine(xPosition, yPosition, width, 0, 2, 255, 255, 255, 255);
         RenderUtils.drawLine(xPosition, yPosition + height, width, 0, 2, 255, 255, 255, 255);
         RenderUtils.drawLine(xPosition, yPosition, 0, height, 2, 255, 255, 255, 255);
         RenderUtils.drawLine(xPosition + width, yPosition, 0, height, 2, 255, 255, 255, 255);
-        if (chroma.state) {
-            float[] hsb = Color.RGBtoHSB(ColorUtils.getRed(), ColorUtils.getGreen(), ColorUtils.getBlue(), null);
-            hue = hsb[0];
-            saturation = hsb[1];
-            brightness = hsb[2];
-            red = ColorUtils.getRed();
-            green = ColorUtils.getGreen();
-            blue = ColorUtils.getBlue();
-            satRed = red;
-            satGreen = green;
-            satBlue = blue;
-        }
         if (!state) return;
         saturationHovered = mouseX >= boxX && mouseY >= boxY && mouseX <= boxX + sectionX - 1.4 && mouseY <= boxY + sectionY - 1.4;
         hueHovered = mouseX >= boxX + sectionX && mouseY >= boxY && mouseX < boxX + sectionX + deltaSectionX - 1 && mouseY < boxY + sectionY - 1;
@@ -159,6 +148,18 @@ public class ColorButton extends AbstractBaseButton {
         red = color >> 16 & 255;
         green = color >> 8 & 255;
         blue = color & 255;
+    }
+
+    public void updateRGB(float[] hsb) {
+        hue = hsb[0];
+        saturation = hsb[1];
+        brightness = hsb[2];
+        red = ColorUtils.getRed();
+        green = ColorUtils.getGreen();
+        blue = ColorUtils.getBlue();
+        satRed = red;
+        satGreen = green;
+        satBlue = blue;
     }
 
     public int getFinalRed() {
