@@ -1,5 +1,6 @@
 package com.gromit.gromitmod.gui.slider;
 
+import com.gromit.gromitmod.saver.PersistSlider;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
@@ -12,17 +13,18 @@ public class Slider extends GuiButton {
 
     private final int minValue;
     private final int steps;
-    private int currentProgress;
     public int currentValue;
     private final int iterations;
     private double guiScale;
     private boolean dragging;
+    private final PersistSlider persistSlider;
 
-    public Slider(int buttonId, int x, int y, int width, int height, String buttonText, int minValue, int maxValue, int iterations) {
+    public Slider(int buttonId, int x, int y, int width, int height, String buttonText, int minValue, int maxValue, int iterations, PersistSlider persistSlider) {
         super(buttonId, x, y, width, height, buttonText);
         this.minValue = minValue;
         steps = width / (maxValue - minValue);
         this.iterations = iterations;
+        this.persistSlider = persistSlider;
     }
 
     @Override
@@ -32,16 +34,16 @@ public class Slider extends GuiButton {
         hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX <= xPosition + width && mouseY < yPosition + height;
         mouseDragged(minecraft, mouseX, mouseY);
         RenderUtils.drawRoundedThinRectangle(xPosition, yPosition, width, height, iterations, Color.WHITE.getRGB());
-        RenderUtils.drawCircleFilled(xPosition + currentProgress, yPosition + height / 2.0, 2, 200, ColorUtils.getRGB());
-        currentValue = (currentProgress / steps) + minValue;
-        displayString = String.valueOf((currentProgress / steps) + minValue);
+        RenderUtils.drawCircleFilled(xPosition + persistSlider.getCurrentProgress(), yPosition + height / 2.0, 2, 200, ColorUtils.getRGB());
+        currentValue = (persistSlider.getCurrentProgress() / steps) + minValue;
+        displayString = String.valueOf((persistSlider.getCurrentProgress() / steps) + minValue);
     }
 
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
         mouseX /= guiScale;
         if (hovered) {
-            currentProgress = Math.round((float) (mouseX - xPosition) / steps) * steps;
+            persistSlider.setCurrentProgress(Math.round((float) (mouseX - xPosition) / steps) * steps);
             dragging = true;
             return true;
         } else return false;
@@ -51,8 +53,8 @@ public class Slider extends GuiButton {
     protected void mouseDragged(Minecraft minecraft, int mouseX, int mouseY) {
         if (dragging && hovered) {
             int pos = mouseX - xPosition;
-            if (pos == 0) currentProgress = 0;
-            if (pos % steps == 0) currentProgress = pos;
+            if (pos == 0) persistSlider.setCurrentProgress(0);
+            if (pos % steps == 0) persistSlider.setCurrentProgress(pos);
         }
     }
 

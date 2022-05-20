@@ -20,7 +20,7 @@ public class ColorUtils {
         if (red == 255 && green == 0 && blue > 0) blue--;
         float[] hsb = Color.RGBtoHSB(red, green, blue, null);
         for (ColorButton colorButton : colorButtons) {
-            if (colorButton.getChroma().isState()) colorButton.updateRGB(hsb);
+            if (colorButton.getChroma().getPersistCheckbox().isState()) colorButton.updateRGB(hsb);
         }
     }
 

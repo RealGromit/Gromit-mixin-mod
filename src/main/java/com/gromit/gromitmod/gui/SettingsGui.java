@@ -26,11 +26,11 @@ public class SettingsGui extends MainGui {
 
         openGui.updateButton(mainGuiPointX + 110, mainGuiPointY + 39, guiScale);
         buttonList.add(openGui);
-        settings.setState(true);
-        crumbs.setState(false);
-        fps.setState(false);
-        fun.setState(false);
-        render.setState(false);
+        settings.getPersistBoolean().setState(true);
+        crumbs.getPersistBoolean().setState(false);
+        fps.getPersistBoolean().setState(false);
+        fun.getPersistBoolean().setState(false);
+        render.getPersistBoolean().setState(false);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class SettingsGui extends MainGui {
     }
 
     @Override
-    public void onGuiClosed() {settings.setState(false);}
+    public void onGuiClosed() {settings.getPersistBoolean().setState(false);}
 
     @Override
     public void handleKeyboardInput() throws IOException {

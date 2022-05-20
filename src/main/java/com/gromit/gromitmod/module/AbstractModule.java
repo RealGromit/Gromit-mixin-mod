@@ -2,7 +2,9 @@ package com.gromit.gromitmod.module;
 
 import net.minecraftforge.common.MinecraftForge;
 
-public abstract class AbstractModule {
+import java.io.Serializable;
+
+public abstract class AbstractModule implements Serializable {
 
     private boolean state = false;
 
@@ -17,6 +19,8 @@ public abstract class AbstractModule {
         onDisable();
         state = false;
     }
+
+    public void updateAfterDeserialization() {}
 
     protected void onEnable() {}
 

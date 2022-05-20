@@ -6,7 +6,6 @@ import net.minecraft.client.gui.GuiButton;
 public abstract class AbstractBaseButton extends GuiButton {
 
     protected double guiScale;
-    protected boolean state = false;
     protected OnEnable onEnable;
     protected OnDisable onDisable;
 
@@ -36,14 +35,6 @@ public abstract class AbstractBaseButton extends GuiButton {
 
     public double getGuiScale() {
         return guiScale;
-    }
-
-    public boolean isState() {
-        return state;
-    }
-
-    public void setState(boolean state) {
-        this.state = state;
     }
 
     public OnEnable getOnEnable() {

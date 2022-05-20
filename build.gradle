@@ -55,6 +55,7 @@ configurations {
 }
 
 repositories {
+    mavenCentral()
     maven {
         name = 'sponge'
         url = 'https://repo.spongepowered.org/repository/maven-public/'
@@ -62,7 +63,9 @@ repositories {
 }
 
 dependencies {
-	embed ("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+    embed group: 'org.xerial', name: 'sqlite-jdbc', version: '3.36.0.3'
+    embed group: 'org.reflections', name: 'reflections', version: '0.10.2'
+	embed ('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
         exclude module: 'gson'
         exclude module: 'guava'
         exclude module: 'jarjar'

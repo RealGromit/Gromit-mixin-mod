@@ -3,20 +3,21 @@ package com.gromit.gromitmod.gui.module.crumbs;
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.button.CheckboxButton;
 import com.gromit.gromitmod.gui.button.ColorButton;
+import com.gromit.gromitmod.gui.module.CrumbsModuleGui;
 import com.gromit.gromitmod.gui.slider.Slider;
+import com.gromit.gromitmod.module.crumbs.ExplosionBox;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class ExplosionBoxGui extends CrumbsModuleGui {
 
     private static ExplosionBoxGui instance;
-    public static final ColorButton boxColorButton = new ColorButton(8, 0, 0, 4, 4, 0, 0, 60, 60);
-    public static final ColorButton outlineColorButton = new ColorButton(-1, 0, 0, 4, 4, 0, 0, 60, 60);
-    public static final Slider slider = new Slider(9, 0, 0, 95, 2, "", 1, 20, 100);
-    public static final CheckboxButton precision = new CheckboxButton(10, 0, 0, 4, 4,
-            (button) -> {},
-            (button) -> {});
+    private static final ExplosionBox explosionBoxInstance = ExplosionBox.getInstance();
+    public static ColorButton boxColorButton = new ColorButton(8, 0, 0, 4, 4, 0, 0, 60, 60, explosionBoxInstance.persistBoxColor, explosionBoxInstance.persistBoxColorCheckbox);;
+    public static ColorButton outlineColorButton = new ColorButton(-1, 0, 0, 4, 4, 0, 0, 60, 60, explosionBoxInstance.persistOutlineColor, explosionBoxInstance.persistOutlineColorCheckbox);;
+    public static Slider slider = new Slider(9, 0, 0, 95, 2, "", 1, 20, 100, explosionBoxInstance.persistTimeoutSlider);;
+    public static CheckboxButton precision = new CheckboxButton(10, 0, 0, 4, 4, explosionBoxInstance.persistBoxPrecision);;
 
     public ExplosionBoxGui(GromitMod gromitMod) {
         super(gromitMod);
@@ -38,7 +39,7 @@ public class ExplosionBoxGui extends CrumbsModuleGui {
         buttonList.add(boxColorButton.getChroma());
         buttonList.add(outlineColorButton);
         buttonList.add(outlineColorButton.getChroma());
-        explosionBox.setState(true);
+        explosionBox.getPersistBoolean().setState(true);
     }
 
     @Override
@@ -58,9 +59,7 @@ public class ExplosionBoxGui extends CrumbsModuleGui {
     }
 
     @Override
-    public void onGuiClosed() {
-        explosionBox.setState(false);
-    }
+    public void onGuiClosed() {explosionBox.getPersistBoolean().setState(false);}
 
     @Override
     protected void setInstance() {

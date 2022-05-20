@@ -18,10 +18,10 @@ public class FunModuleGui extends MainGui {
         super.initGui();
 
         Saver.setFunModuleGui(this);
-        fun.setState(true);
-        crumbs.setState(false);
-        fps.setState(false);
-        render.setState(false);
+        fun.getPersistBoolean().setState(true);
+        crumbs.getPersistBoolean().setState(false);
+        fps.getPersistBoolean().setState(false);
+        render.getPersistBoolean().setState(false);
     }
 
     @Override

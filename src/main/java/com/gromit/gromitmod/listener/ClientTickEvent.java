@@ -26,8 +26,8 @@ public class ClientTickEvent {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        ColorUtils.refreshColors();
         if (minecraft.theWorld == null || minecraft.thePlayer == null) return;
+        ColorUtils.refreshColors();
         if (event.phase == TickEvent.Phase.START) return;
         if (Keyboard.isKeyDown(Saver.getOpenGuiButton()) || Mouse.isButtonDown(Saver.getOpenGuiButton())) {
             if (minecraft.currentScreen == null && Saver.getLastScreen() != null) minecraft.displayGuiScreen(Saver.getLastScreen());

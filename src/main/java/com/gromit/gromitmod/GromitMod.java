@@ -9,6 +9,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
+import java.io.File;
+import java.io.IOException;
+
 @Mod(modid = "GromitMod", version = "1.0")
 public class GromitMod {
 
@@ -18,14 +21,27 @@ public class GromitMod {
     @Mod.EventHandler
     public void onPostInit(FMLPostInitializationEvent event) {
         instance = this;
+        createDatabase(minecraft.mcDataDir.getPath() + "/mods/gromitmod");
+        Sqlite.createTable();
         FontUtil.bootstrap();
+        ModuleHandler moduleHandler = new ModuleHandler(this);
         new GuiHandler(this);
-        new ModuleHandler(this);
         new ClientTickEvent(this);
         new NetworkManager();
+        Runtime.getRuntime().addShutdownHook(new Thread(moduleHandler::writeModules));
     }
 
-    public Minecraft getMinecraft() {return minecraft;}
+    private void createDatabase(String folderPath) {
+        File database = new File(folderPath);
+        if (database.exists()) return;
+        if (!database.mkdir()) return;
+        try {new File(folderPath + "/database.db").createNewFile();}
+        catch (IOException e) {throw new RuntimeException(e);}
+    }
+
+    public Minecraft getMinecraft() {
+        return minecraft;
+    }
 
     public static GromitMod getInstance() {
         return instance;

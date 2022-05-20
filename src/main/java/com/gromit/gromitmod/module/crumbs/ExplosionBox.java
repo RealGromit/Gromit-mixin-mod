@@ -1,11 +1,12 @@
 package com.gromit.gromitmod.module.crumbs;
 
-import com.gromit.gromitmod.GromitMod;
+import com.gromit.gromitmod.annotation.Module;
 import com.gromit.gromitmod.event.network.InboundPacket;
-import com.gromit.gromitmod.gui.button.CheckboxButton;
-import com.gromit.gromitmod.gui.button.ColorButton;
 import com.gromit.gromitmod.gui.module.crumbs.ExplosionBoxGui;
 import com.gromit.gromitmod.module.AbstractModule;
+import com.gromit.gromitmod.saver.PersistCheckbox;
+import com.gromit.gromitmod.saver.PersistColorButton;
+import com.gromit.gromitmod.saver.PersistSlider;
 import com.gromit.gromitmod.utils.AxisAlignedBBTime;
 import com.gromit.gromitmod.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
@@ -16,23 +17,31 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ExplosionBox extends AbstractModule {
+@Module(moduleName = "ExplosionBoxModule")
+public class ExplosionBox extends AbstractModule implements Serializable {
+
+    private static final long serialVersionUID = 3175898751531181260L;
 
     private static ExplosionBox instance;
-    private final ColorButton colorButton = ExplosionBoxGui.boxColorButton;
-    private final ColorButton outlineColorButton = ExplosionBoxGui.outlineColorButton;
-    private final CheckboxButton precision = ExplosionBoxGui.precision;
-    private final RenderManager renderManager;
-    private final Set<AxisAlignedBBTime> boxSet = ConcurrentHashMap.newKeySet();
-    private final Minecraft minecraft;
+    private transient RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();;
+    private transient Set<AxisAlignedBBTime> boxSet = ConcurrentHashMap.newKeySet();
+    private transient Minecraft minecraft = Minecraft.getMinecraft();;
 
-    public ExplosionBox(GromitMod gromitMod) {
+    public final PersistCheckbox persistToggle = new PersistCheckbox();
+    public final PersistColorButton persistBoxColor = new PersistColorButton();
+    public final PersistCheckbox persistBoxColorCheckbox = new PersistCheckbox();
+    public final PersistColorButton persistOutlineColor = new PersistColorButton();
+    public final PersistCheckbox persistOutlineColorCheckbox = new PersistCheckbox();
+    public final PersistSlider persistTimeoutSlider = new PersistSlider();
+    public final PersistCheckbox persistBoxPrecision = new PersistCheckbox();
+
+    // Constructor needs to be free of params due to Class.newInstance()
+    public ExplosionBox() {
         instance = this;
-        renderManager = gromitMod.getMinecraft().getRenderManager();
-        minecraft = gromitMod.getMinecraft();
     }
 
     @SubscribeEvent
@@ -40,7 +49,7 @@ public class ExplosionBox extends AbstractModule {
         if (!(event.getPacket() instanceof S27PacketExplosion)) return;
         S27PacketExplosion explosion = (S27PacketExplosion) event.getPacket();
         AxisAlignedBBTime box;
-        if (precision.isState()) box = new AxisAlignedBBTime(explosion.getX() - 0.1, explosion.getY() + 0.4 - 0.06125, explosion.getZ() - 0.1, explosion.getX() + 0.1, explosion.getY() + 0.6 - 0.06125, explosion.getZ() + 0.1, System.currentTimeMillis());
+        if (persistBoxPrecision.isState()) box = new AxisAlignedBBTime(explosion.getX() - 0.1, explosion.getY() + 0.4 - 0.06125, explosion.getZ() - 0.1, explosion.getX() + 0.1, explosion.getY() + 0.6 - 0.06125, explosion.getZ() + 0.1, System.currentTimeMillis());
         else {
             double posX = Math.floor(explosion.getX());
             double posY = Math.floor(explosion.getY());
@@ -65,9 +74,18 @@ public class ExplosionBox extends AbstractModule {
         GlStateManager.pushMatrix();
         GlStateManager.translate(-renderManager.viewerPosX, -renderManager.viewerPosY, -renderManager.viewerPosZ);
         for (AxisAlignedBBTime box : boxSet) {
-            RenderUtils.drawAABB(box, colorButton.getFinalRed(), colorButton.getFinalGreen(), colorButton.getFinalBlue(), colorButton.getFinalAlpha());
-            RenderUtils.drawAABBOutline(box, 2, outlineColorButton.getFinalRed(), outlineColorButton.getFinalGreen(), outlineColorButton.getFinalBlue(), outlineColorButton.getFinalAlpha());
+            RenderUtils.drawAABB(box, persistBoxColor.getRed(), persistBoxColor.getGreen(), persistBoxColor.getBlue(), persistBoxColor.getAlpha());
+            RenderUtils.drawAABBOutline(box, 2, persistOutlineColor.getRed(), persistOutlineColor.getGreen(), persistOutlineColor.getBlue(), persistOutlineColor.getAlpha());
         } GlStateManager.popMatrix();
+    }
+
+    // Needed to reassign transient fields
+    @Override
+    public void updateAfterDeserialization() {
+        instance = this;
+        boxSet = ConcurrentHashMap.newKeySet();
+        minecraft = Minecraft.getMinecraft();
+        renderManager = Minecraft.getMinecraft().getRenderManager();
     }
 
     public static ExplosionBox getInstance() {
