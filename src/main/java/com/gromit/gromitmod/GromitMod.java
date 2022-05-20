@@ -17,12 +17,13 @@ public class GromitMod {
 
     private static GromitMod instance;
     private final Minecraft minecraft = Minecraft.getMinecraft();
+    private boolean firstStartup = false;
 
     @Mod.EventHandler
     public void onPostInit(FMLPostInitializationEvent event) {
         instance = this;
         createDatabase(minecraft.mcDataDir.getPath() + "/mods/gromitmod");
-        Sqlite.createTable();
+        if (firstStartup) Sqlite.createTable();
         FontUtil.bootstrap();
         ModuleHandler moduleHandler = new ModuleHandler(this);
         new GuiHandler(this);
@@ -35,7 +36,10 @@ public class GromitMod {
         File database = new File(folderPath);
         if (database.exists()) return;
         if (!database.mkdir()) return;
-        try {new File(folderPath + "/database.db").createNewFile();}
+        try {
+            new File(folderPath + "/database.db").createNewFile();
+            firstStartup = true;
+        }
         catch (IOException e) {throw new RuntimeException(e);}
     }
 

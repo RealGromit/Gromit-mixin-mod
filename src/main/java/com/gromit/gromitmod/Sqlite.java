@@ -44,6 +44,7 @@ public class Sqlite {
     }
 
     public static void writeModules(List<AbstractModule> modules) {
+        if (modules.isEmpty()) return;
         Connection connection = getConnection();
         if (connection == null) return;
 
