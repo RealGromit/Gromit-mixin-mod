@@ -13,10 +13,13 @@ public class CrumbsModuleGui extends MainGui {
 
     private static CrumbsModuleGui instance;
 
-    protected static final TextButton explosionBox = new TextButton(6, 4, "Explosion Box",
+    protected static final TextButton explosionBox = new TextButton(6,4, "Explosion Box",
             (button) -> minecraft.displayGuiScreen(ExplosionBoxGui.getInstance()),
             (button) -> minecraft.displayGuiScreen(CrumbsModuleGui.getInstance()));
-    private final CheckboxButton checkbox = ExplosionBox.getInstance().checkbox;
+
+    private static final CheckboxButton checkbox = new CheckboxButton(7, 4, 4,
+            (button) -> ExplosionBox.getInstance().register(),
+            (button) -> ExplosionBox.getInstance().unregister());
 
     public CrumbsModuleGui(GromitMod gromitMod) {
         super(gromitMod);

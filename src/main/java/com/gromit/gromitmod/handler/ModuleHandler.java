@@ -16,7 +16,7 @@ import java.util.Set;
 public class ModuleHandler {
 
     // Change capacity of array according to amount of modules
-    private final AbstractModule[] modules = new AbstractModule[1];
+    private final AbstractModule[] modules = new AbstractModule[3];
     private final Reflections reflections = new Reflections("com.gromit.gromitmod");
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final Set<Class<?>> classSet;

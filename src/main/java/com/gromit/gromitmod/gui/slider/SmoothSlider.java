@@ -6,21 +6,23 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.GuiButton;
 
-import java.awt.Color;
+import java.awt.*;
 
-public class Slider extends GuiButton {
+public class SmoothSlider extends GuiButton {
 
     private final int minValue;
     private final int steps;
-    private int currentProgress;
+    private final int maxValue;
+    public int currentProgress;
     public int currentValue;
     private final int iterations;
     private double guiScale;
     private boolean dragging;
 
-    public Slider(int buttonId, int x, int y, int width, int height, String buttonText, int minValue, int maxValue, int iterations) {
+    public SmoothSlider(int buttonId, int x, int y, int width, int height, String buttonText, int minValue, int maxValue, int iterations) {
         super(buttonId, x, y, width, height, buttonText);
         this.minValue = minValue;
+        this.maxValue = maxValue;
         steps = width / (maxValue - minValue);
         this.iterations = iterations;
     }
@@ -37,11 +39,15 @@ public class Slider extends GuiButton {
         displayString = String.valueOf((currentProgress / steps) + minValue);
     }
 
+    public void setCurrentProgress(int currentProgress) {
+        this.currentProgress = currentProgress;
+    }
+
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
         mouseX /= guiScale;
         if (hovered) {
-            currentProgress = Math.round((float) (mouseX - xPosition) / steps) * steps;
+            currentProgress = (int) (Math.ceil((float) (mouseX - xPosition) / steps) * steps);
             dragging = true;
             return true;
         } else return false;
@@ -50,9 +56,10 @@ public class Slider extends GuiButton {
     @Override
     protected void mouseDragged(Minecraft minecraft, int mouseX, int mouseY) {
         if (dragging && mouseX >= xPosition && mouseX <= (xPosition + width)) {
+
             int pos = mouseX - xPosition;
-            if (pos == 0) currentProgress = 0;
-            if (pos % steps == 0) currentProgress = pos;
+            currentProgress = pos;
+
         }
     }
 
@@ -68,9 +75,5 @@ public class Slider extends GuiButton {
         setGuiScale(guiScale);
         xPosition = x1;
         yPosition = y1;
-    }
-
-    public void setCurrentProgress(int i) {
-        this.currentProgress = i;
     }
 }
