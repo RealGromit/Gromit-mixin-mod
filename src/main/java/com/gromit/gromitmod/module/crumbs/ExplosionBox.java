@@ -29,7 +29,7 @@ public class ExplosionBox extends AbstractModule {
 
     public final ColorButton boxColorButton = new ColorButton(8, 4, 4, 0, 0, 60, 60);
     public final ColorButton outlineColorButton = new ColorButton(-1, 4, 4, 0, 0, 60, 60);
-    public final Slider timeoutSlider = new Slider(9, 95, 2, "", 1, 20, 100);
+    public final Slider timeoutSlider = new Slider(9, 95, 2, 2, 1, "", 1, 20, 100);
     public final CheckboxButton boxPrecision = new CheckboxButton(10, 4, 4);
     public final CheckboxButton checkbox = new CheckboxButton(7, 4, 4,
             button -> register(),
