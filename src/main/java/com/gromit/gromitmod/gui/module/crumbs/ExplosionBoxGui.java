@@ -13,11 +13,10 @@ import java.awt.Color;
 public class ExplosionBoxGui extends CrumbsModuleGui {
 
     private static ExplosionBoxGui instance;
-    private static final ExplosionBox explosionBoxInstance = ExplosionBox.getInstance();
-    public static ColorButton boxColorButton = new ColorButton(8, 0, 0, 4, 4, 0, 0, 60, 60, explosionBoxInstance.persistBoxColor, explosionBoxInstance.persistBoxColorCheckbox);;
-    public static ColorButton outlineColorButton = new ColorButton(-1, 0, 0, 4, 4, 0, 0, 60, 60, explosionBoxInstance.persistOutlineColor, explosionBoxInstance.persistOutlineColorCheckbox);;
-    public static Slider slider = new Slider(9, 0, 0, 95, 2, "", 1, 20, 100, explosionBoxInstance.persistTimeoutSlider);;
-    public static CheckboxButton precision = new CheckboxButton(10, 0, 0, 4, 4, explosionBoxInstance.persistBoxPrecision);;
+    private final ColorButton boxColorButton = ExplosionBox.getInstance().boxColorButton;
+    private final ColorButton outlineColorButton = ExplosionBox.getInstance().outlineColorButton;
+    private final Slider timeoutSlider = ExplosionBox.getInstance().timeoutSlider;
+    private final CheckboxButton boxPrecision = ExplosionBox.getInstance().boxPrecision;
 
     public ExplosionBoxGui(GromitMod gromitMod) {
         super(gromitMod);
@@ -31,15 +30,15 @@ public class ExplosionBoxGui extends CrumbsModuleGui {
         boxColorButton.getChroma().updateButton(mainGuiPointX + guiWidth + 35, mainGuiPointY + 64, guiScale);
         outlineColorButton.updateColorButton(mainGuiPointX + 130, mainGuiPointY + 55, mainGuiPointX + guiWidth + 5, mainGuiPointY + 71, guiScale);
         outlineColorButton.getChroma().updateButton(mainGuiPointX + guiWidth + 35, mainGuiPointY + 60 + 75, guiScale);
-        precision.updateButton(mainGuiPointX + 130, mainGuiPointY + 62, guiScale);
-        slider.updateSlider(mainGuiPointX + 68, mainGuiPointY + 80, guiScale);
+        boxPrecision.updateButton(mainGuiPointX + 130, mainGuiPointY + 62, guiScale);
+        timeoutSlider.updateSlider(mainGuiPointX + 68, mainGuiPointY + 80, guiScale);
         buttonList.add(boxColorButton);
-        buttonList.add(slider);
-        buttonList.add(precision);
+        buttonList.add(timeoutSlider);
+        buttonList.add(boxPrecision);
         buttonList.add(boxColorButton.getChroma());
         buttonList.add(outlineColorButton);
         buttonList.add(outlineColorButton.getChroma());
-        explosionBox.getPersistBoolean().setState(true);
+        explosionBox.setState(true);
     }
 
     @Override
@@ -51,15 +50,15 @@ public class ExplosionBoxGui extends CrumbsModuleGui {
         FontUtil.normal.drawString("Outline color", mainGuiPointX + 68, mainGuiPointY + 57, Color.WHITE.getRGB());
         FontUtil.normal.drawString("Precision", mainGuiPointX + 68, mainGuiPointY + 64, Color.WHITE.getRGB());
         FontUtil.normal.drawString("Box timeout in seconds:", mainGuiPointX + 68, mainGuiPointY + 75, Color.WHITE.getRGB());
-        slider.drawButton(minecraft, mouseX, mouseY);
-        precision.drawButton(minecraft, mouseX, mouseY);
-        FontUtil.normal.drawString(slider.displayString, mainGuiPointX + 122, mainGuiPointY + 75, Color.WHITE.getRGB());
+        timeoutSlider.drawButton(minecraft, mouseX, mouseY);
+        boxPrecision.drawButton(minecraft, mouseX, mouseY);
+        FontUtil.normal.drawString(timeoutSlider.displayString, mainGuiPointX + 122, mainGuiPointY + 75, Color.WHITE.getRGB());
         boxColorButton.drawButton(minecraft, mouseX, mouseY);
         outlineColorButton.drawButton(minecraft, mouseX, mouseY);
     }
 
     @Override
-    public void onGuiClosed() {explosionBox.getPersistBoolean().setState(false);}
+    public void onGuiClosed() {explosionBox.setState(false);}
 
     @Override
     protected void setInstance() {

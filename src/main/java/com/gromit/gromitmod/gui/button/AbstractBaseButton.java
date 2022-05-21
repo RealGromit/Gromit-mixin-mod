@@ -3,25 +3,28 @@ package com.gromit.gromitmod.gui.button;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.GuiButton;
 
+import java.util.function.Consumer;
+
 public abstract class AbstractBaseButton extends GuiButton {
 
-    protected double guiScale;
-    protected OnEnable onEnable;
-    protected OnDisable onDisable;
+    protected transient double guiScale;
+    protected boolean state;
+    protected transient Consumer<AbstractBaseButton> onEnable;
+    protected transient Consumer<AbstractBaseButton> onDisable;
 
-    public AbstractBaseButton(int buttonId, int x, int y, int width, int height, String displayString, OnEnable onEnable, OnDisable onDisable) {
-        super(buttonId, x, y, width, height, displayString);
+    public AbstractBaseButton(int buttonId, int width, int height, String displayString, Consumer<AbstractBaseButton> onEnable, Consumer<AbstractBaseButton> onDisable) {
+        super(buttonId, 0, 0, width, height, displayString);
         this.onEnable = onEnable;
         this.onDisable = onDisable;
     }
 
-    public AbstractBaseButton(int buttonId, int x, int y, int width, int height, String displayString, OnEnable onEnable) {
-        super(buttonId, x, y, width, height, displayString);
+    public AbstractBaseButton(int buttonId, int width, int height, String displayString, Consumer<AbstractBaseButton> onEnable) {
+        super(buttonId, 0, 0, width, height, displayString);
         this.onEnable = onEnable;
     }
 
-    public AbstractBaseButton(int buttonId, int x, int y, int width, int height, String displayString) {
-        super(buttonId, x, y, width, height, displayString);
+    public AbstractBaseButton(int buttonId, int width, int height, String displayString) {
+        super(buttonId, 0, 0, width, height, displayString);
     }
 
     @Override
@@ -37,19 +40,24 @@ public abstract class AbstractBaseButton extends GuiButton {
         return guiScale;
     }
 
-    public OnEnable getOnEnable() {
+    public boolean isState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    public Consumer<AbstractBaseButton> getOnEnable() {
         return onEnable;
     }
 
-    public OnDisable getOnDisable() {
+    public Consumer<AbstractBaseButton> getOnDisable() {
         return onDisable;
     }
 
-    public interface OnEnable {
-        void onEnable(AbstractBaseButton baseButton);
-    }
-
-    public interface OnDisable {
-        void onDisable(AbstractBaseButton baseButton);
+    public void updateLambda(Consumer<AbstractBaseButton> onEnable, Consumer<AbstractBaseButton> onDisable) {
+        this.onEnable = onEnable;
+        this.onDisable = onDisable;
     }
 }

@@ -14,7 +14,7 @@ import java.io.IOException;
 public class SettingsGui extends MainGui {
 
     private static SettingsGui instance;
-    private static final KeybindButton openGui = new KeybindButton(5, 0, 0, 4, "Left alt");
+    private static final KeybindButton openGui = new KeybindButton(5, 4, "Left alt");
 
     public SettingsGui(GromitMod gromitMod) {
         super(gromitMod);
@@ -26,11 +26,11 @@ public class SettingsGui extends MainGui {
 
         openGui.updateButton(mainGuiPointX + 110, mainGuiPointY + 39, guiScale);
         buttonList.add(openGui);
-        settings.getPersistBoolean().setState(true);
-        crumbs.getPersistBoolean().setState(false);
-        fps.getPersistBoolean().setState(false);
-        fun.getPersistBoolean().setState(false);
-        render.getPersistBoolean().setState(false);
+        settings.setState(true);
+        crumbs.setState(false);
+        fps.setState(false);
+        fun.setState(false);
+        render.setState(false);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class SettingsGui extends MainGui {
     }
 
     @Override
-    public void onGuiClosed() {settings.getPersistBoolean().setState(false);}
+    public void onGuiClosed() {settings.setState(false);}
 
     @Override
     public void handleKeyboardInput() throws IOException {

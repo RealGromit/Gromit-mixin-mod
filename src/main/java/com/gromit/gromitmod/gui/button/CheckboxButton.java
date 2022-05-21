@@ -1,20 +1,20 @@
 package com.gromit.gromitmod.gui.button;
 
-import com.gromit.gromitmod.saver.PersistCheckbox;
 import com.gromit.gromitmod.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
 
-public class CheckboxButton extends AbstractBaseButton {
-    private final PersistCheckbox persistCheckbox;
+import java.util.function.Consumer;
 
-    public CheckboxButton(int buttonId, int x, int y, int width, int height, OnEnable onEnable, OnDisable onDisable, PersistCheckbox persistCheckbox) {
-        super(buttonId, x, y, width, height, "", onEnable, onDisable);
-        this.persistCheckbox = persistCheckbox;
+public class CheckboxButton extends AbstractBaseButton {
+
+    private int alpha;
+
+    public CheckboxButton(int buttonId, int width, int height, Consumer<AbstractBaseButton> onEnable, Consumer<AbstractBaseButton> onDisable) {
+        super(buttonId, width, height, "", onEnable, onDisable);
     }
 
-    public CheckboxButton(int buttonId, int x, int y, int width, int height, PersistCheckbox persistCheckbox) {
-        super(buttonId, x, y, width, height, "");
-        this.persistCheckbox = persistCheckbox;
+    public CheckboxButton(int buttonId, int width, int height) {
+        super(buttonId, width, height, "");
     }
 
     @Override
@@ -22,23 +22,23 @@ public class CheckboxButton extends AbstractBaseButton {
         mouseX /= guiScale;
         mouseY /= guiScale;
         hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
-        if (persistCheckbox.isState()) {
+        if (state) {
             RenderUtils.drawLine(xPosition, yPosition, width, 0, 2, 255, 255, 255, 255);
             RenderUtils.drawLine(xPosition, yPosition + height, width, 0, 2, 255, 255, 255, 255);
             RenderUtils.drawLine(xPosition, yPosition, 0, height, 2, 255, 255, 255, 255);
             RenderUtils.drawLine(xPosition + width, yPosition, 0, height, 2, 255, 255, 255, 255);
-            RenderUtils.drawLine(xPosition, yPosition, width, height, 2, 255, 255, 255, persistCheckbox.getAlpha());
-            RenderUtils.drawLine(xPosition, yPosition + height, width, -height, 2, 255, 255, 255, persistCheckbox.getAlpha());
-            if (persistCheckbox.getAlpha() != 255) persistCheckbox.setAlpha(persistCheckbox.getAlpha() + 5);
+            RenderUtils.drawLine(xPosition, yPosition, width, height, 2, 255, 255, 255, alpha);
+            RenderUtils.drawLine(xPosition, yPosition + height, width, -height, 2, 255, 255, 255, alpha);
+            if (alpha != 255) alpha += 5;
         } else {
             RenderUtils.drawLine(xPosition, yPosition, width, 0, 2, 255, 255, 255, 255);
             RenderUtils.drawLine(xPosition, yPosition + height, width, 0, 2, 255, 255, 255, 255);
             RenderUtils.drawLine(xPosition, yPosition, 0, height, 2, 255, 255, 255, 255);
             RenderUtils.drawLine(xPosition + width, yPosition, 0, height, 2, 255, 255, 255, 255);
-            if (persistCheckbox.getAlpha() != 0) {
-                RenderUtils.drawLine(xPosition, yPosition, width, height, 2, 255, 255, 255, persistCheckbox.getAlpha());
-                RenderUtils.drawLine(xPosition, yPosition + height, width, -height, 2, 255, 255, 255, persistCheckbox.getAlpha());
-                persistCheckbox.setAlpha(persistCheckbox.getAlpha() - 5);
+            if (alpha != 0) {
+                RenderUtils.drawLine(xPosition, yPosition, width, height, 2, 255, 255, 255, alpha);
+                RenderUtils.drawLine(xPosition, yPosition + height, width, -height, 2, 255, 255, 255, alpha);
+                alpha -= 5;
             }
         }
     }
@@ -46,14 +46,10 @@ public class CheckboxButton extends AbstractBaseButton {
     @Override
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
         if (hovered) {
-            if (persistCheckbox.isState() && onDisable != null) onDisable.onDisable(this);
-            else if (!persistCheckbox.isState() && onEnable != null) onEnable.onEnable(this);
-            persistCheckbox.setState(!persistCheckbox.isState());
+            if (state && onDisable != null) onDisable.accept(this);
+            else if (!state && onEnable != null) onEnable.accept(this);
+            state = !state;
             return true;
         } return false;
-    }
-
-    public PersistCheckbox getPersistCheckbox() {
-        return persistCheckbox;
     }
 }

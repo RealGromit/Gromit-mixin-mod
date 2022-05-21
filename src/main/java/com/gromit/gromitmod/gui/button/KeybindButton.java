@@ -10,8 +10,8 @@ public class KeybindButton extends AbstractBaseButton {
 
     private boolean detectingInput = false;
 
-    public KeybindButton(int buttonId, int x, int y, int height, String displayString) {
-        super(buttonId, x, y, (int) (FontUtil.normal.getStringWidth(displayString) / 2), height, displayString);
+    public KeybindButton(int buttonId, int height, String displayString) {
+        super(buttonId, (int) (FontUtil.normal.getStringWidth(displayString) / 2), height, displayString);
     }
 
     @Override

@@ -2,11 +2,9 @@ package com.gromit.gromitmod.module;
 
 import net.minecraftforge.common.MinecraftForge;
 
-import java.io.Serializable;
+public abstract class AbstractModule {
 
-public abstract class AbstractModule implements Serializable {
-
-    private boolean state = false;
+    private boolean state;
 
     public void register() {
         MinecraftForge.EVENT_BUS.register(this);

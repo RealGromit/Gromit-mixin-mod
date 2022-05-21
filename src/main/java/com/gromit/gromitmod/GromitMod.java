@@ -10,20 +10,18 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 import java.io.File;
-import java.io.IOException;
 
 @Mod(modid = "GromitMod", version = "1.0")
 public class GromitMod {
 
     private static GromitMod instance;
     private final Minecraft minecraft = Minecraft.getMinecraft();
-    private boolean firstStartup = false;
+    private final String jsonFolder = minecraft.mcDataDir.getPath() + "/mods/gromitmod";
 
     @Mod.EventHandler
     public void onPostInit(FMLPostInitializationEvent event) {
         instance = this;
-        createDatabase(minecraft.mcDataDir.getPath() + "/mods/gromitmod");
-        if (firstStartup) Sqlite.createTable();
+        createFolder();
         FontUtil.bootstrap();
         ModuleHandler moduleHandler = new ModuleHandler(this);
         new GuiHandler(this);
@@ -32,19 +30,18 @@ public class GromitMod {
         Runtime.getRuntime().addShutdownHook(new Thread(moduleHandler::writeModules));
     }
 
-    private void createDatabase(String folderPath) {
-        File database = new File(folderPath);
-        if (database.exists()) return;
-        if (!database.mkdir()) return;
-        try {
-            new File(folderPath + "/database.db").createNewFile();
-            firstStartup = true;
-        }
-        catch (IOException e) {throw new RuntimeException(e);}
+    private void createFolder() {
+        File folder = new File(jsonFolder);
+        if (folder.exists()) return;
+        folder.mkdir();
     }
 
     public Minecraft getMinecraft() {
         return minecraft;
+    }
+
+    public String getJsonFolder() {
+        return jsonFolder;
     }
 
     public static GromitMod getInstance() {

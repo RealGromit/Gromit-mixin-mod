@@ -7,21 +7,16 @@ import com.gromit.gromitmod.gui.button.TextButton;
 import com.gromit.gromitmod.gui.module.crumbs.ExplosionBoxGui;
 import com.gromit.gromitmod.handler.Saver;
 import com.gromit.gromitmod.module.crumbs.ExplosionBox;
-import com.gromit.gromitmod.saver.PersistBoolean;
 import com.gromit.gromitmod.utils.RenderUtils;
 
 public class CrumbsModuleGui extends MainGui {
 
     private static CrumbsModuleGui instance;
 
-    protected static final TextButton explosionBox = new TextButton(6, 0, 0, 4, "Explosion Box",
+    protected static final TextButton explosionBox = new TextButton(6, 4, "Explosion Box",
             (button) -> minecraft.displayGuiScreen(ExplosionBoxGui.getInstance()),
-            (button) -> minecraft.displayGuiScreen(CrumbsModuleGui.getInstance()),
-            new PersistBoolean());
-
-    private static final CheckboxButton checkbox = new CheckboxButton(7, 0, 0, 4, 4,
-            (button) -> ExplosionBox.getInstance().register(),
-            (button) -> ExplosionBox.getInstance().unregister(), ExplosionBox.getInstance().persistToggle);
+            (button) -> minecraft.displayGuiScreen(CrumbsModuleGui.getInstance()));
+    private final CheckboxButton checkbox = ExplosionBox.getInstance().checkbox;
 
     public CrumbsModuleGui(GromitMod gromitMod) {
         super(gromitMod);
@@ -36,10 +31,10 @@ public class CrumbsModuleGui extends MainGui {
         checkbox.updateButton(mainGuiPointX + 49, mainGuiPointY + 39, guiScale);
         buttonList.add(explosionBox);
         buttonList.add(checkbox);
-        crumbs.getPersistBoolean().setState(true);
-        fps.getPersistBoolean().setState(false);
-        fun.getPersistBoolean().setState(false);
-        render.getPersistBoolean().setState(false);
+        crumbs.setState(true);
+        fps.setState(false);
+        fun.setState(false);
+        render.setState(false);
     }
 
     @Override

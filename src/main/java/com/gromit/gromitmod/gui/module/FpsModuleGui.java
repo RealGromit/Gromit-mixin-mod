@@ -18,10 +18,10 @@ public class FpsModuleGui extends MainGui {
         super.initGui();
 
         Saver.setFpsModuleGui(this);
-        fps.getPersistBoolean().setState(true);
-        crumbs.getPersistBoolean().setState(false);
-        fun.getPersistBoolean().setState(false);
-        render.getPersistBoolean().setState(false);
+        fps.setState(true);
+        crumbs.setState(false);
+        fun.setState(false);
+        render.setState(false);
     }
 
     @Override
