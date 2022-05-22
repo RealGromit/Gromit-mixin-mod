@@ -18,30 +18,15 @@ public class FunModuleGui extends MainGui {
     private static FunModuleGui instance;
 
     protected static final TextButton autoTickButton = new TextButton(101,4, "AutoTick",
-            (button) -> minecraft.displayGuiScreen(AutoTickGui.getInstance()),
-            (button) -> minecraft.displayGuiScreen(FunModuleGui.getInstance()));
+            button -> minecraft.displayGuiScreen(AutoTickGui.getInstance()),
+            button -> minecraft.displayGuiScreen(FunModuleGui.getInstance()));
 
     protected static final TextButton debugButton = new TextButton(102,4, "Debug Block",
-            (button) -> minecraft.displayGuiScreen(DebugBlockGui.getInstance()),
-            (button) -> minecraft.displayGuiScreen(FunModuleGui.getInstance()));
+            button -> minecraft.displayGuiScreen(DebugBlockGui.getInstance()),
+            button -> minecraft.displayGuiScreen(FunModuleGui.getInstance()));
 
-    public static final CheckboxButton checkbox1 = new CheckboxButton(103, 4, 4,
-            (button) -> {
-                AutoTick.getInstance().register();
-            },
-
-            (button) -> {
-                AutoTick.getInstance().unregister();
-            });
-
-    public static final CheckboxButton checkbox2 = new CheckboxButton(104, 4, 4,
-            (button) -> {
-                DebugBlock.getInstance().register();
-            },
-
-            (button) -> {
-                DebugBlock.getInstance().unregister();
-            });
+    private final CheckboxButton autoTickStateButton = AutoTick.getInstance().stateCheckbox;
+    private final CheckboxButton debugBlockStateButton = DebugBlock.getInstance().stateCheckbox;
 
     public FunModuleGui(GromitMod gromitMod) {
         super(gromitMod);
@@ -58,13 +43,13 @@ public class FunModuleGui extends MainGui {
         render.setState(false);
 
         autoTickButton.updateButton(mainGuiPointX + 7, mainGuiPointY + 39, guiScale);
-        checkbox1.updateButton(mainGuiPointX + 49, mainGuiPointY + 39, guiScale);
+        autoTickStateButton.updateButton(mainGuiPointX + 49, mainGuiPointY + 39, guiScale);
         debugButton.updateButton(mainGuiPointX + 7, mainGuiPointY + 46, guiScale);
-        checkbox2.updateButton(mainGuiPointX + 49, mainGuiPointY + 46, guiScale);
+        debugBlockStateButton.updateButton(mainGuiPointX + 49, mainGuiPointY + 46, guiScale);
         buttonList.add(autoTickButton);
-        buttonList.add(checkbox1);
+        buttonList.add(autoTickStateButton);
         buttonList.add(debugButton);
-        buttonList.add(checkbox2);
+        buttonList.add(debugBlockStateButton);
 
     }
 
@@ -73,9 +58,9 @@ public class FunModuleGui extends MainGui {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         autoTickButton.drawButton(minecraft, mouseX, mouseY);
-        checkbox1.drawButton(minecraft, mouseX, mouseY);
+        autoTickStateButton.drawButton(minecraft, mouseX, mouseY);
         debugButton.drawButton(minecraft, mouseX, mouseY);
-        checkbox2.drawButton(minecraft, mouseX, mouseY);
+        debugBlockStateButton.drawButton(minecraft, mouseX, mouseY);
 
         RenderUtils.drawLine(mainGuiPointX + 60, mainGuiPointY + 37, 0, 101, 4, 255, 255, 255, 255);
     }

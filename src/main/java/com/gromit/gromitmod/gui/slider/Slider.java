@@ -18,8 +18,8 @@ public class Slider extends GuiButton {
     private double guiScale;
     private boolean dragging;
 
-    public Slider(int buttonId, int x, int y, int width, int height, String buttonText, int minValue, int maxValue, int iterations) {
-        super(buttonId, x, y, width, height, buttonText);
+    public Slider(int buttonId, int width, int height, int minValue, int maxValue, int iterations) {
+        super(buttonId, 0, 0, width, height, "");
         this.minValue = minValue;
         steps = width / (maxValue - minValue);
         this.iterations = iterations;

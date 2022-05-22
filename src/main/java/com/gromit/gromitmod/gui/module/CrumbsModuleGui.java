@@ -17,9 +17,7 @@ public class CrumbsModuleGui extends MainGui {
             (button) -> minecraft.displayGuiScreen(ExplosionBoxGui.getInstance()),
             (button) -> minecraft.displayGuiScreen(CrumbsModuleGui.getInstance()));
 
-    private static final CheckboxButton checkbox = new CheckboxButton(7, 4, 4,
-            (button) -> ExplosionBox.getInstance().register(),
-            (button) -> ExplosionBox.getInstance().unregister());
+    private final CheckboxButton explosionBoxStateButton = ExplosionBox.getInstance().stateCheckbox;
 
     public CrumbsModuleGui(GromitMod gromitMod) {
         super(gromitMod);
@@ -31,9 +29,9 @@ public class CrumbsModuleGui extends MainGui {
 
         Saver.setCrumbsModuleGui(this);
         explosionBox.updateButton(mainGuiPointX + 7, mainGuiPointY + 39, guiScale);
-        checkbox.updateButton(mainGuiPointX + 49, mainGuiPointY + 39, guiScale);
+        explosionBoxStateButton.updateButton(mainGuiPointX + 49, mainGuiPointY + 39, guiScale);
         buttonList.add(explosionBox);
-        buttonList.add(checkbox);
+        buttonList.add(explosionBoxStateButton);
         crumbs.setState(true);
         fps.setState(false);
         fun.setState(false);
@@ -45,7 +43,7 @@ public class CrumbsModuleGui extends MainGui {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         explosionBox.drawButton(minecraft, mouseX, mouseY);
-        checkbox.drawButton(minecraft, mouseX, mouseY);
+        explosionBoxStateButton.drawButton(minecraft, mouseX, mouseY);
 
         RenderUtils.drawLine(mainGuiPointX + 60, mainGuiPointY + 37, 0, 101, 4, 255, 255, 255, 255);
     }

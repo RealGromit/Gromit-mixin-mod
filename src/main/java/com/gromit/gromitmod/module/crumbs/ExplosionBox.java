@@ -7,6 +7,7 @@ import com.gromit.gromitmod.gui.button.ColorButton;
 import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.module.AbstractModule;
 import com.gromit.gromitmod.utils.AxisAlignedBBTime;
+import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -29,13 +30,12 @@ public class ExplosionBox extends AbstractModule {
 
     public final ColorButton boxColorButton = new ColorButton(8, 4, 4, 0, 0, 60, 60);
     public final ColorButton outlineColorButton = new ColorButton(-1, 4, 4, 0, 0, 60, 60);
-    public final Slider timeoutSlider = new Slider(9, 95, 2, 2, 1, "", 1, 20, 100);
+    public final Slider timeoutSlider = new Slider(9, 95, 2, 1, 20, 100);
     public final CheckboxButton boxPrecision = new CheckboxButton(10, 4, 4);
-    public final CheckboxButton checkbox = new CheckboxButton(7, 4, 4,
+    public final CheckboxButton stateCheckbox = new CheckboxButton(7, 4, 4,
             button -> register(),
             button -> unregister());
 
-    // Constructor needs to be free of params due to Class.newInstance()
     public ExplosionBox() {
         instance = this;
     }
@@ -75,14 +75,15 @@ public class ExplosionBox extends AbstractModule {
         } GlStateManager.popMatrix();
     }
 
-    // Needed to reassign transient fields and lambda
     @Override
     public void updateAfterDeserialization() {
         instance = this;
         boxSet = ConcurrentHashMap.newKeySet();
         minecraft = Minecraft.getMinecraft();
         renderManager = Minecraft.getMinecraft().getRenderManager();
-        checkbox.updateLambda(button -> register(), button -> unregister());
+        stateCheckbox.updateLambda(button -> register(), button -> unregister());
+        ColorUtils.colorButtons.add(boxColorButton);
+        ColorUtils.colorButtons.add(outlineColorButton);
     }
 
     public static ExplosionBox getInstance() {

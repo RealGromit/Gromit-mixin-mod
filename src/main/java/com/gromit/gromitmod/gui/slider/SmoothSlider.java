@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.GuiButton;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class SmoothSlider extends GuiButton {
 
@@ -19,8 +19,8 @@ public class SmoothSlider extends GuiButton {
     private double guiScale;
     private boolean dragging;
 
-    public SmoothSlider(int buttonId, int x, int y, int width, int height, String buttonText, int minValue, int maxValue, int iterations) {
-        super(buttonId, x, y, width, height, buttonText);
+    public SmoothSlider(int buttonId, int width, int height, String buttonText, int minValue, int maxValue, int iterations) {
+        super(buttonId, 0, 0, width, height, buttonText);
         this.minValue = minValue;
         this.maxValue = maxValue;
         steps = width / (maxValue - minValue);

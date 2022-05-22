@@ -18,6 +18,7 @@ public abstract class AbstractModule {
         state = false;
     }
 
+    // Needed to reassign transient/static fields and lambda
     public void updateAfterDeserialization() {}
 
     protected void onEnable() {}
