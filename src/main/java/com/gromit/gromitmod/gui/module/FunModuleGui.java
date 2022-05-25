@@ -17,11 +17,11 @@ public class FunModuleGui extends MainGui {
 
     private static FunModuleGui instance;
 
-    protected static final TextButton autoTickButton = new TextButton(101,4, "AutoTick",
+    protected static final TextButton autoTickButton = new TextButton(1,4, "AutoTick",
             button -> minecraft.displayGuiScreen(AutoTickGui.getInstance()),
             button -> minecraft.displayGuiScreen(FunModuleGui.getInstance()));
 
-    protected static final TextButton debugButton = new TextButton(102,4, "Debug Block",
+    protected static final TextButton debugButton = new TextButton(2,4, "Debug Block",
             button -> minecraft.displayGuiScreen(DebugBlockGui.getInstance()),
             button -> minecraft.displayGuiScreen(FunModuleGui.getInstance()));
 

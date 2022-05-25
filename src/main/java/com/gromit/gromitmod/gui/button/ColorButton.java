@@ -61,14 +61,15 @@ public class ColorButton extends AbstractBaseButton {
         RenderUtils.drawLine(boxX + sectionX, boxY, 0, sectionY, 2, 255, 255, 255, 255);
         RenderUtils.drawLine(boxX, boxY + sectionY, boxWidth, 0, 2, 255, 255, 255, 255);
 
+        float hsbSection = sectionY / 7f;
         RenderUtils.drawShadingRectangle(boxX + 0.3, boxY + 0.3, sectionX - 0.6, sectionY - 0.6, satRed, satGreen, satBlue, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3, deltaSectionX - 0.6, 6.7, 255, 0, 0, 255, 255, 165, 0, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + 6.7, deltaSectionX - 0.6, 6.7, 255, 165, 0, 255, 255, 255, 0, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + 13.5, deltaSectionX - 0.6, 6.7, 255, 255, 0, 255, 0, 255, 0, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + 20.3, deltaSectionX - 0.6, 6.7, 0, 255, 0, 255, 0, 0, 255, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + 27, deltaSectionX - 0.6, 6.7, 0, 0, 255, 255, 255, 0, 255, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + 33.8, deltaSectionX - 0.6, 6.7, 255, 0, 255, 255, 255, 20, 147, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + 40.5, deltaSectionX - 0.6, 6.9, 255, 20, 147, 255, 255, 0, 0, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3, deltaSectionX - 0.6, hsbSection - 0.1, 255, 0, 0, 255, 255, 165, 0, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + hsbSection - 0.1, deltaSectionX - 0.6, hsbSection - 0.1, 255, 165, 0, 255, 255, 255, 0, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + hsbSection * 2 - 0.2, deltaSectionX - 0.6, hsbSection - 0.1, 255, 255, 0, 255, 0, 255, 0, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + hsbSection * 3 - 0.3, deltaSectionX - 0.6, hsbSection - 0.1, 0, 255, 0, 255, 0, 0, 255, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + hsbSection * 4 - 0.4, deltaSectionX - 0.6, hsbSection - 0.1, 0, 0, 255, 255, 255, 0, 255, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + hsbSection * 5 - 0.5, deltaSectionX - 0.6, hsbSection - 0.1, 255, 0, 255, 255, 255, 20, 147, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + hsbSection * 6 - 0.6, deltaSectionX - 0.6, hsbSection, 255, 20, 147, 255, 255, 0, 0, 255);
         RenderUtils.drawShadingRectangleHeightGradient(boxX + 0.3, boxY + sectionY + 0.3, boxWidth - 0.6, deltaSectionY - 0.6, 0, 0, 0, 0, red, green, blue, 255);
         FontUtil.normal.drawString("Chroma rgb", boxX + 1, boxY + boxHeight + 6, Color.WHITE.getRGB());
         chroma.drawButton(minecraft, ogMouseX, ogMouseY);
@@ -124,7 +125,7 @@ public class ColorButton extends AbstractBaseButton {
     }
 
     private void setHue(int mouseY) {
-        hue = MathHelper.clamp_float((mouseY - boxY) / 46f, 0, 1);
+        hue = MathHelper.clamp_float((mouseY - boxY) / (sectionY - 2f), 0, 1);
         int color = Color.HSBtoRGB(hue, 1, 1);
         satRed = color >> 16 & 255;
         satGreen = color >> 8 & 255;
@@ -133,13 +134,14 @@ public class ColorButton extends AbstractBaseButton {
     }
 
     private void setSaturation(int mouseX, int mouseY) {
-        saturation = MathHelper.clamp_float((mouseX - boxX) / 46f, 0, 1);
-        brightness = MathHelper.clamp_float((boxY - mouseY + 46) / 46f, 0, 1);
+        float sectionX = sectionY - 2f;
+        saturation = MathHelper.clamp_float((mouseX - boxX) / sectionX, 0, 1);
+        brightness = MathHelper.clamp_float((boxY - mouseY + sectionX) / sectionX, 0, 1);
         updateColor();
     }
 
     private void setAlpha(int mouseX) {
-        alpha = (int) (MathHelper.clamp_float((mouseX - boxX) / 58f, 0, 1) * 255);
+        alpha = (int) (MathHelper.clamp_float((mouseX - boxX) / (boxWidth - 2f), 0, 1) * 255);
         updateColor();
     }
 

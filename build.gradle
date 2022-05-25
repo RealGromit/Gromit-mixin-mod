@@ -63,6 +63,7 @@ repositories {
 }
 
 dependencies {
+    embed group: 'it.unimi.dsi', name: 'fastutil', version: '8.5.8'
     embed group: 'org.reflections', name: 'reflections', version: '0.10.2'
 	embed ('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
         exclude module: 'gson'

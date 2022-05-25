@@ -2,7 +2,9 @@ package com.gromit.gromitmod;
 
 import com.gromit.gromitmod.handler.GuiHandler;
 import com.gromit.gromitmod.handler.ModuleHandler;
+import com.gromit.gromitmod.listener.ChunkMapper;
 import com.gromit.gromitmod.listener.ClientTickEvent;
+import com.gromit.gromitmod.listener.PlayerInteractEvent;
 import com.gromit.gromitmod.network.NetworkManager;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import net.minecraft.client.Minecraft;
@@ -23,9 +25,11 @@ public class GromitMod {
         instance = this;
         createFolder();
         FontUtil.bootstrap();
+        new ChunkMapper(minecraft);
         ModuleHandler moduleHandler = new ModuleHandler(this);
         new GuiHandler(this);
         new ClientTickEvent(this);
+        new PlayerInteractEvent(minecraft);
         new NetworkManager();
         Runtime.getRuntime().addShutdownHook(new Thread(moduleHandler::writeModules));
     }

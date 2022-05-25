@@ -1,7 +1,6 @@
 package com.gromit.gromitmod.handler;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.annotation.Module;
 import com.gromit.gromitmod.module.AbstractModule;
@@ -16,14 +15,13 @@ import java.util.Set;
 public class ModuleHandler {
 
     // Change capacity of array according to amount of modules
-    private final AbstractModule[] modules = new AbstractModule[3];
-    private final Reflections reflections = new Reflections("com.gromit.gromitmod");
-    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private final AbstractModule[] modules = new AbstractModule[4];
+    private final Gson gson = new Gson();
     private final Set<Class<?>> classSet;
     private final String jsonFolder;
 
     public ModuleHandler(GromitMod gromitMod) {
-        classSet = reflections.getTypesAnnotatedWith(Module.class);
+        classSet = new Reflections("com.gromit.gromitmod").getTypesAnnotatedWith(Module.class);
         jsonFolder = gromitMod.getJsonFolder();
         readModules();
     }

@@ -28,11 +28,11 @@ public class ExplosionBox extends AbstractModule {
     private transient Set<AxisAlignedBBTime> boxSet = ConcurrentHashMap.newKeySet();
     private transient Minecraft minecraft = Minecraft.getMinecraft();
 
-    public final ColorButton boxColorButton = new ColorButton(8, 4, 4, 0, 0, 60, 60);
-    public final ColorButton outlineColorButton = new ColorButton(-1, 4, 4, 0, 0, 60, 60);
-    public final Slider timeoutSlider = new Slider(9, 95, 2, 1, 20, 100);
-    public final CheckboxButton boxPrecision = new CheckboxButton(10, 4, 4);
-    public final CheckboxButton stateCheckbox = new CheckboxButton(7, 4, 4,
+    public final ColorButton boxColorButton = new ColorButton(9, 4, 4, 0, 0, 60, 60);
+    public final ColorButton outlineColorButton = new ColorButton(10, 4, 4, 0, 0, 60, 60);
+    public final Slider timeoutSlider = new Slider(11, 95, 2, 1, 20, 100);
+    public final CheckboxButton boxPrecision = new CheckboxButton(12, 4, 4);
+    public final CheckboxButton stateCheckbox = new CheckboxButton(13, 4, 4,
             button -> register(),
             button -> unregister());
 
