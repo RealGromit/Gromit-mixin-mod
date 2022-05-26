@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class AxisAlignedBBTime {
 
-    private final long time;
+    private long time;
     public double minX;
     public double minY;
     public double minZ;
@@ -68,5 +68,9 @@ public class AxisAlignedBBTime {
 
     public long getTime() {
         return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

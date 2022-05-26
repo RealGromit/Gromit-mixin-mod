@@ -296,6 +296,85 @@ public class RenderUtils {
         GlStateManager.disableBlend();
     }
 
+    public static void drawPatchcrumbsLine(AxisAlignedBBTime box, float lineWidth, int red, int green, int blue, int alpha, byte renderLineDirection) {
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glLineWidth(lineWidth);
+        glEnable(GL_LINE_SMOOTH);
+        if (renderLineDirection == 1) {
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.maxX, box.maxY, box.minZ + 320).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.minX, box.maxY, box.minZ + 320).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.minX, box.minY, box.minZ + 320).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.maxX, box.minY, box.minZ + 320).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.maxX, box.maxY, box.maxZ - 320).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.minX, box.maxY, box.maxZ - 320).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.minX, box.minY, box.maxZ - 320).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.maxX, box.minY, box.maxZ - 320).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+        }
+        if (renderLineDirection == 2) {
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.maxX, box.maxY, box.maxZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.minX + 320, box.maxY, box.maxZ).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.maxX, box.maxY, box.minZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.minX + 320, box.maxY, box.minZ).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.maxX, box.minY, box.minZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.minX + 320, box.minY, box.minZ).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.maxX, box.minY, box.maxZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.minX + 320, box.minY, box.maxZ).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.minX, box.maxY, box.maxZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.maxX - 320, box.maxY, box.maxZ).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.minX, box.maxY, box.minZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.maxX - 320, box.maxY, box.minZ).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.minX, box.minY, box.minZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.maxX - 320, box.minY, box.minZ).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_COLOR);
+            worldRenderer.pos(box.minX, box.minY, box.maxZ).color(red, green, blue, alpha).endVertex();
+            worldRenderer.pos(box.maxX - 320, box.minY, box.maxZ).color(red, green, blue, alpha).endVertex();
+            tessellator.draw();
+        }
+        glDisable(GL_LINE_SMOOTH);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+    }
+
     public static void drawAABB(AxisAlignedBBTime box, int red, int green, int blue, int alpha) {
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();

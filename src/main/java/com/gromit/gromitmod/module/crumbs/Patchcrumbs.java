@@ -8,14 +8,21 @@ import com.gromit.gromitmod.listener.ChunkMapper;
 import com.gromit.gromitmod.module.AbstractModule;
 import com.gromit.gromitmod.utils.AxisAlignedBBTime;
 import com.gromit.gromitmod.utils.ColorUtils;
+import com.gromit.gromitmod.utils.MathUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
+import it.unimi.dsi.fastutil.longs.Long2LongMap;
+import it.unimi.dsi.fastutil.longs.Long2LongOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ByteMap;
+import it.unimi.dsi.fastutil.objects.Object2ByteOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectIterator;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFallingBlock;
-import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -42,17 +49,19 @@ public class Patchcrumbs extends AbstractModule {
             button -> unregister());
 
     // Set for all detections that are possibly incoming shots
-    private transient HashSet<AxisAlignedBBTime> detectionSet = new HashSet<>();
+    //private transient HashSet<AxisAlignedBBTime> detectionSet = new HashSet<>();
+    private transient Object2ByteOpenHashMap<AxisAlignedBBTime> detectionSet = new Object2ByteOpenHashMap<>();
     // Set for incoming shots that need to be drawn
-    private transient HashSet<AxisAlignedBBTime> drawSet = new HashSet<>();
-
+    //private transient HashSet<AxisAlignedBBTime> drawSet = new HashSet<>();
+    private transient Object2ByteOpenHashMap<AxisAlignedBBTime> drawSet = new Object2ByteOpenHashMap<>();
     private transient HashSet<Integer> entityIds = new HashSet<>();
+    private transient Long2LongOpenHashMap blockXZ = new Long2LongOpenHashMap();
 
     private transient double oldX;
     private transient double oldY;
     private transient double oldZ;
 
-    private long tickCounter;
+    private transient long tickCounter;
 
     public Patchcrumbs() {
         instance = this;
@@ -64,47 +73,88 @@ public class Patchcrumbs extends AbstractModule {
         if (event.phase == TickEvent.Phase.START) return;
         tickCounter++;
 
-        if (tickCounter % 600 == 0) entityIds.clear();
+        if (tickCounter % 600 == 0) {
+            entityIds.clear();
+            tickCounter = 0;
+        }
 
         List<Entity> entityList = minecraft.theWorld.getLoadedEntityList();
         long time = System.currentTimeMillis();
 
         for (Entity entity : entityList) {
-            if (!(entity instanceof EntityFallingBlock) && !(entity instanceof EntityTNTPrimed)) continue;
+            if (!(entity instanceof EntityFallingBlock)) continue;
             if (entity.motionX + entity.motionZ == 0) {
+                if (chunkMapper.getCannonChunks().contains(MathUtils.int2Long(entity.chunkCoordX, entity.chunkCoordZ))) continue;
                 if (oldX == entity.posX && oldY == entity.posY && oldZ == entity.posZ) continue;
                 oldX = entity.posX;
                 oldY = entity.posY;
                 oldZ = entity.posZ;
-                if (chunkMapper.getCannonChunks().contains((((long) entity.chunkCoordX) << 32) | (entity.chunkCoordZ & 0xffffffffL))) continue;
                 if (entityIds.contains(entity.getEntityId())) continue;
                 entityIds.add(entity.getEntityId());
-                if (minecraft.theWorld.getEntitiesWithinAABB(EntityFallingBlock.class, entity.getEntityBoundingBox()).size() < 3
-                        || minecraft.theWorld.getEntitiesWithinAABB(EntityTNTPrimed.class, entity.getEntityBoundingBox()).size() < 2) continue;
-                if (!isCollidedWithBlock(entity.worldObj, entity.posX, entity.posY, entity.posZ)) continue;
-                AxisAlignedBBTime axisAlignedBBTime = new AxisAlignedBBTime(entity.getEntityBoundingBox(), time);
-                axisAlignedBBTime.expandToBlock();
-                axisAlignedBBTime.roundY();
-                detectionSet.add(axisAlignedBBTime);
+                if (blockXZ.containsKey(MathUtils.int2Long((int) entity.posX, (int) entity.posZ))) continue;
+                if (minecraft.theWorld.getEntitiesWithinAABB(EntityFallingBlock.class, entity.getEntityBoundingBox()).size() < 3) continue;
+                byte direction = isCollidedWithBlock(entity.worldObj, entity.posX, entity.posY, entity.posZ);
+                if (direction == 0) continue;
+                AxisAlignedBBTime box = new AxisAlignedBBTime(entity.getEntityBoundingBox(), time);
+                box.expandToBlock();
+                box.roundY();
+                detectionSet.put(box, direction);
             }
         }
-        detectionSet.removeIf(box -> time - box.getTime() > 4000);
+        ObjectIterator<Object2ByteMap.Entry<AxisAlignedBBTime>> iterator = detectionSet.object2ByteEntrySet().fastIterator();
+        while (iterator.hasNext()) {
+            Object2ByteMap.Entry<AxisAlignedBBTime> pair = iterator.next();
+            AxisAlignedBBTime box = pair.getKey();
+            if (time - box.getTime() > 4000) {
+                iterator.remove();
+                continue;
+            }
+            blockXZ.put(MathUtils.int2Long((int) box.minX, (int) box.minZ), time);
+            Block block = minecraft.theWorld.getBlockState(new BlockPos(box.minX + 0.5, box.minY - 3, box.minZ + 0.5)).getBlock();
+            if (block instanceof BlockFalling) {
+                iterator.remove();
+                box.setTime(time);
+                drawSet.put(box, pair.getByteValue());
+            }
+        }
+        ObjectIterator<Long2LongMap.Entry> iterator1 = blockXZ.long2LongEntrySet().fastIterator();
+        while (iterator1.hasNext()) {
+            Long2LongMap.Entry pair = iterator1.next();
+            if (time - pair.getLongValue() > 2000) iterator1.remove();
+        }
+        ObjectIterator<Object2ByteMap.Entry<AxisAlignedBBTime>> iterator2 = drawSet.object2ByteEntrySet().fastIterator();
+        while (iterator2.hasNext()) {
+            Object2ByteMap.Entry<AxisAlignedBBTime> pair = iterator2.next();
+            if (time - pair.getKey().getTime() > 2900) iterator2.remove();
+        }
     }
 
     @SubscribeEvent
     public void onRenderLastWorld(RenderWorldLastEvent event) {
         // Currently, using detectionSet due to only having 1 detection method for now
-        if (detectionSet.isEmpty()) return;
+        if (drawSet.isEmpty()) return;
         GlStateManager.pushMatrix();
+        GlStateManager.disableLighting();
+        GlStateManager.disableDepth();
+        GlStateManager.depthMask(false);
         GlStateManager.translate(-renderManager.viewerPosX, -renderManager.viewerPosY, -renderManager.viewerPosZ);
-        for (AxisAlignedBBTime box : detectionSet) {
+
+        ObjectIterator<Object2ByteMap.Entry<AxisAlignedBBTime>> iterator = drawSet.object2ByteEntrySet().fastIterator();
+        while (iterator.hasNext()) {
+            Object2ByteMap.Entry<AxisAlignedBBTime> pair = iterator.next();
+            AxisAlignedBBTime box = pair.getKey();
             RenderUtils.drawAABB(box, boxColorButton.getRed(), boxColorButton.getGreen(), boxColorButton.getBlue(), boxColorButton.getAlpha());
             RenderUtils.drawAABBOutline(box, 2, outlineColorButton.getRed(), outlineColorButton.getGreen(), outlineColorButton.getBlue(), outlineColorButton.getAlpha());
+            RenderUtils.drawPatchcrumbsLine(box, 2, lineColorButton.getRed(), lineColorButton.getGreen(), lineColorButton.getBlue(), lineColorButton.getAlpha(), pair.getByteValue());
         }
+
+        GlStateManager.depthMask(true);
+        GlStateManager.enableDepth();
+        GlStateManager.enableLighting();
         GlStateManager.popMatrix();
     }
 
-    private boolean isCollidedWithBlock(World world, double x, double y, double z) {
+    private byte isCollidedWithBlock(World world, double x, double y, double z) {
         BlockPos blockPos = new BlockPos(x, y, z);
         BlockPos north = blockPos.north();
         BlockPos south = blockPos.south();
@@ -114,10 +164,11 @@ public class Patchcrumbs extends AbstractModule {
         IBlockState southSate = world.getBlockState(south);
         IBlockState westState = world.getBlockState(west);
         IBlockState eastState = world.getBlockState(east);
-        return northState.getBlock().getCollisionBoundingBox(world, north, northState) != null
-                || southSate.getBlock().getCollisionBoundingBox(world, south, southSate) != null
-                || westState.getBlock().getCollisionBoundingBox(world, west, westState) != null
-                || eastState.getBlock().getCollisionBoundingBox(world, east, eastState) != null;
+        if (northState.getBlock().getCollisionBoundingBox(world, north, northState) != null
+                || southSate.getBlock().getCollisionBoundingBox(world, south, southSate) != null) return 1;
+        if (westState.getBlock().getCollisionBoundingBox(world, west, westState) != null
+                || eastState.getBlock().getCollisionBoundingBox(world, east, eastState) != null) return 2;
+        return 0;
     }
 
     @Override
