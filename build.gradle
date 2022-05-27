@@ -63,6 +63,8 @@ repositories {
 }
 
 dependencies {
+    implementation files('libs/LunatriusCore-1.8.9-1.1.2.32-universal.jar')
+    implementation files('libs/Schematica-1.8.9-1.7.7.143-universal.jar')
     embed group: 'it.unimi.dsi', name: 'fastutil', version: '8.5.8'
     embed group: 'org.reflections', name: 'reflections', version: '0.10.2'
 	embed ('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
