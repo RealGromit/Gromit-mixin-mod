@@ -4,31 +4,29 @@ import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.MainGui;
 import com.gromit.gromitmod.gui.button.CheckboxButton;
 import com.gromit.gromitmod.gui.button.TextButton;
-import com.gromit.gromitmod.gui.module.fun.AutoTickGui;
-import com.gromit.gromitmod.gui.module.fun.DebugBlockGui;
+import com.gromit.gromitmod.gui.module.other.AutoTickGui;
+import com.gromit.gromitmod.gui.module.other.DebugBlockGui;
 import com.gromit.gromitmod.handler.Saver;
-import com.gromit.gromitmod.module.fun.AutoTick;
-import com.gromit.gromitmod.module.fun.DebugBlock;
+import com.gromit.gromitmod.module.other.AutoTick;
+import com.gromit.gromitmod.module.other.DebugBlock;
 import com.gromit.gromitmod.utils.RenderUtils;
 
-import java.io.IOException;
+public class OtherModuleGui extends MainGui {
 
-public class FunModuleGui extends MainGui {
+    private static OtherModuleGui instance;
 
-    private static FunModuleGui instance;
-
-    protected static final TextButton autoTickButton = new TextButton(1,4, "AutoTick",
+    protected static final TextButton autoTickButton = new TextButton(1,4, "Auto Tick",
             button -> minecraft.displayGuiScreen(AutoTickGui.getInstance()),
-            button -> minecraft.displayGuiScreen(FunModuleGui.getInstance()));
+            button -> minecraft.displayGuiScreen(OtherModuleGui.getInstance()));
 
     protected static final TextButton debugButton = new TextButton(2,4, "Debug Block",
             button -> minecraft.displayGuiScreen(DebugBlockGui.getInstance()),
-            button -> minecraft.displayGuiScreen(FunModuleGui.getInstance()));
+            button -> minecraft.displayGuiScreen(OtherModuleGui.getInstance()));
 
     private final CheckboxButton autoTickStateButton = AutoTick.getInstance().stateCheckbox;
     private final CheckboxButton debugBlockStateButton = DebugBlock.getInstance().stateCheckbox;
 
-    public FunModuleGui(GromitMod gromitMod) {
+    public OtherModuleGui(GromitMod gromitMod) {
         super(gromitMod);
     }
 
@@ -36,7 +34,7 @@ public class FunModuleGui extends MainGui {
     public void initGui() {
         super.initGui();
 
-        Saver.setFunModuleGui(this);
+        Saver.setOtherModuleGui(this);
         fun.setState(true);
         crumbs.setState(false);
         fps.setState(false);
@@ -50,7 +48,6 @@ public class FunModuleGui extends MainGui {
         buttonList.add(autoTickStateButton);
         buttonList.add(debugButton);
         buttonList.add(debugBlockStateButton);
-
     }
 
     @Override
@@ -66,21 +63,11 @@ public class FunModuleGui extends MainGui {
     }
 
     @Override
-    public void onGuiClosed() {
-
-    }
-
-    @Override
-    public void handleMouseInput() throws IOException {
-        super.handleMouseInput();
-    }
-
-    @Override
     protected void setInstance() {
         instance = this;
     }
 
-    public static FunModuleGui getInstance() {
+    public static OtherModuleGui getInstance() {
         return instance;
     }
 }

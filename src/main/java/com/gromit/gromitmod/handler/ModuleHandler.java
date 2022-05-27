@@ -15,7 +15,7 @@ import java.util.Set;
 public class ModuleHandler {
 
     // Change capacity of array according to amount of modules
-    private final AbstractModule[] modules = new AbstractModule[4];
+    private final AbstractModule[] modules = new AbstractModule[5];
     private final Gson gson = new Gson();
     private final Set<Class<?>> classSet;
     private final String jsonFolder;

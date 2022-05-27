@@ -4,7 +4,7 @@ import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.button.TextButton;
 import com.gromit.gromitmod.gui.module.CrumbsModuleGui;
 import com.gromit.gromitmod.gui.module.FpsModuleGui;
-import com.gromit.gromitmod.gui.module.FunModuleGui;
+import com.gromit.gromitmod.gui.module.OtherModuleGui;
 import com.gromit.gromitmod.gui.module.RenderModuleGui;
 import com.gromit.gromitmod.handler.Saver;
 import com.gromit.gromitmod.utils.ColorUtils;
@@ -44,10 +44,10 @@ public class MainGui extends GuiScreen {
                 else minecraft.displayGuiScreen(CrumbsModuleGui.getInstance());
             }, (button) -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
-    protected static final TextButton fun = new TextButton(6, 4, "Fun",
+    protected static final TextButton fun = new TextButton(6, 4, "Other",
             (button) -> {
-                if (Saver.getFunModuleGui() != null) minecraft.displayGuiScreen(Saver.getFunModuleGui());
-                else minecraft.displayGuiScreen(FunModuleGui.getInstance());
+                if (Saver.getOtherModuleGui() != null) minecraft.displayGuiScreen(Saver.getOtherModuleGui());
+                else minecraft.displayGuiScreen(OtherModuleGui.getInstance());
             }, (button) -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
     protected static final TextButton settings = new TextButton(7, 4, "Settings",
@@ -69,7 +69,7 @@ public class MainGui extends GuiScreen {
         fps.updateButton(mainGuiPointX + 63 + 16 + 25, mainGuiPointY + 16, guiScale);
         crumbs.updateButton(mainGuiPointX + 63 + 16 + 8  + 50, mainGuiPointY + 16, guiScale);
         fun.updateButton(mainGuiPointX + 63 + 16 + 8 + 18  + 75, mainGuiPointY + 16, guiScale);
-        settings.updateButton(mainGuiPointX + 63 + 16 + 8 + 18 + 8  + 100, mainGuiPointY + 16, guiScale);
+        settings.updateButton(mainGuiPointX + 63 + 16 + 8 + 21 + 8  + 100, mainGuiPointY + 16, guiScale);
         buttonList.add(render);
         buttonList.add(fps);
         buttonList.add(crumbs);

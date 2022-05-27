@@ -62,12 +62,12 @@ public class ChunkMapper {
                 for (byte z = 0; z < 16; z++) {
                     for (short y = 1; y < 256; y++) {
                         Block block = chunk.getBlock(x, y, z);
-                        if (block instanceof BlockAir) continue;
-                        if (block instanceof BlockDispenser) cannonDetector.dispensers++;
-                        if (block instanceof BlockRedstoneRepeater) cannonDetector.repeaters++;
-                        if (block instanceof BlockRedstoneWire) cannonDetector.redstone++;
-                        if (block instanceof BlockPistonBase) cannonDetector.pistons++;
-                        if (block instanceof BlockCarpet) cannonDetector.carpets++;
+                        if (block instanceof BlockAir) {}
+                        else if (block instanceof BlockDispenser) cannonDetector.dispensers++;
+                        else if (block instanceof BlockRedstoneRepeater) cannonDetector.repeaters++;
+                        else if (block instanceof BlockRedstoneWire) cannonDetector.redstone++;
+                        else if (block instanceof BlockPistonBase) cannonDetector.pistons++;
+                        else if (block instanceof BlockCarpet) cannonDetector.carpets++;
                     }
                 }
             }
@@ -112,12 +112,12 @@ public class ChunkMapper {
                 for (int z = posZ; z < posZ + 16; z++) {
                     for (short y = 1; y < 256; y++) {
                         Block block = minecraft.theWorld.getBlockState(new BlockPos(x, y, z)).getBlock();
-                        if (block instanceof BlockAir) continue;
-                        if (block instanceof BlockDispenser) cannonDetector.dispensers++;
-                        if (block instanceof BlockRedstoneRepeater) cannonDetector.repeaters++;
-                        if (block instanceof BlockRedstoneWire) cannonDetector.redstone++;
-                        if (block instanceof BlockPistonBase) cannonDetector.pistons++;
-                        if (block instanceof BlockCarpet) cannonDetector.carpets++;
+                        if (block instanceof BlockAir) {}
+                        else if (block instanceof BlockDispenser) cannonDetector.dispensers++;
+                        else if (block instanceof BlockRedstoneRepeater) cannonDetector.repeaters++;
+                        else if (block instanceof BlockRedstoneWire) cannonDetector.redstone++;
+                        else if (block instanceof BlockPistonBase) cannonDetector.pistons++;
+                        else if (block instanceof BlockCarpet) cannonDetector.carpets++;
                     }
                 }
             }

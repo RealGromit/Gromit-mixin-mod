@@ -3,7 +3,7 @@ package com.gromit.gromitmod.handler;
 import com.gromit.gromitmod.gui.MainGui;
 import com.gromit.gromitmod.gui.module.CrumbsModuleGui;
 import com.gromit.gromitmod.gui.module.FpsModuleGui;
-import com.gromit.gromitmod.gui.module.FunModuleGui;
+import com.gromit.gromitmod.gui.module.OtherModuleGui;
 import com.gromit.gromitmod.gui.module.RenderModuleGui;
 
 public class Saver {
@@ -12,7 +12,7 @@ public class Saver {
     private static RenderModuleGui renderModuleGui;
     private static FpsModuleGui fpsModuleGui;
     private static CrumbsModuleGui crumbsModuleGui;
-    private static FunModuleGui funModuleGui;
+    private static OtherModuleGui otherModuleGui;
     private static int openGuiButton = 0x38;
 
     public static MainGui getLastScreen() {
@@ -48,12 +48,12 @@ public class Saver {
         Saver.crumbsModuleGui = crumbsModuleGui;
     }
 
-    public static FunModuleGui getFunModuleGui() {
-        return funModuleGui;
+    public static OtherModuleGui getOtherModuleGui() {
+        return otherModuleGui;
     }
 
-    public static void setFunModuleGui(FunModuleGui funModuleGui) {
-        Saver.funModuleGui = funModuleGui;
+    public static void setOtherModuleGui(OtherModuleGui otherModuleGui) {
+        Saver.otherModuleGui = otherModuleGui;
     }
 
     public static int getOpenGuiButton() {

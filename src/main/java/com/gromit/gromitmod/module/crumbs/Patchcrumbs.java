@@ -110,8 +110,9 @@ public class Patchcrumbs extends AbstractModule {
                 continue;
             }
             blockXZ.put(MathUtils.int2Long((int) box.minX, (int) box.minZ), time);
-            Block block = minecraft.theWorld.getBlockState(new BlockPos(box.minX + 0.5, box.minY - 3, box.minZ + 0.5)).getBlock();
-            if (block instanceof BlockFalling) {
+            Block block = minecraft.theWorld.getBlockState(new BlockPos(box.minX + 0.5, box.minY - 0.5, box.minZ + 0.5)).getBlock();
+            Block block1 = minecraft.theWorld.getBlockState(new BlockPos(box.minX + 0.5, box.minY - 1.5, box.minZ + 0.5)).getBlock();
+            if (block instanceof BlockFalling || block1 instanceof BlockFalling) {
                 iterator.remove();
                 box.setTime(time);
                 drawSet.put(box, pair.getByteValue());
@@ -175,6 +176,7 @@ public class Patchcrumbs extends AbstractModule {
     public void updateAfterDeserialization() {
         instance = this;
         chunkMapper = ChunkMapper.getInstance();
+        stateCheckbox.updateLambda(button -> register(), button -> unregister());
         ColorUtils.colorButtons.add(boxColorButton);
         ColorUtils.colorButtons.add(outlineColorButton);
         ColorUtils.colorButtons.add(lineColorButton);
