@@ -1,6 +1,7 @@
 package com.gromit.gromitmod;
 
 import com.gromit.gromitmod.handler.GuiHandler;
+import com.gromit.gromitmod.handler.InputHandler;
 import com.gromit.gromitmod.handler.ModuleHandler;
 import com.gromit.gromitmod.listener.ChunkMapper;
 import com.gromit.gromitmod.listener.ClientTickEvent;
@@ -31,6 +32,7 @@ public class GromitMod {
         new ClientTickEvent(this);
         new PlayerInteractEvent(minecraft);
         new NetworkManager();
+        new InputHandler(minecraft);
         Runtime.getRuntime().addShutdownHook(new Thread(moduleHandler::writeModules));
     }
 
