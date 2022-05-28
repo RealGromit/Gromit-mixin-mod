@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
 import java.io.File;
 
-@Mod(modid = "GromitMod", version = "1.0")
+@Mod(modid = "GromitMod", version = "1.0", acceptedMinecraftVersions = "[1.8.9]")
 public class GromitMod {
 
     private static GromitMod instance;

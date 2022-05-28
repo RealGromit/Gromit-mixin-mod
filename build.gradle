@@ -15,10 +15,12 @@ buildscript {
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
 		classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceCompatibility = targetCompatibility = '1.8'
 compileJava {
@@ -50,8 +52,8 @@ minecraft {
 }
 
 configurations {
-    embed
-    compile.extendsFrom embed
+    shade
+    compile.extendsFrom shade
 }
 
 repositories {
@@ -60,14 +62,17 @@ repositories {
         name = 'sponge'
         url = 'https://repo.spongepowered.org/repository/maven-public/'
     }
+    maven {
+        url "https://cursemaven.com"
+    }
 }
 
 dependencies {
-    implementation files('libs/LunatriusCore-1.8.9-1.1.2.32-universal.jar')
-    implementation files('libs/Schematica-1.8.9-1.7.7.143-universal.jar')
-    embed group: 'it.unimi.dsi', name: 'fastutil', version: '8.5.8'
-    embed group: 'org.reflections', name: 'reflections', version: '0.10.2'
-    embed ('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
+    shade 'curse.maven:schematica-225603:2279147'
+    shade 'curse.maven:lunatriuscore-225605:2272942'
+    shade group: 'it.unimi.dsi', name: 'fastutil', version: '8.5.8'
+    shade group: 'org.reflections', name: 'reflections', version: '0.10.2'
+    shade ('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
         exclude module: 'gson'
         exclude module: 'guava'
         exclude module: 'jarjar'
@@ -77,43 +82,26 @@ dependencies {
         exclude module: 'asm-commons'
         exclude module: 'slf4j-api'
     }
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
-    // except that these dependencies get remapped to your current MCP mappings
-    //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-    //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
 }
 
 mixin {
     add sourceSets.main, 'mixins.gromitmod.refmap.json'
 }
 
-jar {
-    from(configurations.embed.collect {
-        it.isDirectory() ? it : zipTree(it)
-    }) {
-        exclude 'dummyThing',
-                'LICENSE.txt',
-                'META-INF/MUMFREY.RSA',
-                'META-INF/maven/**',
-                'org/**/*.html'
+shadowJar {
+    classifier = null
+    configurations = [project.configurations.shade]
+}
+build.dependsOn shadowJar
+
+reobf {
+    shadowJar {
+        mappingType = 'SEARGE'
+        classpath = sourceSets.main.compileClasspath
     }
+}
+
+jar {
     manifest.attributes(
         'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
         'TweakOrder': 0,
