@@ -14,12 +14,13 @@ import com.gromit.gromitmod.utils.RenderUtils;
 public class OtherModuleGui extends MainGui {
 
     private static OtherModuleGui instance;
+    private static final GromitMod gromitMod = GromitMod.getInstance();
 
-    protected static final TextButton autoTickButton = new TextButton(1,4, "Auto Tick",
+    protected static final TextButton autoTickButton = new TextButton(gromitMod.getNewButtonId(), 4, "Auto Tick",
             button -> minecraft.displayGuiScreen(AutoTickGui.getInstance()),
             button -> minecraft.displayGuiScreen(OtherModuleGui.getInstance()));
 
-    protected static final TextButton debugButton = new TextButton(2,4, "Debug Block",
+    protected static final TextButton debugButton = new TextButton(gromitMod.getNewButtonId(),4, "Debug Block",
             button -> minecraft.displayGuiScreen(DebugBlockGui.getInstance()),
             button -> minecraft.displayGuiScreen(OtherModuleGui.getInstance()));
 
@@ -59,7 +60,7 @@ public class OtherModuleGui extends MainGui {
         debugButton.drawButton(minecraft, mouseX, mouseY);
         debugBlockStateButton.drawButton(minecraft, mouseX, mouseY);
 
-        RenderUtils.drawLine(mainGuiPointX + 60, mainGuiPointY + 37, 0, 101, 4, 255, 255, 255, 255);
+        RenderUtils.drawLine(mainGuiPointX + 60, mainGuiPointY + 37, 0, 101, 4, false, 255, 255, 255, 255);
     }
 
     @Override

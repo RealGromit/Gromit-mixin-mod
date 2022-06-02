@@ -14,7 +14,8 @@ import java.io.IOException;
 public class SettingsGui extends MainGui {
 
     private static SettingsGui instance;
-    private static final KeybindButton openGui = new KeybindButton(8, 4, "Left alt");
+    private static final GromitMod gromitMod = GromitMod.getInstance();
+    private static final KeybindButton openGui = new KeybindButton(gromitMod.getNewButtonId(), 4, "Left alt");
 
     public SettingsGui(GromitMod gromitMod) {
         super(gromitMod);

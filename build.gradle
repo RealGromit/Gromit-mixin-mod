@@ -54,6 +54,8 @@ minecraft {
 configurations {
     shade
     compile.extendsFrom shade
+    shadeReobf
+    deobfCompile.extendsFrom shadeReobf
 }
 
 repositories {
@@ -68,8 +70,8 @@ repositories {
 }
 
 dependencies {
-    shade 'curse.maven:schematica-225603:2279147'
-    shade 'curse.maven:lunatriuscore-225605:2272942'
+    shadeReobf 'curse.maven:schematica-225603:2279147'
+    shadeReobf 'curse.maven:lunatriuscore-225605:2272942'
     shade group: 'it.unimi.dsi', name: 'fastutil', version: '8.5.8'
     shade group: 'org.reflections', name: 'reflections', version: '0.10.2'
     shade ('org.spongepowered:mixin:0.7.11-SNAPSHOT') {
@@ -90,7 +92,7 @@ mixin {
 
 shadowJar {
     classifier = null
-    configurations = [project.configurations.shade]
+    configurations = [project.configurations.shade, project.configurations.shadeReobf]
 }
 build.dependsOn shadowJar
 

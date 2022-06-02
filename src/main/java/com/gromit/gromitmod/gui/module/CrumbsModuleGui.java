@@ -14,12 +14,13 @@ import com.gromit.gromitmod.utils.RenderUtils;
 public class CrumbsModuleGui extends MainGui {
 
     private static CrumbsModuleGui instance;
+    private static final GromitMod gromitMod = GromitMod.getInstance();
 
-    protected static final TextButton explosionBox = new TextButton(0,4, "Explosion Box",
+    protected static final TextButton explosionBox = new TextButton(gromitMod.getNewButtonId(), 4, "Explosion Box",
             button -> minecraft.displayGuiScreen(ExplosionBoxGui.getInstance()),
             button -> minecraft.displayGuiScreen(CrumbsModuleGui.getInstance()));
 
-    protected static final TextButton patchcrumbs = new TextButton(0,4, "Patchcrumbs",
+    protected static final TextButton patchcrumbs = new TextButton(gromitMod.getNewButtonId(),4, "Patchcrumbs",
             button -> minecraft.displayGuiScreen(PatchcrumbsGui.getInstance()),
             button -> minecraft.displayGuiScreen(CrumbsModuleGui.getInstance()));
 
@@ -58,7 +59,7 @@ public class CrumbsModuleGui extends MainGui {
         explosionBoxStateButton.drawButton(minecraft, mouseX, mouseY);
         patchcrumbsStateButton.drawButton(minecraft, mouseX, mouseY);
 
-        RenderUtils.drawLine(mainGuiPointX + 60, mainGuiPointY + 37, 0, 101, 4, 255, 255, 255, 255);
+        RenderUtils.drawLine(mainGuiPointX + 60, mainGuiPointY + 37, 0, 101, 4, false, 255, 255, 255, 255);
     }
     @Override
     protected void setInstance() {

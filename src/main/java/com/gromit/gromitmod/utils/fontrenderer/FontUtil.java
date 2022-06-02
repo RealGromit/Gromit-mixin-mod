@@ -5,7 +5,7 @@ package com.gromit.gromitmod.utils.fontrenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
-import java.awt.*;
+import java.awt.Font;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +17,8 @@ public class FontUtil {
     private static Font normal_;
     public static CustomFontRenderer title;
     private static Font title_;
+    public static CustomFontRenderer biggerTitle;
+    private static Font biggerTitle_;
 
     private static Font getFont(Map<String, Font> locationMap, String location, int size) {
         Font font = null;
@@ -50,6 +52,7 @@ public class FontUtil {
             Map<String, Font> locationMap = new HashMap<>();
             normal_ = getFont(locationMap, "font.otf", 19);
             title_ = getFont(locationMap, "font.otf", 26);
+            biggerTitle_ = getFont(locationMap, "font.otf", 35);
             completed++;
         }).start();
         new Thread(() ->
@@ -74,5 +77,6 @@ public class FontUtil {
 
         normal = new CustomFontRenderer(normal_, true, true);
         title = new CustomFontRenderer(title_, true, true);
+        biggerTitle = new CustomFontRenderer(biggerTitle_, true, true);
     }
 }

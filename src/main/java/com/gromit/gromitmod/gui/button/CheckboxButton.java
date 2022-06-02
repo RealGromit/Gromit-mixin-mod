@@ -23,21 +23,21 @@ public class CheckboxButton extends AbstractBaseButton {
         mouseY /= guiScale;
         hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
         if (state) {
-            RenderUtils.drawLine(xPosition, yPosition, width, 0, 2, 255, 255, 255, 255);
-            RenderUtils.drawLine(xPosition, yPosition + height, width, 0, 2, 255, 255, 255, 255);
-            RenderUtils.drawLine(xPosition, yPosition, 0, height, 2, 255, 255, 255, 255);
-            RenderUtils.drawLine(xPosition + width, yPosition, 0, height, 2, 255, 255, 255, 255);
-            RenderUtils.drawLine(xPosition, yPosition, width, height, 2, 255, 255, 255, alpha);
-            RenderUtils.drawLine(xPosition, yPosition + height, width, -height, 2, 255, 255, 255, alpha);
+            RenderUtils.drawLine(xPosition, yPosition, width, 0, 2, true, 255, 255, 255, 255);
+            RenderUtils.drawLine(xPosition, yPosition + height, width, 0, 2, true, 255, 255, 255, 255);
+            RenderUtils.drawLine(xPosition, yPosition, 0, height, 2, true, 255, 255, 255, 255);
+            RenderUtils.drawLine(xPosition + width, yPosition, 0, height, 2, true, 255, 255, 255, 255);
+            RenderUtils.drawLine(xPosition, yPosition, width, height, 2, true, 255, 255, 255, alpha);
+            RenderUtils.drawLine(xPosition, yPosition + height, width, -height, 2, true, 255, 255, 255, alpha);
             if (alpha != 255) alpha += 5;
         } else {
-            RenderUtils.drawLine(xPosition, yPosition, width, 0, 2, 255, 255, 255, 255);
-            RenderUtils.drawLine(xPosition, yPosition + height, width, 0, 2, 255, 255, 255, 255);
-            RenderUtils.drawLine(xPosition, yPosition, 0, height, 2, 255, 255, 255, 255);
-            RenderUtils.drawLine(xPosition + width, yPosition, 0, height, 2, 255, 255, 255, 255);
+            RenderUtils.drawLine(xPosition, yPosition, width, 0, 2, true, 255, 255, 255, 255);
+            RenderUtils.drawLine(xPosition, yPosition + height, width, 0, 2, true, 255, 255, 255, 255);
+            RenderUtils.drawLine(xPosition, yPosition, 0, height, 2, true, 255, 255, 255, 255);
+            RenderUtils.drawLine(xPosition + width, yPosition, 0, height, 2, true, 255, 255, 255, 255);
             if (alpha != 0) {
-                RenderUtils.drawLine(xPosition, yPosition, width, height, 2, 255, 255, 255, alpha);
-                RenderUtils.drawLine(xPosition, yPosition + height, width, -height, 2, 255, 255, 255, alpha);
+                RenderUtils.drawLine(xPosition, yPosition, width, height, 2, true, 255, 255, 255, alpha);
+                RenderUtils.drawLine(xPosition, yPosition + height, width, -height, 2, true, 255, 255, 255, alpha);
                 alpha -= 5;
             }
         }

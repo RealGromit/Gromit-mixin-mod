@@ -44,17 +44,17 @@ public class RenderUtils {
         GlStateManager.enableTexture2D();
     }
 
-    public static void drawLine(double x1, double y1, double x2, double y2, float lineWidth, int red, int green, int blue, int alpha) {
+    public static void drawLine(double x1, double y1, double x2, double y2, float lineWidth, boolean smoothLine, int red, int green, int blue, int alpha) {
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glLineWidth(lineWidth);
-        glEnable(GL_LINE_SMOOTH);
+        if (smoothLine) glEnable(GL_LINE_SMOOTH);
         worldRenderer.begin(GL_LINES, DefaultVertexFormats.POSITION_COLOR);
         worldRenderer.pos(x1, y1, 0).color(red, green, blue, alpha).endVertex();
         worldRenderer.pos(x1 + x2, y1 + y2, 0).color(red, green, blue, alpha).endVertex();
         tessellator.draw();
-        glDisable(GL_LINE_SMOOTH);
+        if (smoothLine) glDisable(GL_LINE_SMOOTH);
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
     }

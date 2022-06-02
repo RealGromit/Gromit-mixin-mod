@@ -1,5 +1,6 @@
 package com.gromit.gromitmod.module.other;
 
+import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.annotation.Module;
 import com.gromit.gromitmod.gui.button.CheckboxButton;
 import com.gromit.gromitmod.gui.slider.SmoothSlider;
@@ -29,11 +30,12 @@ import java.util.List;
 public class DebugBlock extends AbstractModule {
 
     private static DebugBlock instance;
+    private static final GromitMod gromitMod = GromitMod.getInstance();
     private transient RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
     private transient Minecraft minecraft = Minecraft.getMinecraft();
 
-    public final SmoothSlider timeoutSlider = new SmoothSlider(200, 84, 2, "", 1, 85, 100);
-    public final CheckboxButton stateCheckbox = new CheckboxButton(104, 4, 4,
+    public final SmoothSlider timeoutSlider = new SmoothSlider(gromitMod.getNewButtonId(), 84, 2, "", 1, 85, 100);
+    public final CheckboxButton stateCheckbox = new CheckboxButton(gromitMod.getNewButtonId(), 4, 4,
             button -> register(),
             button -> unregister());
 

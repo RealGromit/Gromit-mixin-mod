@@ -29,12 +29,12 @@ public class TextButton extends AbstractBaseButton {
     public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
         if (hovered) {
             if (state) {
-                onDisable.accept(this);
                 state = false;
+                onDisable.accept(this);
             }
             else {
-                onEnable.accept(this);
                 state = true;
+                onEnable.accept(this);
             } return true;
         } return false;
     }

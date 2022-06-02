@@ -1,5 +1,6 @@
 package com.gromit.gromitmod.module.crumbs;
 
+import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.annotation.Module;
 import com.gromit.gromitmod.gui.button.CheckboxButton;
 import com.gromit.gromitmod.gui.button.ColorButton;
@@ -36,15 +37,16 @@ import java.util.List;
 public class Patchcrumbs extends AbstractModule {
 
     private static Patchcrumbs instance;
+    private static final GromitMod gromitMod = GromitMod.getInstance();
     private transient Minecraft minecraft = Minecraft.getMinecraft();
     private transient RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
     private transient ChunkMapper chunkMapper = ChunkMapper.getInstance();
 
-    public final ColorButton boxColorButton = new ColorButton(14, 4, 4, 0, 0, 40, 40);
-    public final ColorButton outlineColorButton = new ColorButton(15, 4, 4, 0, 0, 40, 40);
-    public final ColorButton lineColorButton = new ColorButton(16, 4, 4, 0, 0, 40, 40);
-    public final Slider timeoutSlider = new Slider(17, 95, 2, 1, 20, 100);
-    public final CheckboxButton stateCheckbox = new CheckboxButton(18, 4, 4,
+    public final ColorButton boxColorButton = new ColorButton(gromitMod.getNewButtonId(), 4, 4, 0, 0, 40, 40);
+    public final ColorButton outlineColorButton = new ColorButton(gromitMod.getNewButtonId(), 4, 4, 0, 0, 40, 40);
+    public final ColorButton lineColorButton = new ColorButton(gromitMod.getNewButtonId(), 4, 4, 0, 0, 40, 40);
+    public final Slider timeoutSlider = new Slider(gromitMod.getNewButtonId(), 95, 2, 1, 20, 100);
+    public final CheckboxButton stateCheckbox = new CheckboxButton(gromitMod.getNewButtonId(), 4, 4,
             button -> register(),
             button -> unregister());
 

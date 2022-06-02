@@ -1,5 +1,6 @@
 package com.gromit.gromitmod.module.crumbs;
 
+import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.annotation.Module;
 import com.gromit.gromitmod.event.network.InboundPacket;
 import com.gromit.gromitmod.gui.button.CheckboxButton;
@@ -24,15 +25,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ExplosionBox extends AbstractModule {
 
     private static ExplosionBox instance;
+    private static final GromitMod gromitMod = GromitMod.getInstance();
     private transient RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
     private transient Set<AxisAlignedBBTime> boxSet = ConcurrentHashMap.newKeySet();
     private transient Minecraft minecraft = Minecraft.getMinecraft();
 
-    public final ColorButton boxColorButton = new ColorButton(9, 4, 4, 0, 0, 60, 60);
-    public final ColorButton outlineColorButton = new ColorButton(10, 4, 4, 0, 0, 60, 60);
-    public final Slider timeoutSlider = new Slider(11, 95, 2, 1, 20, 100);
-    public final CheckboxButton boxPrecision = new CheckboxButton(12, 4, 4);
-    public final CheckboxButton stateCheckbox = new CheckboxButton(13, 4, 4,
+    public final ColorButton boxColorButton = new ColorButton(gromitMod.getNewButtonId(), 4, 4, 0, 0, 60, 60);
+    public final ColorButton outlineColorButton = new ColorButton(gromitMod.getNewButtonId(), 4, 4, 0, 0, 60, 60);
+    public final Slider timeoutSlider = new Slider(gromitMod.getNewButtonId(), 95, 2, 1, 20, 100);
+    public final CheckboxButton boxPrecision = new CheckboxButton(gromitMod.getNewButtonId(), 4, 4);
+    public final CheckboxButton stateCheckbox = new CheckboxButton(gromitMod.getNewButtonId(), 4, 4,
             button -> register(),
             button -> unregister());
 

@@ -45,21 +45,21 @@ public class ColorButton extends AbstractBaseButton {
         hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
 
         RenderUtils.drawRectangle(xPosition, yPosition, width, height, red, green, blue, alpha);
-        RenderUtils.drawLine(xPosition, yPosition, width, 0, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(xPosition, yPosition + height, width, 0, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(xPosition, yPosition, 0, height, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(xPosition + width, yPosition, 0, height, 2, 255, 255, 255, 255);
+        RenderUtils.drawLine(xPosition, yPosition, width, 0, 2, true, 255, 255, 255, 255);
+        RenderUtils.drawLine(xPosition, yPosition + height, width, 0, 2, true, 255, 255, 255, 255);
+        RenderUtils.drawLine(xPosition, yPosition, 0, height, 2, true, 255, 255, 255, 255);
+        RenderUtils.drawLine(xPosition + width, yPosition, 0, height, 2, true, 255, 255, 255, 255);
         if (!state) return;
         saturationHovered = mouseX >= boxX && mouseY >= boxY && mouseX <= boxX + sectionX - 1.4 && mouseY <= boxY + sectionY - 1.4;
         hueHovered = mouseX >= boxX + sectionX && mouseY >= boxY && mouseX < boxX + sectionX + deltaSectionX - 1 && mouseY < boxY + sectionY - 1;
         alphaHovered = mouseX >= boxX && mouseY >= boxY + sectionY && mouseX < boxX + boxWidth - 1 && mouseY < boxY + sectionY + deltaSectionY - 1;
         mouseDragged(minecraft, mouseX, mouseY);
-        RenderUtils.drawLine(boxX, boxY, boxWidth, 0, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(boxX, boxY + boxHeight, boxWidth, 0, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(boxX, boxY, 0, boxHeight, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(boxX + boxWidth, boxY, 0, boxHeight, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(boxX + sectionX, boxY, 0, sectionY, 2, 255, 255, 255, 255);
-        RenderUtils.drawLine(boxX, boxY + sectionY, boxWidth, 0, 2, 255, 255, 255, 255);
+        RenderUtils.drawLine(boxX, boxY, boxWidth, 0, 2, true, 255, 255, 255, 255);
+        RenderUtils.drawLine(boxX, boxY + boxHeight, boxWidth, 0, 2, true, 255, 255, 255, 255);
+        RenderUtils.drawLine(boxX, boxY, 0, boxHeight, 2, true, 255, 255, 255, 255);
+        RenderUtils.drawLine(boxX + boxWidth, boxY, 0, boxHeight, 2, true, 255, 255, 255, 255);
+        RenderUtils.drawLine(boxX + sectionX, boxY, 0, sectionY, 2, true, 255, 255, 255, 255);
+        RenderUtils.drawLine(boxX, boxY + sectionY, boxWidth, 0, 2, true, 255, 255, 255, 255);
 
         float hsbSection = sectionY / 7f;
         RenderUtils.drawShadingRectangle(boxX + 0.3, boxY + 0.3, sectionX - 0.6, sectionY - 0.6, satRed, satGreen, satBlue, 255);

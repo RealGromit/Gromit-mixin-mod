@@ -1,5 +1,6 @@
 package com.gromit.gromitmod.module.other;
 
+import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.annotation.Module;
 import com.gromit.gromitmod.gui.button.CheckboxButton;
 import com.gromit.gromitmod.gui.slider.SmoothSlider;
@@ -21,10 +22,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class AutoTick extends AbstractModule {
 
     private static AutoTick instance;
+    private static final GromitMod gromitMod = GromitMod.getInstance();
     private transient Minecraft minecraft = Minecraft.getMinecraft();
 
-    public final SmoothSlider tickSlider = new SmoothSlider(100, 95, 2, "", 1, 4, 100);
-    public final CheckboxButton stateCheckbox = new CheckboxButton(103, 4, 4,
+    public final SmoothSlider tickSlider = new SmoothSlider(gromitMod.getNewButtonId(), 95, 2, "", 1, 4, 100);
+    public final CheckboxButton stateCheckbox = new CheckboxButton(gromitMod.getNewButtonId(), 4, 4,
             button -> register(),
             button -> unregister());
 

@@ -1,5 +1,7 @@
 package com.gromit.gromitmod.gui.button;
 
+import com.gromit.gromitmod.GromitMod;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.GuiButton;
 
@@ -7,6 +9,8 @@ import java.util.function.Consumer;
 
 public abstract class AbstractBaseButton extends GuiButton {
 
+    protected static final GromitMod gromitMod = GromitMod.getInstance();
+    protected static final Minecraft minecraft = gromitMod.getMinecraft();
     protected transient double guiScale;
     protected boolean state;
     protected transient Consumer<AbstractBaseButton> onEnable;
