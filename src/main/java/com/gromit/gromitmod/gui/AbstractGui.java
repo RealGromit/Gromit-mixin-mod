@@ -71,14 +71,27 @@ public abstract class AbstractGui extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-        if (mouseButton != 0) return;
-
         for (GromitButton button : buttonList) {
             if (!button.isHovering()) continue;
-            for (ButtonListener buttonListener : button.getButtonListeners()) {
-                if (buttonListener instanceof ClickListener) ((ClickListener) buttonListener).onClick(button);
+            if (mouseButton == 0) {
+                button.setState(!button.isState());
+                for (ButtonListener buttonListener : button.getButtonListeners()) {
+                    if (buttonListener instanceof ClickListener) ((ClickListener) buttonListener).onClick(button);
+                    if (button.isState() && buttonListener instanceof ClickEnableListener) ((ClickEnableListener) buttonListener).onClickEnable(button);
+                    else if (!button.isState() && buttonListener instanceof ClickDisableListener) ((ClickDisableListener) buttonListener).onClickDisable(button);
+                }
+                selectedButton = button;
             }
-            selectedButton = button;
+            else if (mouseButton == 1) {
+                for (ButtonListener buttonListener : button.getButtonListeners()) {
+                    if (buttonListener instanceof RightClickListener) ((RightClickListener) buttonListener).onRightClick(button);
+                }
+            }
+            else if (mouseButton == 2) {
+                for (ButtonListener buttonListener : button.getButtonListeners()) {
+                    if (buttonListener instanceof MiddleClickListener) ((MiddleClickListener) buttonListener).onMiddleClick(button);
+                }
+            }
             break;
         }
     }

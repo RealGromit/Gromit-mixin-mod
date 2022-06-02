@@ -21,6 +21,7 @@ public class GromitButton {
     @Getter protected int height;
     @Getter protected String buttonText;
     @Getter @Setter protected boolean hovering;
+    @Getter @Setter protected boolean state;
     @Getter protected int color;
     @Getter protected CustomFontRenderer fontRenderer;
 
