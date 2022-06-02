@@ -2,7 +2,7 @@ package com.gromit.gromitmod.gui.module;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.MainGui;
-import com.gromit.gromitmod.handler.Saver;
+import com.gromit.gromitmod.utils.GlobalSaver;
 import com.gromit.gromitmod.utils.RenderUtils;
 
 public class FpsModuleGui extends MainGui {
@@ -17,7 +17,7 @@ public class FpsModuleGui extends MainGui {
     public void initGui() {
         super.initGui();
 
-        Saver.setFpsModuleGui(this);
+        GlobalSaver.setFpsModuleGui(this);
         fps.setState(true);
         crumbs.setState(false);
         fun.setState(false);

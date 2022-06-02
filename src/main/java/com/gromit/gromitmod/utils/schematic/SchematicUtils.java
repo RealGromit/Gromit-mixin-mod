@@ -16,8 +16,8 @@ import java.util.List;
 public class SchematicUtils implements Savable {
 
     private static SchematicUtils instance;
-    private SchematicLoadGui schematicLoadGui;
-    public final File schematicFolder = new File("./schematics/");
+    private transient SchematicLoadGui schematicLoadGui;
+    public transient final File schematicFolder = new File("./schematics/");
     private transient final GromitMod gromitMod = GromitMod.getInstance();
     private final HashMap<String, List<PlayerData>> recordMap = new HashMap<>();
 

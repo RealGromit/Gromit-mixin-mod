@@ -1,7 +1,9 @@
 package com.gromit.gromitmod.gui;
 
 import com.gromit.gromitmod.GromitMod;
-import com.gromit.gromitmod.gui.button.AbstractButton;
+import com.gromit.gromitmod.gui.button.GromitButton;
+import com.gromit.gromitmod.gui.button.listener.*;
+import com.gromit.gromitmod.utils.GlobalSaver;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -14,6 +16,7 @@ import org.lwjgl.input.Mouse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractGui extends GuiScreen {
 
@@ -23,9 +26,9 @@ public abstract class AbstractGui extends GuiScreen {
 
     private int eventButton;
     private long lastMouseEvent;
-    private AbstractButton selectedButton;
+    private GromitButton selectedButton;
 
-    private final List<AbstractButton> buttonList = new ArrayList<>();
+    protected final List<GromitButton> buttonList = new ArrayList<>();
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -33,25 +36,48 @@ public abstract class AbstractGui extends GuiScreen {
 
         mouseX /= guiScale;
         mouseY /= guiScale;
-        for (AbstractButton button : buttonList) {
-            button.setHovering(mouseX >= button.getX() && mouseY >= button.getY() && mouseX < button.getX() + button.getWidth() && mouseY < button.getY() + button.getHeight());
+        for (GromitButton button : buttonList) {
+            if (!button.isHovering() && isMouseOver(button, mouseX, mouseY)) {
+                button.setHovering(true);
+                for (ButtonListener buttonListener : button.getButtonListeners()) {
+                    if (buttonListener instanceof StartHoverListener) ((StartHoverListener) buttonListener).onStartHover(button);
+                }
+            }
+            else if (button.isHovering() && !isMouseOver(button, mouseX, mouseY)) {
+                button.setHovering(false);
+                for (ButtonListener buttonListener : button.getButtonListeners()) {
+                    if (buttonListener instanceof EndHoverListener) ((EndHoverListener) buttonListener).onEndHover(button);
+                }
+            }
+            if (button.isHovering()) {
+                for (ButtonListener buttonListener : button.getButtonListeners()) {
+                    if (buttonListener instanceof HoverListener) ((HoverListener) buttonListener).onHover(button);
+                }
+            }
             break;
         }
     }
 
     @Override
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        super.keyTyped(typedChar, keyCode);
+    protected void keyTyped(char typedChar, int keyCode) {
+        if (keyCode == 1) {
+            GlobalSaver.setLastAbstractGuiScreen(this);
+            mc.displayGuiScreen(null);
+            if (mc.currentScreen == null) {
+                mc.setIngameFocus();
+            }
+        }
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (mouseButton != 0) return;
 
-        for (AbstractButton button : buttonList) {
-            if (button.isHovering()) button.buttonClicked(this);
+        for (GromitButton button : buttonList) {
+            if (!button.isHovering()) continue;
+            for (ButtonListener buttonListener : button.getButtonListeners()) {
+                if (buttonListener instanceof ClickListener) ((ClickListener) buttonListener).onClick(button);
+            }
             selectedButton = button;
             break;
         }
@@ -60,14 +86,11 @@ public abstract class AbstractGui extends GuiScreen {
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
         if (selectedButton != null && state == 0) {
-            selectedButton.buttonReleased(this);
+            for (ButtonListener buttonListener : selectedButton.getButtonListeners()) {
+                if (buttonListener instanceof ReleaseListener) ((ReleaseListener) buttonListener).onRelease(selectedButton);
+            }
             selectedButton = null;
         }
-    }
-
-    @Override
-    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
-        super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
     }
 
     @Override
@@ -87,7 +110,7 @@ public abstract class AbstractGui extends GuiScreen {
     }
 
     @Override
-    public void handleMouseInput() throws IOException {
+    public void handleMouseInput() {
         int i = (int) (Mouse.getEventX() * width / mc.displayWidth / guiScale);
         int j = (int) ((height - Mouse.getEventY() * height / mc.displayHeight - 1) / guiScale);
         int k = Mouse.getEventButton();
@@ -112,6 +135,10 @@ public abstract class AbstractGui extends GuiScreen {
     @Override
     public void onResize(Minecraft minecraft, int width, int height) {
         super.onResize(minecraft, width, height);
+    }
+
+    protected boolean isMouseOver(GromitButton gromitButton, int mouseX, int mouseY) {
+        return mouseX >= gromitButton.getX() && mouseY >= gromitButton.getY() && mouseX < gromitButton.getX() + gromitButton.getWidth() && mouseY < gromitButton.getY() + gromitButton.getHeight();
     }
 
     @Override
@@ -169,17 +196,17 @@ public abstract class AbstractGui extends GuiScreen {
     public void confirmClicked(boolean result, int id) {}
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
+    protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {}
+
+    @Override
+    public int hashCode() {return Objects.hashCode(buttonList);}
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (!(obj instanceof AbstractGui)) return false;
+        return buttonList.equals(((AbstractGui) obj).buttonList) && getClass().getSimpleName().equals(obj.getClass().getSimpleName());
     }
 
     @Override
-    public String toString() {
-        return super.toString();
-    }
+    public String toString() {return getClass().getSimpleName();}
 }

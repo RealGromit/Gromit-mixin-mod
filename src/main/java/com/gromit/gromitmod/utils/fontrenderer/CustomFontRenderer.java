@@ -89,7 +89,7 @@ public class CustomFontRenderer extends CFont {
                 underline = false,
                 render = true;
         x *= 4;
-        y = (y - 3) * 4;
+        y = (y - 0.8) * 4;
         GL11.glPushMatrix();
         GlStateManager.scale(0.25, 0.25, 0.25);
         GlStateManager.enableBlend();

@@ -6,7 +6,7 @@ import com.gromit.gromitmod.gui.module.CrumbsModuleGui;
 import com.gromit.gromitmod.gui.module.FpsModuleGui;
 import com.gromit.gromitmod.gui.module.OtherModuleGui;
 import com.gromit.gromitmod.gui.module.RenderModuleGui;
-import com.gromit.gromitmod.handler.Saver;
+import com.gromit.gromitmod.utils.GlobalSaver;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
 import net.minecraft.util.ResourceLocation;
@@ -24,25 +24,25 @@ public class MainGui extends ScalableGui {
 
     protected static final TextButton render = new TextButton(GromitMod.getInstance().getNewButtonId(), 4, "Mods",
             (button) -> {
-                if (Saver.getRenderModuleGui() != null) minecraft.displayGuiScreen(Saver.getRenderModuleGui());
+                if (GlobalSaver.getRenderModuleGui() != null) minecraft.displayGuiScreen(GlobalSaver.getRenderModuleGui());
                 else minecraft.displayGuiScreen(RenderModuleGui.getInstance());
             }, (button) -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
     protected static final TextButton fps = new TextButton(GromitMod.getInstance().getNewButtonId(), 4, "Fps",
             (button) -> {
-                if (Saver.getFpsModuleGui() != null) minecraft.displayGuiScreen(Saver.getFpsModuleGui());
+                if (GlobalSaver.getFpsModuleGui() != null) minecraft.displayGuiScreen(GlobalSaver.getFpsModuleGui());
                 else minecraft.displayGuiScreen(FpsModuleGui.getInstance());
             }, (button) -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
     protected static final TextButton crumbs = new TextButton(GromitMod.getInstance().getNewButtonId(), 4, "Crumbs",
             (button) -> {
-                if (Saver.getCrumbsModuleGui() != null) minecraft.displayGuiScreen(Saver.getCrumbsModuleGui());
+                if (GlobalSaver.getCrumbsModuleGui() != null) minecraft.displayGuiScreen(GlobalSaver.getCrumbsModuleGui());
                 else minecraft.displayGuiScreen(CrumbsModuleGui.getInstance());
             }, (button) -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
     protected static final TextButton fun = new TextButton(GromitMod.getInstance().getNewButtonId(), 4, "Other",
             (button) -> {
-                if (Saver.getOtherModuleGui() != null) minecraft.displayGuiScreen(Saver.getOtherModuleGui());
+                if (GlobalSaver.getOtherModuleGui() != null) minecraft.displayGuiScreen(GlobalSaver.getOtherModuleGui());
                 else minecraft.displayGuiScreen(OtherModuleGui.getInstance());
             }, (button) -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
@@ -96,7 +96,7 @@ public class MainGui extends ScalableGui {
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
         if (keyCode == 1) {
-            Saver.setLastScreen(this);
+            GlobalSaver.setLastScreen(this);
             this.mc.displayGuiScreen(null);
             if (this.mc.currentScreen == null) {
                 this.mc.setIngameFocus();

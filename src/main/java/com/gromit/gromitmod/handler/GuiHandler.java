@@ -3,6 +3,7 @@ package com.gromit.gromitmod.handler;
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.MainGui;
 import com.gromit.gromitmod.gui.SettingsGui;
+import com.gromit.gromitmod.gui.TestGui;
 import com.gromit.gromitmod.gui.module.CrumbsModuleGui;
 import com.gromit.gromitmod.gui.module.FpsModuleGui;
 import com.gromit.gromitmod.gui.module.OtherModuleGui;
@@ -27,5 +28,6 @@ public class GuiHandler {
         new DebugBlockGui(gromitMod);
         new PatchcrumbsGui(gromitMod);
         new SchematicLoadGui();
+        new TestGui();
     }
 }

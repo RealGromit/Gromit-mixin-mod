@@ -2,7 +2,6 @@ package com.gromit.gromitmod.gui;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.button.KeybindButton;
-import com.gromit.gromitmod.handler.Saver;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import net.minecraft.client.gui.GuiButton;
 import org.lwjgl.input.Keyboard;
@@ -55,7 +54,6 @@ public class SettingsGui extends MainGui {
             if (!keybindButton.isDetectingInput()) continue;
             String displayString = Keyboard.getKeyName(Keyboard.getEventKey());
             keybindButton.updateKeybind(displayString, (int) (FontUtil.normal.getStringWidth(displayString) / 2));
-            Saver.setOpenGuiButton(Keyboard.getEventKey());
         }
     }
 
@@ -72,7 +70,6 @@ public class SettingsGui extends MainGui {
             if (!keybindButton.isDetectingInput()) continue;
             String displayString = Mouse.getButtonName(Mouse.getEventButton());
             keybindButton.updateKeybind(displayString, (int) (FontUtil.normal.getStringWidth(displayString) / 2));
-            Saver.setOpenGuiButton(Mouse.getEventButton());
         }
     }
 

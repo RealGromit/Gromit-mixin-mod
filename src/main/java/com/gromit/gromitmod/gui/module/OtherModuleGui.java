@@ -6,7 +6,7 @@ import com.gromit.gromitmod.gui.button.CheckboxButton;
 import com.gromit.gromitmod.gui.button.TextButton;
 import com.gromit.gromitmod.gui.module.other.AutoTickGui;
 import com.gromit.gromitmod.gui.module.other.DebugBlockGui;
-import com.gromit.gromitmod.handler.Saver;
+import com.gromit.gromitmod.utils.GlobalSaver;
 import com.gromit.gromitmod.module.other.AutoTick;
 import com.gromit.gromitmod.module.other.DebugBlock;
 import com.gromit.gromitmod.utils.RenderUtils;
@@ -35,7 +35,7 @@ public class OtherModuleGui extends MainGui {
     public void initGui() {
         super.initGui();
 
-        Saver.setOtherModuleGui(this);
+        GlobalSaver.setOtherModuleGui(this);
         fun.setState(true);
         crumbs.setState(false);
         fps.setState(false);

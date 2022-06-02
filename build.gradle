@@ -84,6 +84,7 @@ dependencies {
         exclude module: 'asm-commons'
         exclude module: 'slf4j-api'
     }
+    compileOnly 'org.projectlombok:lombok:1.18.24'
 }
 
 mixin {

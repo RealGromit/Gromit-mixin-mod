@@ -6,7 +6,7 @@ import com.gromit.gromitmod.gui.button.CheckboxButton;
 import com.gromit.gromitmod.gui.button.TextButton;
 import com.gromit.gromitmod.gui.module.crumbs.ExplosionBoxGui;
 import com.gromit.gromitmod.gui.module.crumbs.PatchcrumbsGui;
-import com.gromit.gromitmod.handler.Saver;
+import com.gromit.gromitmod.utils.GlobalSaver;
 import com.gromit.gromitmod.module.crumbs.ExplosionBox;
 import com.gromit.gromitmod.module.crumbs.Patchcrumbs;
 import com.gromit.gromitmod.utils.RenderUtils;
@@ -35,7 +35,7 @@ public class CrumbsModuleGui extends MainGui {
     public void initGui() {
         super.initGui();
 
-        Saver.setCrumbsModuleGui(this);
+        GlobalSaver.setCrumbsModuleGui(this);
         explosionBox.updateButton(mainGuiPointX + 7, mainGuiPointY + 39, guiScale);
         patchcrumbs.updateButton(mainGuiPointX + 7, mainGuiPointY + 46, guiScale);
         explosionBoxStateButton.updateButton(mainGuiPointX + 49, mainGuiPointY + 39, guiScale);
