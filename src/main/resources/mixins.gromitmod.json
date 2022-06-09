@@ -8,6 +8,7 @@
   "mixins": [
     "EntityTntPrimedMixin",
     "ExplosionMixin",
+    "ForgeHooksClientMixin",
     "InputHandlerMixin"
   ]
 }

@@ -1,16 +1,16 @@
 package com.gromit.gromitmod.gui.module;
 
-import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.MainGui;
 import com.gromit.gromitmod.utils.GlobalSaver;
 import com.gromit.gromitmod.utils.RenderUtils;
+import lombok.Getter;
 
 public class FpsModuleGui extends MainGui {
 
-    private static FpsModuleGui instance;
+    @Getter private static FpsModuleGui instance;
 
-    public FpsModuleGui(GromitMod gromitMod) {
-        super(gromitMod);
+    public FpsModuleGui() {
+        super();
     }
 
     @Override
@@ -20,8 +20,8 @@ public class FpsModuleGui extends MainGui {
         GlobalSaver.setFpsModuleGui(this);
         fps.setState(true);
         crumbs.setState(false);
-        fun.setState(false);
-        render.setState(false);
+        other.setState(false);
+        mods.setState(false);
     }
 
     @Override
@@ -34,9 +34,5 @@ public class FpsModuleGui extends MainGui {
     @Override
     protected void setInstance() {
         instance = this;
-    }
-
-    public static FpsModuleGui getInstance() {
-        return instance;
     }
 }

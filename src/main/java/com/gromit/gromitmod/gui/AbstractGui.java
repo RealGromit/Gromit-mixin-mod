@@ -1,9 +1,9 @@
 package com.gromit.gromitmod.gui;
 
 import com.gromit.gromitmod.GromitMod;
-import com.gromit.gromitmod.gui.button.GromitButton;
-import com.gromit.gromitmod.gui.button.listener.*;
+import com.gromit.gromitmod.gui.button.AbstractButton;
 import com.gromit.gromitmod.utils.GlobalSaver;
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -14,54 +14,32 @@ import net.minecraft.util.IChatComponent;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public abstract class AbstractGui extends GuiScreen {
 
     protected static final GromitMod gromitMod = GromitMod.getInstance();
     protected static final Minecraft minecraft = gromitMod.getMinecraft();
     protected double guiScale;
+    protected int scroll;
 
     private int eventButton;
     private long lastMouseEvent;
-    private GromitButton selectedButton;
+    private AbstractButton selectedButton;
 
-    protected final List<GromitButton> buttonList = new ArrayList<>();
+    @Getter protected final CopyOnWriteArrayList<AbstractButton> buttonList = new CopyOnWriteArrayList<>();
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         GlStateManager.scale(guiScale, guiScale, guiScale);
-
-        mouseX /= guiScale;
-        mouseY /= guiScale;
-        for (GromitButton button : buttonList) {
-            if (!button.isHovering() && isMouseOver(button, mouseX, mouseY)) {
-                button.setHovering(true);
-                for (ButtonListener buttonListener : button.getButtonListeners()) {
-                    if (buttonListener instanceof StartHoverListener) ((StartHoverListener) buttonListener).onStartHover(button);
-                }
-            }
-            else if (button.isHovering() && !isMouseOver(button, mouseX, mouseY)) {
-                button.setHovering(false);
-                for (ButtonListener buttonListener : button.getButtonListeners()) {
-                    if (buttonListener instanceof EndHoverListener) ((EndHoverListener) buttonListener).onEndHover(button);
-                }
-            }
-            if (button.isHovering()) {
-                for (ButtonListener buttonListener : button.getButtonListeners()) {
-                    if (buttonListener instanceof HoverListener) ((HoverListener) buttonListener).onHover(button);
-                }
-            }
-            break;
-        }
     }
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
         if (keyCode == 1) {
-            GlobalSaver.setLastAbstractGuiScreen(this);
+            if (this instanceof MainGui) GlobalSaver.setLastAbstractGuiScreen(this);
             mc.displayGuiScreen(null);
             if (mc.currentScreen == null) {
                 mc.setIngameFocus();
@@ -71,37 +49,18 @@ public abstract class AbstractGui extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
-        for (GromitButton button : buttonList) {
-            if (!button.isHovering()) continue;
-            if (mouseButton == 0) {
-                button.setState(!button.isState());
-                for (ButtonListener buttonListener : button.getButtonListeners()) {
-                    if (buttonListener instanceof ClickListener) ((ClickListener) buttonListener).onClick(button);
-                    if (button.isState() && buttonListener instanceof ClickEnableListener) ((ClickEnableListener) buttonListener).onClickEnable(button);
-                    else if (!button.isState() && buttonListener instanceof ClickDisableListener) ((ClickDisableListener) buttonListener).onClickDisable(button);
-                }
+        for (AbstractButton button : buttonList) {
+            if (!button.isEnabled()) continue;
+            if (button.mousePressed(mouseButton, mouseX, mouseY)) {
                 selectedButton = button;
             }
-            else if (mouseButton == 1) {
-                for (ButtonListener buttonListener : button.getButtonListeners()) {
-                    if (buttonListener instanceof RightClickListener) ((RightClickListener) buttonListener).onRightClick(button);
-                }
-            }
-            else if (mouseButton == 2) {
-                for (ButtonListener buttonListener : button.getButtonListeners()) {
-                    if (buttonListener instanceof MiddleClickListener) ((MiddleClickListener) buttonListener).onMiddleClick(button);
-                }
-            }
-            break;
         }
     }
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
         if (selectedButton != null && state == 0) {
-            for (ButtonListener buttonListener : selectedButton.getButtonListeners()) {
-                if (buttonListener instanceof ReleaseListener) ((ReleaseListener) buttonListener).onRelease(selectedButton);
-            }
+            if (selectedButton.isEnabled()) selectedButton.mouseReleased(mouseX, mouseY);
             selectedButton = null;
         }
     }
@@ -113,9 +72,7 @@ public abstract class AbstractGui extends GuiScreen {
 
     // setGuiSize(int width, int height) {}
     @Override
-    public void func_183500_a(int width, int height) {
-        super.func_183500_a(width, height);
-    }
+    public void func_183500_a(int width, int height) {}
 
     @Override
     public void handleInput() throws IOException {
@@ -138,6 +95,12 @@ public abstract class AbstractGui extends GuiScreen {
             long l = Minecraft.getSystemTime() - lastMouseEvent;
             mouseClickMove(i, j, eventButton, l);
         }
+        if (Mouse.getEventDWheel() != 0) {
+            scroll = Mouse.getEventDWheel() / 60;
+            for (AbstractButton button : buttonList) {
+                button.mouseScrolled(scroll);
+            }
+        }
     }
 
     @Override
@@ -147,11 +110,7 @@ public abstract class AbstractGui extends GuiScreen {
 
     @Override
     public void onResize(Minecraft minecraft, int width, int height) {
-        super.onResize(minecraft, width, height);
-    }
-
-    protected boolean isMouseOver(GromitButton gromitButton, int mouseX, int mouseY) {
-        return mouseX >= gromitButton.getX() && mouseY >= gromitButton.getY() && mouseX < gromitButton.getX() + gromitButton.getWidth() && mouseY < gromitButton.getY() + gromitButton.getHeight();
+        setWorldAndResolution(minecraft, width, height);
     }
 
     @Override
@@ -185,7 +144,10 @@ public abstract class AbstractGui extends GuiScreen {
     protected void actionPerformed(GuiButton button) {}
 
     @Override
-    public void initGui() {guiScale = width / 480.0;}
+    public void initGui() {
+        guiScale = width / 480.0;
+        buttonList.clear();
+    }
 
     @Override
     public void updateScreen() {}

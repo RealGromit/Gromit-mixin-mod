@@ -1,8 +1,9 @@
 package com.gromit.gromitmod.gui.button.listener;
 
-import com.gromit.gromitmod.gui.button.GromitButton;
+import com.gromit.gromitmod.gui.button.AbstractButton;
 
 public interface HoverListener extends ButtonListener {
 
-    void onHover(GromitButton gromitButton);
+    @Override
+    void onListen(AbstractButton abstractButton);
 }

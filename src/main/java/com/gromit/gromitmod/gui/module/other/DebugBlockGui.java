@@ -1,8 +1,7 @@
 package com.gromit.gromitmod.gui.module.other;
 
-import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.module.OtherModuleGui;
-import com.gromit.gromitmod.gui.slider.SmoothSlider;
+import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.module.other.DebugBlock;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 
@@ -11,21 +10,19 @@ import java.awt.Color;
 public class DebugBlockGui extends OtherModuleGui {
 
     private static DebugBlockGui instance;
-    private final SmoothSlider timeoutSlider = DebugBlock.getInstance().timeoutSlider;
+    private final Slider timeoutSlider = DebugBlock.getInstance().timeoutSlider;
 
-    public DebugBlockGui(GromitMod gromitMod) {
-        super(gromitMod);
+    public DebugBlockGui() {
+        super();
     }
 
     @Override
     public void initGui() {
         super.initGui();
 
-        timeoutSlider.updateSlider(mainGuiPointX + 68, mainGuiPointY + 80, guiScale);
         buttonList.add(timeoutSlider);
-
-        debugButton.setState(true);
-        autoTickButton.setState(false);
+        debug.setState(true);
+        autoTick.setState(false);
     }
 
     @Override
@@ -37,13 +34,13 @@ public class DebugBlockGui extends OtherModuleGui {
         FontUtil.normal.drawString("Use Shovel To Select Block", mainGuiPointX + 68, mainGuiPointY + 57, Color.WHITE.getRGB());
         FontUtil.normal.drawString("Debugblock Timeout : ", mainGuiPointX + 68, mainGuiPointY + 75, Color.WHITE.getRGB());
 
-        timeoutSlider.drawButton(minecraft, mouseX, mouseY);
-        FontUtil.normal.drawString(timeoutSlider.displayString, mainGuiPointX + 122, mainGuiPointY + 75, Color.WHITE.getRGB());
+        timeoutSlider.drawButton(mouseX, mouseY);
+        FontUtil.normal.drawString(timeoutSlider.buttonName, mainGuiPointX + 122, mainGuiPointY + 75, Color.WHITE.getRGB());
     }
 
     @Override
     public void onGuiClosed() {
-        autoTickButton.setState(false);
+        autoTick.setState(false);
     }
 
     @Override

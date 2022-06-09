@@ -7,7 +7,8 @@ import com.github.lunatrius.schematica.client.renderer.RenderSchematic;
 import com.github.lunatrius.schematica.client.world.SchematicWorld;
 import com.github.lunatrius.schematica.handler.client.InputHandler;
 import com.github.lunatrius.schematica.proxy.ClientProxy;
-import com.gromit.gromitmod.gui.TestGui;
+import com.gromit.gromitmod.gui.schematica.SchematicLoadGui;
+import com.gromit.gromitmod.utils.schematic.SchematicUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
@@ -43,9 +44,8 @@ public abstract class InputHandlerMixin {
     public void onKeyInput(InputEvent event) {
         if (minecraft.currentScreen == null) {
             if (KEY_BINDING_LOAD.isPressed()) {
-                //SchematicUtils.getInstance().updateSchematics();
-                //minecraft.displayGuiScreen(SchematicLoadGui.getInstance());
-                minecraft.displayGuiScreen(TestGui.getInstance());
+                SchematicUtils.getInstance().updateSchematics();
+                minecraft.displayGuiScreen(SchematicLoadGui.getInstance());
             }
 
             if (KEY_BINDING_SAVE.isPressed()) {

@@ -3,27 +3,30 @@ package com.gromit.gromitmod.gui.button;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
-import net.minecraft.client.Minecraft;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.util.MathHelper;
 
 import java.awt.Color;
 
-public class ColorButton extends AbstractBaseButton {
+public class ColorButton extends AbstractButton<ColorButton> {
 
-    private int boxX, boxY;
-    private final int boxWidth, boxHeight, sectionX, sectionY, deltaSectionX, deltaSectionY;
-    private int red = 255, green, blue, alpha = 255, satRed = 255, satGreen, satBlue;
-    private boolean hueHovered = false;
-    private boolean saturationHovered = false;
-    private boolean alphaHovered = false;
-    private boolean hueDragging = false;
-    private boolean saturationDragging = false;
-    private boolean alphaDragging = false;
-    private float hue = 1, saturation = 1, brightness = 1;
-    private final CheckboxButton chroma = new CheckboxButton(11, 4, 4);
+    @Getter protected int boxX;
+    @Getter protected int boxY;
+    @Getter protected int boxWidth, boxHeight, sectionX, sectionY, deltaSectionX, deltaSectionY;
+    @Getter protected int red = 255, green, blue, alpha = 255, satRed = 255, satGreen, satBlue;
+    @Getter @Setter protected boolean hueHovered;
+    @Getter @Setter protected boolean saturationHovered;
+    @Getter @Setter protected boolean alphaHovered;
+    @Getter @Setter protected boolean hueDragging;
+    @Getter @Setter protected boolean saturationDragging;
+    @Getter @Setter protected boolean alphaDragging;
+    @Getter protected float hue = 1, saturation = 1, brightness = 1;
 
-    public ColorButton(int buttonId, int width, int height, int boxX, int boxY, int boxWidth, int boxHeight) {
-        super(buttonId, width, height, "");
+    @Getter private final CheckboxButton chroma;
+
+    public ColorButton(int x, int y, int boxX, int boxY, int boxWidth, int boxHeight) {
+        super(x, y);
         this.boxX = boxX;
         this.boxY = boxY;
         this.boxWidth = boxWidth;
@@ -32,28 +35,30 @@ public class ColorButton extends AbstractBaseButton {
         sectionY = (int) (boxHeight * 0.8);
         deltaSectionX = boxWidth - sectionX;
         deltaSectionY = boxHeight - sectionY;
-        ColorUtils.colorButtons.add(this);
+        chroma = new CheckboxButton((int) (boxX + FontUtil.normal.getStringWidth("Chroma rgb") / 2) + 3, boxY + boxHeight + 3)
+                .setWidth(4)
+                .setHeight(4);
     }
 
     @Override
-    public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-        int ogMouseX = mouseX;
-        int ogMouseY = mouseY;
-        mouseX /= guiScale;
-        mouseY /= guiScale;
+    public void drawButton(int mouseX, int mouseY) {
+        if (!enabled) return;
+        super.drawButton(mouseX, mouseY);
 
-        hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
+        RenderUtils.drawRectangle(x, y, width, height, red, green, blue, alpha);
+        RenderUtils.drawLine(x, y, width, 0, 2, true, 255, 255, 255, 255);
+        RenderUtils.drawLine(x, y + height, width, 0, 2, true, 255, 255, 255, 255);
+        RenderUtils.drawLine(x, y, 0, height, 2, true, 255, 255, 255, 255);
+        RenderUtils.drawLine(x + width, y, 0, height, 2, true, 255, 255, 255, 255);
+        drawColorPicker(mouseX, mouseY);
+    }
 
-        RenderUtils.drawRectangle(xPosition, yPosition, width, height, red, green, blue, alpha);
-        RenderUtils.drawLine(xPosition, yPosition, width, 0, 2, true, 255, 255, 255, 255);
-        RenderUtils.drawLine(xPosition, yPosition + height, width, 0, 2, true, 255, 255, 255, 255);
-        RenderUtils.drawLine(xPosition, yPosition, 0, height, 2, true, 255, 255, 255, 255);
-        RenderUtils.drawLine(xPosition + width, yPosition, 0, height, 2, true, 255, 255, 255, 255);
+    private void drawColorPicker(int mouseX, int mouseY) {
         if (!state) return;
         saturationHovered = mouseX >= boxX && mouseY >= boxY && mouseX <= boxX + sectionX - 1.4 && mouseY <= boxY + sectionY - 1.4;
         hueHovered = mouseX >= boxX + sectionX && mouseY >= boxY && mouseX < boxX + sectionX + deltaSectionX - 1 && mouseY < boxY + sectionY - 1;
         alphaHovered = mouseX >= boxX && mouseY >= boxY + sectionY && mouseX < boxX + boxWidth - 1 && mouseY < boxY + sectionY + deltaSectionY - 1;
-        mouseDragged(minecraft, mouseX, mouseY);
+        if (chroma.isState()) updateRGB(Color.RGBtoHSB(ColorUtils.getRed(), ColorUtils.getGreen(), ColorUtils.getBlue(), null));
         RenderUtils.drawLine(boxX, boxY, boxWidth, 0, 2, true, 255, 255, 255, 255);
         RenderUtils.drawLine(boxX, boxY + boxHeight, boxWidth, 0, 2, true, 255, 255, 255, 255);
         RenderUtils.drawLine(boxX, boxY, 0, boxHeight, 2, true, 255, 255, 255, 255);
@@ -71,18 +76,14 @@ public class ColorButton extends AbstractBaseButton {
         RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + hsbSection * 5 - 0.5, deltaSectionX - 0.6, hsbSection - 0.1, 255, 0, 255, 255, 255, 20, 147, 255);
         RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3, boxY + 0.3 + hsbSection * 6 - 0.6, deltaSectionX - 0.6, hsbSection, 255, 20, 147, 255, 255, 0, 0, 255);
         RenderUtils.drawShadingRectangleHeightGradient(boxX + 0.3, boxY + sectionY + 0.3, boxWidth - 0.6, deltaSectionY - 0.6, 0, 0, 0, 0, red, green, blue, 255);
-        FontUtil.normal.drawString("Chroma rgb", boxX + 1, boxY + boxHeight + 6, Color.WHITE.getRGB());
-        chroma.drawButton(minecraft, ogMouseX, ogMouseY);
+        FontUtil.normal.drawString("Chroma rgb", boxX + 1, boxY + boxHeight + 3, Color.WHITE.getRGB());
+        chroma.drawButton(mouseX, mouseY);
     }
 
     @Override
-    public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= guiScale;
-        mouseY /= guiScale;
-        if (hovered) {
-            state = !state;
-            return true;
-        }
+    public boolean mousePressed(int mouseButton, int mouseX, int mouseY) {
+        super.mousePressed(mouseButton, mouseX, mouseY);
+
         if (hueHovered) {
             setHue(mouseY);
             hueDragging = true;
@@ -99,11 +100,14 @@ public class ColorButton extends AbstractBaseButton {
             setAlpha(mouseX);
             alphaDragging = true;
             return true;
-        } return false;
+        }
+        return false;
     }
 
     @Override
-    protected void mouseDragged(Minecraft minecraft, int mouseX, int mouseY) {
+    public void mouseDragged(int mouseX, int mouseY) {
+        super.mouseDragged(mouseX, mouseY);
+
         if (hueDragging && hueHovered) setHue(mouseY);
         if (saturationDragging && saturationHovered) setSaturation(mouseX, mouseY);
         if (alphaDragging && alphaHovered) setAlpha(mouseX);
@@ -111,17 +115,11 @@ public class ColorButton extends AbstractBaseButton {
 
     @Override
     public void mouseReleased(int mouseX, int mouseY) {
+        super.mouseReleased(mouseX, mouseY);
+
         hueDragging = false;
         saturationDragging = false;
         alphaDragging = false;
-    }
-
-    public void updateColorButton(int x, int y, int boxX, int boxY, double guiScale) {
-        this.guiScale = guiScale;
-        xPosition = x;
-        yPosition = y;
-        this.boxX = boxX;
-        this.boxY = boxY;
     }
 
     private void setHue(int mouseY) {
@@ -164,23 +162,13 @@ public class ColorButton extends AbstractBaseButton {
         satBlue = blue;
     }
 
-    public int getRed() {
-        return red;
+    public ColorButton setBoxWidth(int boxWidth) {
+        this.boxWidth = boxWidth;
+        return this;
     }
 
-    public int getGreen() {
-        return green;
-    }
-
-    public int getBlue() {
-        return blue;
-    }
-
-    public int getAlpha() {
-        return alpha;
-    }
-
-    public CheckboxButton getChroma() {
-        return chroma;
+    public ColorButton setBoxHeight(int boxHeight) {
+        this.boxHeight = boxHeight;
+        return this;
     }
 }

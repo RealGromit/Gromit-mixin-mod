@@ -1,12 +1,15 @@
 package com.gromit.gromitmod.module.other;
 
-import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.annotation.Module;
+import com.gromit.gromitmod.gui.MainGui;
 import com.gromit.gromitmod.gui.button.CheckboxButton;
-import com.gromit.gromitmod.gui.slider.SmoothSlider;
+import com.gromit.gromitmod.gui.button.listener.ClickDisableListener;
+import com.gromit.gromitmod.gui.button.listener.ClickEnableListener;
+import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.module.AbstractModule;
 import com.gromit.gromitmod.utils.ClientUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -29,16 +32,21 @@ import java.util.List;
 @Module(moduleName = "DebugBlockModule")
 public class DebugBlock extends AbstractModule {
 
-    private static DebugBlock instance;
-    private static final GromitMod gromitMod = GromitMod.getInstance();
+    @Getter private static DebugBlock instance;
     private transient RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
     private transient Minecraft minecraft = Minecraft.getMinecraft();
 
-    public final SmoothSlider timeoutSlider = new SmoothSlider(gromitMod.getNewButtonId(), 84, 2, "", 1, 85, 100);
-    public final CheckboxButton stateCheckbox = new CheckboxButton(gromitMod.getNewButtonId(), 4, 4,
-            button -> register(),
-            button -> unregister());
+    public final Slider timeoutSlider = new Slider(MainGui.mainGuiPointX + 68, MainGui.mainGuiPointY + 80)
+            .setWidth(84)
+            .setHeight(2)
+            .setSteps(1, 85)
+            .setIterations(100);
 
+    public final CheckboxButton stateCheckbox = new CheckboxButton(MainGui.mainGuiPointX + 49, MainGui.mainGuiPointY + 46)
+            .setWidth(4)
+            .setHeight(4)
+            .addButtonListener((ClickEnableListener) button -> register())
+            .addButtonListener((ClickDisableListener) button -> unregister());
 
     private boolean coordinatesSet = false;
     private int ticks = 0;
@@ -199,10 +207,14 @@ public class DebugBlock extends AbstractModule {
         tempsand = new ArrayList<>();
         temptnt = new ArrayList<>();
         messageList = new ArrayList<>();
-        stateCheckbox.updateLambda(button -> register(), button -> unregister());
-    }
-
-    public static DebugBlock getInstance() {
-        return instance;
+        timeoutSlider
+                .setWidth(84)
+                .setHeight(2)
+                .setSteps(1, 85)
+                .setIterations(100);
+        stateCheckbox.setWidth(4)
+                .setHeight(4)
+                .addButtonListener((ClickEnableListener) button -> register())
+                .addButtonListener((ClickDisableListener) button -> unregister());
     }
 }

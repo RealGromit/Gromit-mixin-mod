@@ -1,9 +1,11 @@
 package com.gromit.gromitmod.module.other;
 
-import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.annotation.Module;
+import com.gromit.gromitmod.gui.MainGui;
 import com.gromit.gromitmod.gui.button.CheckboxButton;
-import com.gromit.gromitmod.gui.slider.SmoothSlider;
+import com.gromit.gromitmod.gui.button.listener.ClickDisableListener;
+import com.gromit.gromitmod.gui.button.listener.ClickEnableListener;
+import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.module.AbstractModule;
 import net.minecraft.block.BlockRedstoneRepeater;
 import net.minecraft.block.state.IBlockState;
@@ -22,14 +24,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class AutoTick extends AbstractModule {
 
     private static AutoTick instance;
-    private static final GromitMod gromitMod = GromitMod.getInstance();
     private transient Minecraft minecraft = Minecraft.getMinecraft();
 
-    public final SmoothSlider tickSlider = new SmoothSlider(gromitMod.getNewButtonId(), 95, 2, "", 1, 4, 100);
-    public final CheckboxButton stateCheckbox = new CheckboxButton(gromitMod.getNewButtonId(), 4, 4,
-            button -> register(),
-            button -> unregister());
+    public final Slider tickSlider = new Slider(MainGui.mainGuiPointX + 68, MainGui.mainGuiPointY + 80)
+            .setWidth(95)
+            .setHeight(2)
+            .setSteps(1, 4)
+            .setIterations(100);
 
+    public final CheckboxButton stateCheckbox = new CheckboxButton(MainGui.mainGuiPointX + 49, MainGui.mainGuiPointY + 39)
+            .setWidth(4)
+            .setHeight(4)
+            .addButtonListener((ClickEnableListener) button -> register())
+            .addButtonListener((ClickDisableListener) button -> unregister());
 
     private IBlockState repeaterState;
     private BlockPos repeaterBlockPos;
@@ -85,7 +92,15 @@ public class AutoTick extends AbstractModule {
     public void updateAfterDeserialization() {
         instance = this;
         minecraft = Minecraft.getMinecraft();
-        stateCheckbox.updateLambda(button -> register(), button -> unregister());
+        tickSlider
+                .setWidth(95)
+                .setHeight(2)
+                .setSteps(1, 4)
+                .setIterations(100);
+        stateCheckbox.setWidth(4)
+                .setHeight(4)
+                .addButtonListener((ClickEnableListener) button -> register())
+                .addButtonListener((ClickDisableListener) button -> unregister());
     }
 
     public static AutoTick getInstance() {

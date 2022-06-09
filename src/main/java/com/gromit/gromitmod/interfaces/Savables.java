@@ -1,6 +1,6 @@
 package com.gromit.gromitmod.interfaces;
 
-public interface Savable {
+public interface Savables {
 
     void updateAfterDeserialization();
 }

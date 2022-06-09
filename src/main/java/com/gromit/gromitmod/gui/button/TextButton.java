@@ -1,41 +1,52 @@
 package com.gromit.gromitmod.gui.button;
 
+import com.gromit.gromitmod.gui.button.listener.EndHoverListener;
 import com.gromit.gromitmod.utils.ColorUtils;
+import com.gromit.gromitmod.utils.fontrenderer.CustomFontRenderer;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
-import net.minecraft.client.Minecraft;
+import lombok.Getter;
 
 import java.awt.Color;
-import java.util.function.Consumer;
 
-public class TextButton extends AbstractBaseButton {
+public class TextButton extends AbstractButton<TextButton> {
 
-    public TextButton(int buttonId, int height, String displayString, Consumer<AbstractBaseButton> onEnable, Consumer<AbstractBaseButton> onDisable) {
-        super(buttonId, (int) (FontUtil.normal.getStringWidth(displayString) / 2), height, displayString, onEnable, onDisable);
+    @Getter protected String buttonText;
+    @Getter protected int color = Color.WHITE.getRGB();
+    @Getter protected CustomFontRenderer fontRenderer;
+
+    public TextButton(CustomFontRenderer fontRenderer, int x, int y) {
+        super(x, y);
+        this.fontRenderer = fontRenderer;
+        if (fontRenderer.equals(FontUtil.normal)) height = 4;
+        else if (fontRenderer.equals(FontUtil.title)) height = 6;
+        addButtonListener((EndHoverListener) button -> ((TextButton) button).setColor(Color.WHITE.getRGB()));
     }
 
     @Override
-    public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= guiScale;
-        mouseY /= guiScale;
-        hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX < xPosition + width && mouseY < yPosition + height;
-        if (state) {
-            FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, ColorUtils.getRGB());
-        } else if (hovered) {
-            FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, ColorUtils.getRGB());
-        } else FontUtil.normal.drawString(displayString, xPosition + 0.5, yPosition + 2, Color.WHITE.getRGB());
+    public void drawButton(int mouseX, int mouseY) {
+        if (!enabled) return;
+        super.drawButton(mouseX, mouseY);
+
+        if (state) color = ColorUtils.getRGB();
+        else if (hovering) color = ColorUtils.getRGB();
+        fontRenderer.drawString(buttonText, x, y, color);
+    }
+
+    public TextButton setButtonText(String buttonText) {
+        this.buttonText = buttonText;
+        width = (int) (fontRenderer.getStringWidth(buttonText) / 2);
+        return this;
+    }
+
+    public TextButton setColor(int color) {
+        this.color = color;
+        return this;
     }
 
     @Override
-    public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
-        if (hovered) {
-            if (state) {
-                state = false;
-                onDisable.accept(this);
-            }
-            else {
-                state = true;
-                onEnable.accept(this);
-            } return true;
-        } return false;
+    public void setState(boolean state) {
+        super.setState(state);
+
+        if (!state) color = Color.WHITE.getRGB();
     }
 }

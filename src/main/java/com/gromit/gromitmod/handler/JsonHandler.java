@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.annotation.Module;
-import com.gromit.gromitmod.annotation.Persist;
-import com.gromit.gromitmod.interfaces.Savable;
+import com.gromit.gromitmod.annotation.Savable;
+import com.gromit.gromitmod.interfaces.Savables;
 import com.gromit.gromitmod.module.AbstractModule;
 import org.reflections.Reflections;
 
@@ -24,15 +24,15 @@ public class JsonHandler {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     private final HashSet<AbstractModule> modules = new HashSet<>();
-    private final HashSet<Savable> savables = new HashSet<>();
+    private final HashSet<Savables> savables = new HashSet<>();
     private final Set<Class<?>> moduleSet = reflections.getTypesAnnotatedWith(Module.class);
-    private final Set<Class<?>> persistSet = reflections.getTypesAnnotatedWith(Persist.class);
+    private final Set<Class<?>> savableSet = reflections.getTypesAnnotatedWith(Savable.class);
     private final String moduleFolder = gromitMod.getModuleFolder();
-    private final String persistFolder = gromitMod.getPersistFolder();
+    private final String savableFolder = gromitMod.getPersistFolder();
 
     public JsonHandler() {
         readModules();
-        readPersists();
+        readSavables();
     }
 
     private void readModules() {
@@ -43,9 +43,7 @@ public class JsonHandler {
                     moduleFile.createNewFile();
                     AbstractModule module = (AbstractModule) clazz.newInstance();
                     modules.add(module);
-                } catch (InstantiationException | IllegalAccessException | IOException e) {
-                    throw new RuntimeException(e);
-                }
+                } catch (InstantiationException | IllegalAccessException | IOException e) {throw new RuntimeException(e);}
             } else {
                 try {
                     FileReader fileReader = new FileReader(moduleFile);
@@ -54,34 +52,28 @@ public class JsonHandler {
                     if (module.isState()) module.register();
                     module.updateAfterDeserialization();
                     modules.add(module);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                } catch (IOException e) {throw new RuntimeException(e);}
             }
         }
     }
 
-    private void readPersists() {
-        for (Class<?> clazz : persistSet) {
-            File persistFile = new File(persistFolder, clazz.getAnnotation(Persist.class).persistName() + ".json");
-            if (!persistFile.exists()) {
+    private void readSavables() {
+        for (Class<?> clazz : savableSet) {
+            File savable = new File(savableFolder, clazz.getAnnotation(Savable.class).savableName() + ".json");
+            if (!savable.exists()) {
                 try {
-                    persistFile.createNewFile();
-                    Savable savable = (Savable) clazz.newInstance();
-                    savables.add(savable);
-                } catch (InstantiationException | IllegalAccessException | IOException e) {
-                    throw new RuntimeException(e);
-                }
+                    savable.createNewFile();
+                    Savables savables = (Savables) clazz.newInstance();
+                    this.savables.add(savables);
+                } catch (InstantiationException | IllegalAccessException | IOException e) {throw new RuntimeException(e);}
             } else {
                 try {
-                    FileReader fileReader = new FileReader(persistFile);
-                    Savable savable = (Savable) gson.fromJson(fileReader, clazz);
+                    FileReader fileReader = new FileReader(savable);
+                    Savables savables = (Savables) gson.fromJson(fileReader, clazz);
                     fileReader.close();
-                    savable.updateAfterDeserialization();
-                    savables.add(savable);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                    savables.updateAfterDeserialization();
+                    this.savables.add(savables);
+                } catch (IOException e) {throw new RuntimeException(e);}
             }
         }
     }
@@ -94,20 +86,16 @@ public class JsonHandler {
                 gson.toJson(module, fileWriter);
                 fileWriter.flush();
                 fileWriter.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            } catch (IOException e) {throw new RuntimeException(e);}
         }
-        for (Savable savable : savables) {
-            File persistFile = new File(persistFolder, savable.getClass().getAnnotation(Persist.class).persistName() + ".json");
+        for (Savables savables : this.savables) {
+            File savableFile = new File(savableFolder, savables.getClass().getAnnotation(Savable.class).savableName() + ".json");
             try {
-                FileWriter fileWriter = new FileWriter(persistFile);
-                gson.toJson(savable, fileWriter);
+                FileWriter fileWriter = new FileWriter(savableFile);
+                gson.toJson(savables, fileWriter);
                 fileWriter.flush();
                 fileWriter.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            } catch (IOException e) {throw new RuntimeException(e);}
         }
     }
 }

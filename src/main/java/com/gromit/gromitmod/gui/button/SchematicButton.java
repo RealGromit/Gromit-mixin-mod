@@ -2,12 +2,14 @@ package com.gromit.gromitmod.gui.button;
 
 import com.github.lunatrius.schematica.Schematica;
 import com.github.lunatrius.schematica.proxy.ClientProxy;
+import com.gromit.gromitmod.gui.button.listener.*;
 import com.gromit.gromitmod.gui.schematica.SchematicLoadGui;
 import com.gromit.gromitmod.utils.ColorUtils;
+import com.gromit.gromitmod.utils.fontrenderer.CustomFontRenderer;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import com.gromit.gromitmod.utils.schematic.PlayerData;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -19,68 +21,89 @@ import java.io.File;
 import java.util.List;
 import java.util.Objects;
 
-public class SchematicButton extends AbstractBaseButton {
+public class SchematicButton extends AbstractButton<SchematicButton> {
 
     private final SchematicLoadGui schematicLoadGui = SchematicLoadGui.getInstance();
-    public List<PlayerData> playerDataList;
-    private File file;
-    private final boolean directory;
+    @Setter @Getter private List<PlayerData> playerDataList;
+    @Setter @Getter private File file;
+    @Getter private final boolean directory;
     private int currentIndex;
 
-    private final TextButton recordButton = new TextButton(gromitMod.getNewButtonId(), 4, "Record",
-            button -> {},
-            button -> {});
+    @Getter protected String buttonText;
+    @Getter protected int color = Color.WHITE.getRGB();
+    @Getter protected CustomFontRenderer fontRenderer;
 
-    private final TextButton playButton = new TextButton(gromitMod.getNewButtonId(), 4, "Play",
-            button -> {},
-            button -> {});
+    @Getter private final TextButton recordButton = new TextButton(FontUtil.title, (int) (345 - FontUtil.normal.getStringWidth("Record") / 4), 60);
+    @Getter private final TextButton playButton = new TextButton(FontUtil.title, (int) (390 - FontUtil.normal.getStringWidth("Play") / 4), 60);
 
-    public SchematicButton(int buttonId, int height, String displayString, File file, boolean directory) {
-        super(buttonId, (int) (FontUtil.title.getStringWidth(displayString) / 2), height, displayString);
+    public SchematicButton(CustomFontRenderer fontRenderer, int x, int y, File file, boolean directory) {
+        super(x, y);
+        this.fontRenderer = fontRenderer;
+        if (fontRenderer.equals(FontUtil.normal)) height = 4;
+        else if (fontRenderer.equals(FontUtil.title)) height = 6;
         this.file = file;
         this.directory = directory;
-        recordButton.updateLambda(button -> {
-            MinecraftForge.EVENT_BUS.register(this);
-            playButton.setState(false);
-        },
-        button -> MinecraftForge.EVENT_BUS.unregister(this));
-
-        playButton.updateLambda(button -> {
-            MinecraftForge.EVENT_BUS.register(this);
-            recordButton.setState(false);
-        },
-        button -> MinecraftForge.EVENT_BUS.unregister(this));
+        recordButton
+                .setButtonText("Record")
+                .addButtonListener((StateEnableListener) button -> {
+                    playButton.setState(false);
+                    playerDataList.clear();
+                    MinecraftForge.EVENT_BUS.register(this);
+                })
+                .addButtonListener((StateDisableListener) button -> MinecraftForge.EVENT_BUS.unregister(this));
+        playButton
+                .setButtonText("Play")
+                .addButtonListener((StateEnableListener) button -> {
+                    recordButton.setState(false);
+                    MinecraftForge.EVENT_BUS.register(this);
+                })
+                .addButtonListener((StateDisableListener) button -> MinecraftForge.EVENT_BUS.unregister(this));
+        addButtonListener((ClickDisableListener) button -> {
+            Schematica.proxy.loadSchematic(minecraft.thePlayer, file.getParentFile(), file.getName());
+            if (ClientProxy.schematic != null) ClientProxy.moveSchematicToPlayer(ClientProxy.schematic);
+            minecraft.displayGuiScreen(null);
+        });
+        addButtonListener((EndHoverListener) button -> ((SchematicButton) button).setColor(Color.WHITE.getRGB()));
+        if (directory) {
+            addButtonListener((ClickListener) button -> {
+                schematicLoadGui.changeDirectory(((SchematicButton) button).getFile());
+                button.setState(false);
+            });
+        }
     }
 
     @Override
-    public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= guiScale;
-        mouseY /= guiScale;
-        hovered = mouseX >= xPosition && mouseY >= yPosition + schematicLoadGui.scroll && mouseX < xPosition + width && mouseY < yPosition + height + schematicLoadGui.scroll;
+    public void drawButton(int mouseX, int mouseY) {
+        if (!enabled) return;
+        super.drawButton(mouseX, mouseY);
+
         if (state) {
-            FontUtil.title.drawString(displayString, xPosition + 0.5, yPosition + 2 + schematicLoadGui.scroll, ColorUtils.getRGB());
-            drawAutoPrintMenu(minecraft, mouseX, mouseY);
+            color = ColorUtils.getRGB();
+            drawAutoPrintMenu(mouseX, mouseY);
         }
-        else if (hovered) {
-            FontUtil.title.drawString(displayString, xPosition + 0.5, yPosition + 2 + schematicLoadGui.scroll, ColorUtils.getRGB());
-        }
-        else FontUtil.title.drawString(displayString, xPosition + 0.5, yPosition + 2 + schematicLoadGui.scroll, Color.WHITE.getRGB());
+        else if (hovering) color = ColorUtils.getRGB();
+        fontRenderer.drawString(buttonText, x, y, color);
+    }
+
+    private void drawAutoPrintMenu(int mouseX, int mouseY) {
+        FontUtil.title.drawString("Packets recorded: " + playerDataList.size(), 367 - FontUtil.title.getStringWidth("Packets recorded: " + playerDataList.size()) / 4, 35, Color.WHITE.getRGB());
+        recordButton.drawButton(mouseX, mouseY);
+        playButton.drawButton(mouseX, mouseY);
     }
 
     @Override
-    public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
-        if (hovered) {
-            state = !state;
-            if (!state) {
-                Schematica.proxy.loadSchematic(minecraft.thePlayer, file.getParentFile(), file.getName());
-                if (ClientProxy.schematic != null) ClientProxy.moveSchematicToPlayer(ClientProxy.schematic);
-                minecraft.displayGuiScreen(null);
+    public boolean mousePressed(int mouseButton, int mouseX, int mouseY) {
+        super.mousePressed(mouseButton, mouseX, mouseY);
+
+        if (state && hovering) {
+            for (List<SchematicButton> schematicButtons : schematicLoadGui.getDirectoryMap().values()) {
+                for (SchematicButton schematicButton : schematicButtons) {
+                    if (!schematicButton.equals(this)) schematicButton.setState(false);
+                }
             }
-            if (directory && state) {
-                schematicLoadGui.changeDirectory(file);
-                state = false;
-            } return true;
-        } return false;
+            return true;
+        }
+        return false;
     }
 
     @SubscribeEvent
@@ -102,8 +125,8 @@ public class SchematicButton extends AbstractBaseButton {
     }
 
     @SubscribeEvent
-    public void livingUpdate(LivingEvent.LivingUpdateEvent event) {
-        if (!event.entityLiving.equals(minecraft.thePlayer)) return;
+    public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+        if (!event.entity.equals(minecraft.thePlayer)) return;
 
         if (recordButton.isState() && minecraft.currentScreen == null) {
             Entity player = event.entityLiving;
@@ -111,19 +134,22 @@ public class SchematicButton extends AbstractBaseButton {
         }
     }
 
-    private void drawAutoPrintMenu(Minecraft minecraft, int mouseX, int mouseY) {
-        FontUtil.normal.drawString("Packets recorded: " + playerDataList.size(), 367 - FontUtil.normal.getStringWidth("Packets recorded: " + playerDataList.size()) / 4, 35, Color.WHITE.getRGB());
-        mouseX *= guiScale;
-        mouseY *= guiScale;
-        recordButton.drawButton(minecraft, mouseX, mouseY);
-        playButton.drawButton(minecraft, mouseX, mouseY);
+    public SchematicButton setButtonText(String buttonText) {
+        this.buttonText = buttonText;
+        width = (int) (fontRenderer.getStringWidth(buttonText) / 2);
+        return this;
     }
 
-    public void updateButtonList(List<GuiButton> buttonList) {
-        buttonList.add(recordButton);
-        buttonList.add(playButton);
-        recordButton.updateButton((int) (345 - FontUtil.normal.getStringWidth("Record") / 4), 60, guiScale);
-        playButton.updateButton((int) (390 - FontUtil.normal.getStringWidth("Play") / 4), 60, guiScale);
+    public SchematicButton setColor(int color) {
+        this.color = color;
+        return this;
+    }
+
+    @Override
+    public void setState(boolean state) {
+        super.setState(state);
+
+        if (!state) color = Color.WHITE.getRGB();
     }
 
     @Override
@@ -134,32 +160,4 @@ public class SchematicButton extends AbstractBaseButton {
 
     @Override
     public int hashCode() {return Objects.hashCode(file.getAbsolutePath());}
-
-    public String getDisplayString() {
-        return displayString;
-    }
-
-    public void setDisplayString(String displayString) {
-        this.displayString = displayString;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    public boolean isDirectory() {
-        return directory;
-    }
-
-    public List<PlayerData> getPlayerData() {
-        return playerDataList;
-    }
-
-    public void setPlayerData(List<PlayerData> playerDataList) {
-        this.playerDataList = playerDataList;
-    }
 }

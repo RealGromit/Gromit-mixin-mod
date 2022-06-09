@@ -1,4 +1,8 @@
 package com.gromit.gromitmod.gui.button.listener;
 
-// Marker interface
-public interface ButtonListener {}
+import com.gromit.gromitmod.gui.button.AbstractButton;
+
+public interface ButtonListener {
+
+    void onListen(AbstractButton abstractButton);
+}

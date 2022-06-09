@@ -1,76 +1,78 @@
 package com.gromit.gromitmod.gui.slider;
 
+import com.gromit.gromitmod.gui.button.AbstractButton;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.client.gui.GuiButton;
 
 import java.awt.Color;
 
-public class Slider extends GuiButton {
+public class Slider extends AbstractButton<Slider> {
 
-    private final int minValue;
-    private final int steps;
+    private int minValue;
+    private int steps;
     private int currentProgress;
     public int currentValue;
-    private final int iterations;
-    private double guiScale;
+    private int iterations;
     private boolean dragging;
+    public String buttonName;
 
-    public Slider(int buttonId, int width, int height, int minValue, int maxValue, int iterations) {
-        super(buttonId, 0, 0, width, height, "");
-        this.minValue = minValue;
-        steps = width / (maxValue - minValue);
-        this.iterations = iterations;
+    public Slider(int x, int y) {
+        super(x, y);
     }
 
     @Override
-    public void drawButton(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= guiScale;
-        mouseY /= guiScale;
-        hovered = mouseX >= xPosition && mouseY >= yPosition && mouseX <= xPosition + width && mouseY < yPosition + height;
-        mouseDragged(minecraft, mouseX, mouseY);
-        RenderUtils.drawRoundedThinRectangle(xPosition, yPosition, width, height, iterations, Color.WHITE.getRGB());
-        RenderUtils.drawCircleFilled(xPosition + currentProgress, yPosition + height / 2.0, 2, 200, ColorUtils.getRGB());
+    public void drawButton(int mouseX, int mouseY) {
+        super.drawButton(mouseX, mouseY);
+
+        RenderUtils.drawRoundedThinRectangle(x, y, width, height, iterations, Color.WHITE.getRGB());
+        RenderUtils.drawCircleFilled(x + currentProgress, y + height / 2.0, 2, 200, ColorUtils.getRGB());
         currentValue = (currentProgress / steps) + minValue;
-        displayString = String.valueOf((currentProgress / steps) + minValue);
+        buttonName = String.valueOf((currentProgress / steps) + minValue);
     }
 
     @Override
-    public boolean mousePressed(Minecraft minecraft, int mouseX, int mouseY) {
-        mouseX /= guiScale;
-        if (hovered) {
-            currentProgress = Math.round((float) (mouseX - xPosition) / steps) * steps;
+    public boolean mousePressed(int mouseButton, int mouseX, int mouseY) {
+        super.mousePressed(mouseButton, mouseX, mouseY);
+
+        if (hovering) {
+            currentProgress = Math.round((float) (mouseX - x) / steps) * steps;
             dragging = true;
             return true;
-        } else return false;
+        }
+        return false;
     }
 
     @Override
-    protected void mouseDragged(Minecraft minecraft, int mouseX, int mouseY) {
-        if (dragging && mouseX >= xPosition && mouseX <= (xPosition + width)) {
-            int pos = mouseX - xPosition;
+    public void mouseDragged(int mouseX, int mouseY) {
+        super.mouseDragged(mouseX, mouseY);
+
+        if (dragging && mouseX >= x && mouseX <= (x + width)) {
+            int pos = mouseX - x;
             if (pos == 0) currentProgress = 0;
             if (pos % steps == 0) currentProgress = pos;
         }
     }
 
     @Override
-    public void mouseReleased(int mouseX, int mouseY) {dragging = false;}
+    public void mouseReleased(int mouseX, int mouseY) {
+        super.mouseReleased(mouseX, mouseY);
 
-    @Override
-    public void playPressSound(SoundHandler p_playPressSound_1_) {}
-
-    public void setGuiScale(double guiScale) {this.guiScale = guiScale;}
-
-    public void updateSlider(int x1, int y1, double guiScale) {
-        setGuiScale(guiScale);
-        xPosition = x1;
-        yPosition = y1;
+        dragging = false;
     }
 
-    public void setCurrentProgress(int i) {
-        this.currentProgress = i;
+    public Slider setSteps(int minValue, int maxValue) {
+        this.minValue = minValue;
+        steps = width / (maxValue - minValue);
+        return this;
+    }
+
+    public Slider setIterations(int iterations) {
+        this.iterations = iterations;
+        return this;
+    }
+
+    public Slider setCurrentProgress(int currentProgress) {
+        this.currentProgress = currentProgress;
+        return this;
     }
 }

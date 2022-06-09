@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Persist {
+public @interface Savable {
 
-    String persistName();
+    String savableName();
 }

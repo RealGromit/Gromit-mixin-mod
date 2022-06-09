@@ -34,7 +34,7 @@ public class InputHandler {
     public void onKeyInput(InputEvent event) {
         if (minecraft.currentScreen == null) {
             if (KEY_BINDING_GUI.isPressed()) {
-                if (GlobalSaver.getLastScreen() != null) minecraft.displayGuiScreen(GlobalSaver.getLastScreen());
+                if (GlobalSaver.getLastAbstractGuiScreen() != null) minecraft.displayGuiScreen(GlobalSaver.getLastAbstractGuiScreen());
                 else minecraft.displayGuiScreen(MainGui.getInstance());
             }
         }
