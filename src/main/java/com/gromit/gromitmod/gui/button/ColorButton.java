@@ -2,7 +2,7 @@ package com.gromit.gromitmod.gui.button;
 
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
-import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
+import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.util.MathHelper;
@@ -35,7 +35,7 @@ public class ColorButton extends AbstractButton<ColorButton> {
         sectionY = (int) (boxHeight * 0.8);
         deltaSectionX = boxWidth - sectionX;
         deltaSectionY = boxHeight - sectionY;
-        chroma = new ToggleButton((float) (boxX + FontUtil.normal.getStringWidth("Chroma rgb") / 2) + 3.5f, boxY + boxHeight + 3.8f);
+        chroma = new ToggleButton(boxX + FontManager.getNormalSize().getWidth("Chroma rgb") + 7, boxY + boxHeight + 3.8f);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ColorButton extends AbstractButton<ColorButton> {
         RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3f, boxY + 0.3f + hsbSection * 5 - 0.5f, deltaSectionX - 0.6f, hsbSection - 0.1f, 255, 0, 255, 255, 255, 20, 147, 255);
         RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3f, boxY + 0.3f + hsbSection * 6 - 0.6f, deltaSectionX - 0.6f, hsbSection, 255, 20, 147, 255, 255, 0, 0, 255);
         RenderUtils.drawShadingRectangleHeightGradient(boxX + 0.3f, boxY + sectionY + 0.3f, boxWidth - 0.6f, deltaSectionY - 0.6f, 0, 0, 0, 0, red, green, blue, 255);
-        FontUtil.normal.drawString("Chroma rgb", boxX + 1, boxY + boxHeight + 3, Color.WHITE.getRGB());
+        FontManager.getNormalSize().drawString("Chroma rgb", boxX + 1, boxY + boxHeight + 3, Color.WHITE.getRGB());
         chroma.drawButton(mouseX, mouseY);
     }
 

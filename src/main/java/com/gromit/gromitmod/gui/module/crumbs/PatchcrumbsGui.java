@@ -4,7 +4,7 @@ import com.gromit.gromitmod.gui.button.ColorButton;
 import com.gromit.gromitmod.gui.module.CrumbsModuleGui;
 import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.module.crumbs.Patchcrumbs;
-import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
+import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 
 import java.awt.Color;
@@ -39,17 +39,17 @@ public class PatchcrumbsGui extends CrumbsModuleGui {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        FontUtil.title.drawString("Patchcrumbs", mainGuiPointX + 68, mainGuiPointY + 39, Color.WHITE.getRGB());
-        FontUtil.normal.drawString("Box color", mainGuiPointX + 68, mainGuiPointY + 50, Color.WHITE.getRGB());
-        FontUtil.normal.drawString("Outline color", mainGuiPointX + 68, mainGuiPointY + 57, Color.WHITE.getRGB());
-        FontUtil.normal.drawString("Line color", mainGuiPointX + 68, mainGuiPointY + 64, Color.WHITE.getRGB());
-        FontUtil.normal.drawString("Box timeout in seconds:", mainGuiPointX + 68, mainGuiPointY + 75, Color.WHITE.getRGB());
+        FontManager.getTitleSize().drawString("Patchcrumbs", mainGuiPointX + 68, mainGuiPointY + 39, Color.WHITE.getRGB());
+        FontManager.getNormalSize().drawString("Box color", mainGuiPointX + 68, mainGuiPointY + 50, Color.WHITE.getRGB());
+        FontManager.getNormalSize().drawString("Outline color", mainGuiPointX + 68, mainGuiPointY + 57, Color.WHITE.getRGB());
+        FontManager.getNormalSize().drawString("Line color", mainGuiPointX + 68, mainGuiPointY + 64, Color.WHITE.getRGB());
+        FontManager.getNormalSize().drawString("Box timeout in seconds:", mainGuiPointX + 68, mainGuiPointY + 75, Color.WHITE.getRGB());
 
         boxColorButton.drawButton(mouseX, mouseY);
         outlineColorButton.drawButton(mouseX, mouseY);
         lineColorButton.drawButton(mouseX, mouseY);
         timeoutSlider.drawButton(mouseX, mouseY);
-        FontUtil.normal.drawString(timeoutSlider.buttonName, mainGuiPointX + 122, mainGuiPointY + 75, Color.WHITE.getRGB());
+        FontManager.getNormalSize().drawString(timeoutSlider.buttonName, mainGuiPointX + 122, mainGuiPointY + 75, Color.WHITE.getRGB());
     }
 
     @Override

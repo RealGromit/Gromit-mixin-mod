@@ -7,7 +7,7 @@ import com.gromit.gromitmod.gui.button.listener.ClickEnableListener;
 import com.gromit.gromitmod.gui.button.listener.ClickListener;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
-import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
+import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 
 import java.awt.*;
@@ -24,7 +24,7 @@ public class SchematicLoadGui extends AbstractGui {
     private File lastDirectory;
     private final File schematicFolder = new File(minecraft.mcDataDir.getPath() + "/schematics");
 
-    private final TextButton backButton = new TextButton(FontUtil.normal, 47, 33)
+    private final TextButton backButton = new TextButton(FontManager.getNormalSize(), 47, 33)
             .setButtonText("<- back")
             .addButtonListener((ClickEnableListener) button -> button.setState(false))
             .addButtonListener((ClickListener) button -> changeDirectory(lastDirectory.getParentFile()));
@@ -63,7 +63,7 @@ public class SchematicLoadGui extends AbstractGui {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        FontUtil.biggerTitle.drawString("Load Schematic", 240 - FontUtil.biggerTitle.getStringWidth("Load schematic") / 4, 10, Color.WHITE.getRGB());
+        FontManager.getBiggerTitleSize().drawString("Load Schematic", 240 - FontManager.getBiggerTitleSize().getWidth("Load schematic") / 2, 10, Color.WHITE.getRGB());
         RenderUtils.drawLine(30, 20, 420, 0, 4, false, 255, 255, 255, 255);
 
         RenderUtils.drawRectangle(45, 30, 240, 200, ColorUtils.RGBA2Integer(0, 0, 0, 60));

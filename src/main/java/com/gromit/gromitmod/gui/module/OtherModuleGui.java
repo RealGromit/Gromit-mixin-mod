@@ -11,19 +11,19 @@ import com.gromit.gromitmod.module.other.AutoTick;
 import com.gromit.gromitmod.module.other.DebugBlock;
 import com.gromit.gromitmod.utils.GlobalSaver;
 import com.gromit.gromitmod.utils.RenderUtils;
-import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
+import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 
 public class OtherModuleGui extends MainGui {
 
     @Getter private static OtherModuleGui instance;
 
-    protected static final TextButton autoTick = new TextButton(FontUtil.normal, mainGuiPointX + 7, mainGuiPointY + 39)
+    protected static final TextButton autoTick = new TextButton(FontManager.getNormalSize(), mainGuiPointX + 7, mainGuiPointY + 39)
             .setButtonText("Auto Tick")
             .addButtonListener((ClickEnableListener) button -> minecraft.displayGuiScreen(AutoTickGui.getInstance()))
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(OtherModuleGui.getInstance()));
 
-    protected static final TextButton debug = new TextButton(FontUtil.normal, mainGuiPointX + 7, mainGuiPointY + 46)
+    protected static final TextButton debug = new TextButton(FontManager.getNormalSize(), mainGuiPointX + 7, mainGuiPointY + 46)
             .setButtonText("Debug Block")
             .addButtonListener((ClickEnableListener) button -> minecraft.displayGuiScreen(DebugBlockGui.getInstance()))
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(OtherModuleGui.getInstance()));

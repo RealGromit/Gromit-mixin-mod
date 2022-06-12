@@ -11,19 +11,19 @@ import com.gromit.gromitmod.module.crumbs.ExplosionBox;
 import com.gromit.gromitmod.module.crumbs.Patchcrumbs;
 import com.gromit.gromitmod.utils.GlobalSaver;
 import com.gromit.gromitmod.utils.RenderUtils;
-import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
+import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 
 public class CrumbsModuleGui extends MainGui {
 
     @Getter private static CrumbsModuleGui instance;
 
-    protected static final TextButton explosionBox = new TextButton(FontUtil.normal, mainGuiPointX + 7, mainGuiPointY + 39)
+    protected static final TextButton explosionBox = new TextButton(FontManager.getNormalSize(), mainGuiPointX + 7, mainGuiPointY + 39)
             .setButtonText("Explosion Box")
             .addButtonListener((ClickEnableListener) button -> minecraft.displayGuiScreen(ExplosionBoxGui.getInstance()))
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(CrumbsModuleGui.getInstance()));
 
-    protected static final TextButton patchcrumbs = new TextButton(FontUtil.normal, mainGuiPointX + 7, mainGuiPointY + 46)
+    protected static final TextButton patchcrumbs = new TextButton(FontManager.getNormalSize(), mainGuiPointX + 7, mainGuiPointY + 46)
             .setButtonText("Patchcrumbs")
             .addButtonListener((ClickEnableListener) button -> minecraft.displayGuiScreen(PatchcrumbsGui.getInstance()))
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(CrumbsModuleGui.getInstance()));

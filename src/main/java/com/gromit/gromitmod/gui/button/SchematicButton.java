@@ -5,8 +5,8 @@ import com.github.lunatrius.schematica.proxy.ClientProxy;
 import com.gromit.gromitmod.gui.button.listener.*;
 import com.gromit.gromitmod.gui.schematica.SchematicLoadGui;
 import com.gromit.gromitmod.utils.ColorUtils;
-import com.gromit.gromitmod.utils.fontrenderer.CustomFontRenderer;
-import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
+import com.gromit.gromitmod.utils.fontrenderer.FontManager;
+import com.gromit.gromitmod.utils.fontrenderer.TTFFontRenderer;
 import com.gromit.gromitmod.utils.schematic.PlayerData;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,16 +31,16 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
 
     @Getter protected String buttonText;
     @Getter protected int color = Color.WHITE.getRGB();
-    @Getter protected CustomFontRenderer fontRenderer;
+    @Getter protected TTFFontRenderer fontRenderer;
 
-    @Getter private final TextButton recordButton = new TextButton(FontUtil.title, (int) (345 - FontUtil.normal.getStringWidth("Record") / 4), 60);
-    @Getter private final TextButton playButton = new TextButton(FontUtil.title, (int) (390 - FontUtil.normal.getStringWidth("Play") / 4), 60);
+    @Getter private final TextButton recordButton = new TextButton(FontManager.getTitleSize(), 345 - FontManager.getNormalSize().getWidth("Record") / 2, 60);
+    @Getter private final TextButton playButton = new TextButton(FontManager.getTitleSize(), 390 - FontManager.getNormalSize().getWidth("Play") / 2, 60);
 
-    public SchematicButton(CustomFontRenderer fontRenderer, int x, int y, File file, boolean directory) {
+    public SchematicButton(TTFFontRenderer fontRenderer, int x, int y, File file, boolean directory) {
         super(x, y);
         this.fontRenderer = fontRenderer;
-        if (fontRenderer.equals(FontUtil.normal)) height = 4;
-        else if (fontRenderer.equals(FontUtil.title)) height = 6;
+        if (fontRenderer.equals(FontManager.getNormalSize())) height = 4;
+        else if (fontRenderer.equals(FontManager.getTitleSize())) height = 6;
         this.file = file;
         this.directory = directory;
         recordButton
@@ -86,7 +86,7 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
     }
 
     private void drawAutoPrintMenu(float mouseX, float mouseY) {
-        FontUtil.title.drawString("Packets recorded: " + playerDataList.size(), 367 - FontUtil.title.getStringWidth("Packets recorded: " + playerDataList.size()) / 4, 35, Color.WHITE.getRGB());
+        FontManager.getTitleSize().drawString("Packets recorded: " + playerDataList.size(), 367 - FontManager.getTitleSize().getWidth("Packets recorded: " + playerDataList.size()) / 2, 35, Color.WHITE.getRGB());
         recordButton.drawButton(mouseX, mouseY);
         playButton.drawButton(mouseX, mouseY);
     }
@@ -136,7 +136,7 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
 
     public SchematicButton setButtonText(String buttonText) {
         this.buttonText = buttonText;
-        width = (int) (fontRenderer.getStringWidth(buttonText) / 2);
+        width = fontRenderer.getWidth(buttonText);
         return this;
     }
 

@@ -3,7 +3,7 @@ package com.gromit.gromitmod.gui.module.other;
 import com.gromit.gromitmod.gui.module.OtherModuleGui;
 import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.module.other.AutoTick;
-import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
+import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 
 import java.awt.Color;
 
@@ -29,11 +29,11 @@ public class AutoTickGui extends OtherModuleGui {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        FontUtil.title.drawString("Auto Tick Repeaters", mainGuiPointX + 68, mainGuiPointY + 39, Color.WHITE.getRGB());
-        FontUtil.normal.drawString("Automatically Tick Repeaters When You Rightclick Them", mainGuiPointX + 68, mainGuiPointY + 50, Color.WHITE.getRGB());
-        FontUtil.normal.drawString("Ticks On Repeater:", mainGuiPointX + 68, mainGuiPointY + 75, Color.WHITE.getRGB());
+        FontManager.getTitleSize().drawString("Auto Tick Repeaters", mainGuiPointX + 68, mainGuiPointY + 39, Color.WHITE.getRGB());
+        FontManager.getNormalSize().drawString("Automatically Tick Repeaters When You Rightclick Them", mainGuiPointX + 68, mainGuiPointY + 50, Color.WHITE.getRGB());
+        FontManager.getNormalSize().drawString("Ticks On Repeater:", mainGuiPointX + 68, mainGuiPointY + 75, Color.WHITE.getRGB());
         tickSlider.drawButton(mouseX, mouseY);
-        FontUtil.normal.drawString(tickSlider.buttonName, mainGuiPointX + 122, mainGuiPointY + 75, Color.WHITE.getRGB());
+        FontManager.getNormalSize().drawString(tickSlider.buttonName, mainGuiPointX + 122, mainGuiPointY + 75, Color.WHITE.getRGB());
     }
 
     @Override

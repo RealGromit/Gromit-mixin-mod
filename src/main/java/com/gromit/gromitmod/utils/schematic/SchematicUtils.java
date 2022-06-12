@@ -5,7 +5,7 @@ import com.gromit.gromitmod.annotation.Savable;
 import com.gromit.gromitmod.gui.button.SchematicButton;
 import com.gromit.gromitmod.gui.schematica.SchematicLoadGui;
 import com.gromit.gromitmod.interfaces.Savables;
-import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
+import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
@@ -57,16 +57,16 @@ public class SchematicUtils implements Savables {
                     }
                 }
                 if (!schematicExists) {
-                    if (isDirectory) directory.add(schematicButton = new SchematicButton(FontUtil.title, 47, 1, schematic, true)
+                    if (isDirectory) directory.add(schematicButton = new SchematicButton(FontManager.getTitleSize(), 47, 1, schematic, true)
                             .setButtonText("./" + StringUtils.substringBefore(schematic.getName(), ".schematic")));
-                    else directory.add(schematicButton = new SchematicButton(FontUtil.title, 47, 1, schematic, false)
+                    else directory.add(schematicButton = new SchematicButton(FontManager.getTitleSize(), 47, 1, schematic, false)
                             .setButtonText(StringUtils.substringBefore(schematic.getName(), ".schematic")));
                 }
             }
             else {
-                if (isDirectory) schematicButtons.add(schematicButton = new SchematicButton(FontUtil.title, 47, 1, schematic, true)
+                if (isDirectory) schematicButtons.add(schematicButton = new SchematicButton(FontManager.getTitleSize(), 47, 1, schematic, true)
                         .setButtonText("./" + StringUtils.substringBefore(schematic.getName(), ".schematic")));
-                else schematicButtons.add(schematicButton = new SchematicButton(FontUtil.title, 47, 1, schematic, false)
+                else schematicButtons.add(schematicButton = new SchematicButton(FontManager.getTitleSize(), 47, 1, schematic, false)
                         .setButtonText(StringUtils.substringBefore(schematic.getName(), ".schematic")));
             }
             if (isDirectory) iterateFolders(schematic);

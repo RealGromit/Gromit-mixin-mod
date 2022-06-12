@@ -7,7 +7,7 @@ import com.gromit.gromitmod.listener.ChunkMapper;
 import com.gromit.gromitmod.listener.ClientTickEvent;
 import com.gromit.gromitmod.listener.PlayerInteractEvent;
 import com.gromit.gromitmod.network.NetworkManager;
-import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
+import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.Mod;
@@ -28,7 +28,7 @@ public class GromitMod {
     public void onPostInit(FMLPostInitializationEvent event) {
         instance = this;
         createFolder();
-        FontUtil.bootstrap();
+        new FontManager();
         new ChunkMapper(minecraft);
         JsonHandler jsonHandler = new JsonHandler();
         new GuiHandler();

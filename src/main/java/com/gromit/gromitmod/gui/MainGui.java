@@ -10,7 +10,7 @@ import com.gromit.gromitmod.gui.module.OtherModuleGui;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.GlobalSaver;
 import com.gromit.gromitmod.utils.RenderUtils;
-import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
+import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 import net.minecraft.util.ResourceLocation;
 
@@ -24,7 +24,7 @@ public class MainGui extends AbstractGui {
     private static final ResourceLocation bounds = new ResourceLocation("astrix", "border.png");
     private static final ResourceLocation gromit = new ResourceLocation("astrix", "gromit.png");
 
-    protected static final TextButton mods = new TextButton(FontUtil.normal, mainGuiPointX + 65, mainGuiPointY + 16)
+    protected static final TextButton mods = new TextButton(FontManager.getNormalSize(), mainGuiPointX + 65, mainGuiPointY + 16)
             .setButtonText("Mods")
             .addButtonListener((ClickEnableListener) button -> {
                 if (GlobalSaver.getModsModuleGui() != null) minecraft.displayGuiScreen(GlobalSaver.getModsModuleGui());
@@ -32,7 +32,7 @@ public class MainGui extends AbstractGui {
             })
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
-    protected static final TextButton fps = new TextButton(FontUtil.normal, mainGuiPointX + 115, mainGuiPointY + 16)
+    protected static final TextButton fps = new TextButton(FontManager.getNormalSize(), mainGuiPointX + 115, mainGuiPointY + 16)
             .setButtonText("Fps")
             .addButtonListener((ClickEnableListener) button -> {
                 if (GlobalSaver.getFpsModuleGui() != null) minecraft.displayGuiScreen(GlobalSaver.getFpsModuleGui());
@@ -40,7 +40,7 @@ public class MainGui extends AbstractGui {
             })
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
-    protected static final TextButton crumbs = new TextButton(FontUtil.normal, mainGuiPointX + 160, mainGuiPointY + 16)
+    protected static final TextButton crumbs = new TextButton(FontManager.getNormalSize(), mainGuiPointX + 160, mainGuiPointY + 16)
             .setButtonText("Crumbs")
             .addButtonListener((ClickEnableListener) button -> {
                 if (GlobalSaver.getCrumbsModuleGui() != null) minecraft.displayGuiScreen(GlobalSaver.getCrumbsModuleGui());
@@ -48,7 +48,7 @@ public class MainGui extends AbstractGui {
             })
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
-    protected static final TextButton other = new TextButton(FontUtil.normal, (int) (mainGuiPointX + 230 - FontUtil.normal.getStringWidth("Other") / 2), mainGuiPointY + 16)
+    protected static final TextButton other = new TextButton(FontManager.getNormalSize(), (int) (mainGuiPointX + 230 - FontManager.getNormalSize().getWidth("Other")), mainGuiPointY + 16)
             .setButtonText("Other")
             .addButtonListener((ClickEnableListener) button -> {
                 if (GlobalSaver.getOtherModuleGui() != null) minecraft.displayGuiScreen(GlobalSaver.getOtherModuleGui());
