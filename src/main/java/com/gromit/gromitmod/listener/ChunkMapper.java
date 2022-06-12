@@ -15,13 +15,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ChunkMapper {
 
     private static ChunkMapper instance;
     private final Minecraft minecraft;
     private final Long2ObjectOpenHashMap<CannonDetector> chunkMap = new Long2ObjectOpenHashMap<>();
-    private final HashSet<Chunk> unScannedChunks = new HashSet<>();
+    private final Set<Chunk> unScannedChunks = ConcurrentHashMap.newKeySet();
     private final HashSet<Long> scannedChunks = new HashSet<>();
     private final HashSet<Long> cannonChunks = new HashSet<>();
     private final HashSet<Long> playerUnscannedChunks = new HashSet<>();

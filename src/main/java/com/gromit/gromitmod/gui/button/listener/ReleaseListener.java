@@ -4,5 +4,5 @@ import com.gromit.gromitmod.gui.button.AbstractButton;
 
 public interface ReleaseListener extends ButtonListener {
 
-    void onListen(AbstractButton abstractButton, int mouseX, int mouseY);
+    void onListen(AbstractButton abstractButton, float mouseX, float mouseY);
 }

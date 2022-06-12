@@ -1,8 +1,8 @@
 package com.gromit.gromitmod.gui.module;
 
 import com.gromit.gromitmod.gui.MainGui;
-import com.gromit.gromitmod.gui.button.CheckboxButton;
 import com.gromit.gromitmod.gui.button.TextButton;
+import com.gromit.gromitmod.gui.button.ToggleButton;
 import com.gromit.gromitmod.gui.button.listener.ClickDisableListener;
 import com.gromit.gromitmod.gui.button.listener.ClickEnableListener;
 import com.gromit.gromitmod.gui.module.other.AutoTickGui;
@@ -28,8 +28,8 @@ public class OtherModuleGui extends MainGui {
             .addButtonListener((ClickEnableListener) button -> minecraft.displayGuiScreen(DebugBlockGui.getInstance()))
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(OtherModuleGui.getInstance()));
 
-    private final CheckboxButton autoTickStateButton = AutoTick.getInstance().stateCheckbox;
-    private final CheckboxButton debugBlockStateButton = DebugBlock.getInstance().stateCheckbox;
+    private final ToggleButton autoTickStateButton = AutoTick.getInstance().stateCheckbox;
+    private final ToggleButton debugBlockStateButton = DebugBlock.getInstance().stateCheckbox;
 
     public OtherModuleGui() {
         super();

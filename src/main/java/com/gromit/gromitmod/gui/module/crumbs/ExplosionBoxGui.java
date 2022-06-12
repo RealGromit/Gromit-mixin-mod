@@ -1,7 +1,7 @@
 package com.gromit.gromitmod.gui.module.crumbs;
 
-import com.gromit.gromitmod.gui.button.CheckboxButton;
 import com.gromit.gromitmod.gui.button.ColorButton;
+import com.gromit.gromitmod.gui.button.ToggleButton;
 import com.gromit.gromitmod.gui.module.CrumbsModuleGui;
 import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.module.crumbs.ExplosionBox;
@@ -16,7 +16,7 @@ public class ExplosionBoxGui extends CrumbsModuleGui {
     private final ColorButton boxColorButton = ExplosionBox.getInstance().boxColorButton;
     private final ColorButton outlineColorButton = ExplosionBox.getInstance().outlineColorButton;
     private final Slider timeoutSlider = ExplosionBox.getInstance().timeoutSlider;
-    private final CheckboxButton boxPrecision = ExplosionBox.getInstance().boxPrecision;
+    private final ToggleButton boxPrecision = ExplosionBox.getInstance().boxPrecision;
 
     public ExplosionBoxGui() {
         super();

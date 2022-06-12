@@ -23,7 +23,7 @@ public class TextButton extends AbstractButton<TextButton> {
     }
 
     @Override
-    public void drawButton(int mouseX, int mouseY) {
+    public void drawButton(float mouseX, float mouseY) {
         if (!enabled) return;
         super.drawButton(mouseX, mouseY);
 

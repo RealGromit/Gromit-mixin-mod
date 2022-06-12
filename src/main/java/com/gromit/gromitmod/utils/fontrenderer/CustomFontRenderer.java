@@ -91,12 +91,11 @@ public class CustomFontRenderer extends CFont {
         x *= 4;
         y = (y - 1) * 4;
         GL11.glPushMatrix();
-        GlStateManager.scale(0.25, 0.25, 0.25);
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GlStateManager.color((float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f, alpha);
-        GlStateManager.enableTexture2D();
-        GlStateManager.bindTexture(this.tex.getGlTextureId());
+        GL11.glScalef(0.25f, 0.25f, 0.25f);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glColor4f((float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f, alpha);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.tex.getGlTextureId());
 
         for (int index = 0; index < text.length(); index++) {
@@ -117,7 +116,6 @@ public class CustomFontRenderer extends CFont {
                     randomCase = false;
                     underline = false;
                     strikethrough = false;
-                    GlStateManager.bindTexture(this.tex.getGlTextureId());
                     currentData = this.charData;
 
                     if (colorIndex < 0) {
@@ -129,7 +127,7 @@ public class CustomFontRenderer extends CFont {
                     }
 
                     int colorcode = this.colorCode[colorIndex];
-                    GlStateManager.color((float) (colorcode >> 16 & 255) / 255f, (float) (colorcode >> 8 & 255) / 255f, (float) (colorcode & 255) / 255f, alpha);
+                    GL11.glColor4f((float) (colorcode >> 16 & 255) / 255f, (float) (colorcode >> 8 & 255) / 255f, (float) (colorcode & 255) / 255f, alpha);
                 } else if (colorIndex == 16) {
                     randomCase = true;
                 } else if (colorIndex == 17) {
@@ -162,8 +160,7 @@ public class CustomFontRenderer extends CFont {
                     randomCase = false;
                     underline = false;
                     strikethrough = false;
-                    GlStateManager.color((float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f, alpha);
-                    GlStateManager.bindTexture(this.tex.getGlTextureId());
+                    GL11.glColor4f((float) (color >> 16 & 255) / 255f, (float) (color >> 8 & 255) / 255f, (float) (color & 255) / 255f, alpha);
                     currentData = this.charData;
                 }
 
@@ -186,6 +183,7 @@ public class CustomFontRenderer extends CFont {
         }
 
         GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_DONT_CARE);
+        GL11.glDisable(GL11.GL_BLEND);
         GL11.glPopMatrix();
         return (float) x / 2f;
     }

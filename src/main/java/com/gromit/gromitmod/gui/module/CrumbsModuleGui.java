@@ -1,8 +1,8 @@
 package com.gromit.gromitmod.gui.module;
 
 import com.gromit.gromitmod.gui.MainGui;
-import com.gromit.gromitmod.gui.button.CheckboxButton;
 import com.gromit.gromitmod.gui.button.TextButton;
+import com.gromit.gromitmod.gui.button.ToggleButton;
 import com.gromit.gromitmod.gui.button.listener.ClickDisableListener;
 import com.gromit.gromitmod.gui.button.listener.ClickEnableListener;
 import com.gromit.gromitmod.gui.module.crumbs.ExplosionBoxGui;
@@ -28,8 +28,8 @@ public class CrumbsModuleGui extends MainGui {
             .addButtonListener((ClickEnableListener) button -> minecraft.displayGuiScreen(PatchcrumbsGui.getInstance()))
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(CrumbsModuleGui.getInstance()));
 
-    private final CheckboxButton explosionBoxStateButton = ExplosionBox.getInstance().stateCheckbox;
-    private final CheckboxButton patchcrumbsStateButton = Patchcrumbs.getInstance().stateCheckbox;
+    private final ToggleButton explosionBoxStateButton = ExplosionBox.getInstance().stateCheckbox;
+    private final ToggleButton patchcrumbsStateButton = Patchcrumbs.getInstance().stateCheckbox;
 
     public CrumbsModuleGui() {
         super();

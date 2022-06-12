@@ -5,6 +5,7 @@ import com.gromit.gromitmod.gui.button.SchematicButton;
 import com.gromit.gromitmod.gui.button.TextButton;
 import com.gromit.gromitmod.gui.button.listener.ClickEnableListener;
 import com.gromit.gromitmod.gui.button.listener.ClickListener;
+import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
 import com.gromit.gromitmod.utils.fontrenderer.FontUtil;
 import lombok.Getter;
@@ -65,16 +66,16 @@ public class SchematicLoadGui extends AbstractGui {
         FontUtil.biggerTitle.drawString("Load Schematic", 240 - FontUtil.biggerTitle.getStringWidth("Load schematic") / 4, 10, Color.WHITE.getRGB());
         RenderUtils.drawLine(30, 20, 420, 0, 4, false, 255, 255, 255, 255);
 
-        RenderUtils.drawRectangle(45, 30, 240, 200, 0, 0, 0, 60);
-        RenderUtils.drawLine(45, 30.3, 240, 0, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawRectangle(45, 30, 240, 200, ColorUtils.RGBA2Integer(0, 0, 0, 60));
+        RenderUtils.drawLine(45, 30.3f, 240, 0, 3, false, 255, 255, 255, 255);
         RenderUtils.drawLine(45, 30, 0, 200, 3, false, 255, 255, 255, 255);
-        RenderUtils.drawLine(45, 229.7, 240, 0, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawLine(45, 229.7f, 240, 0, 3, false, 255, 255, 255, 255);
         RenderUtils.drawLine(285, 30, 0, 200, 3, false, 255, 255, 255, 255);
 
-        RenderUtils.drawRectangle(300, 30, 135, 150, 0, 0, 0, 60);
-        RenderUtils.drawLine(300, 30.3, 135, 0, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawRectangle(300, 30, 135, 150, ColorUtils.RGBA2Integer(0, 0, 0, 60));
+        RenderUtils.drawLine(300, 30.3f, 135, 0, 3, false, 255, 255, 255, 255);
         RenderUtils.drawLine(300, 30, 0, 150, 3, false, 255, 255, 255, 255);
-        RenderUtils.drawLine(300, 179.7, 135, 0, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawLine(300, 179.7f, 135, 0, 3, false, 255, 255, 255, 255);
         RenderUtils.drawLine(435, 30, 0, 150, 3, false, 255, 255, 255, 255);
 
         backButton.drawButton(mouseX, mouseY);

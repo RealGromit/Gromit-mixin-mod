@@ -2,9 +2,9 @@ package com.gromit.gromitmod.module.other;
 
 import com.gromit.gromitmod.annotation.Module;
 import com.gromit.gromitmod.gui.MainGui;
-import com.gromit.gromitmod.gui.button.CheckboxButton;
-import com.gromit.gromitmod.gui.button.listener.ClickDisableListener;
-import com.gromit.gromitmod.gui.button.listener.ClickEnableListener;
+import com.gromit.gromitmod.gui.button.ToggleButton;
+import com.gromit.gromitmod.gui.button.listener.StateDisableListener;
+import com.gromit.gromitmod.gui.button.listener.StateEnableListener;
 import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.module.AbstractModule;
 import com.gromit.gromitmod.utils.ClientUtils;
@@ -36,21 +36,18 @@ public class DebugBlock extends AbstractModule {
     private transient RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
     private transient Minecraft minecraft = Minecraft.getMinecraft();
 
-    public final Slider timeoutSlider = new Slider(MainGui.mainGuiPointX + 68, MainGui.mainGuiPointY + 80)
+    public final Slider timeoutSlider = new Slider(MainGui.mainGuiPointX + 68, MainGui.mainGuiPointY + 82, false)
             .setWidth(84)
             .setHeight(2)
-            .setSteps(1, 85)
-            .setIterations(100);
+            .setMinMax(1, 85);
 
-    public final CheckboxButton stateCheckbox = new CheckboxButton(MainGui.mainGuiPointX + 49, MainGui.mainGuiPointY + 46)
-            .setWidth(4)
-            .setHeight(4)
-            .addButtonListener((ClickEnableListener) button -> register())
-            .addButtonListener((ClickDisableListener) button -> unregister());
+    public final ToggleButton stateCheckbox = new ToggleButton(MainGui.mainGuiPointX + 48.5f, MainGui.mainGuiPointY + 46.8f)
+            .addButtonListener((StateEnableListener) button -> register())
+            .addButtonListener((StateDisableListener) button -> unregister());
 
     private boolean coordinatesSet = false;
     private int ticks = 0;
-    private int checkTime = timeoutSlider.currentValue;
+    private float checkTime = timeoutSlider.currentValue;
 
     private transient List<EntityFallingBlock> sandList = new ArrayList<>();
     private transient List<EntityTNTPrimed> tntList = new ArrayList<>();
@@ -207,14 +204,8 @@ public class DebugBlock extends AbstractModule {
         tempsand = new ArrayList<>();
         temptnt = new ArrayList<>();
         messageList = new ArrayList<>();
-        timeoutSlider
-                .setWidth(84)
-                .setHeight(2)
-                .setSteps(1, 85)
-                .setIterations(100);
-        stateCheckbox.setWidth(4)
-                .setHeight(4)
-                .addButtonListener((ClickEnableListener) button -> register())
-                .addButtonListener((ClickDisableListener) button -> unregister());
+        stateCheckbox
+                .addButtonListener((StateEnableListener) button -> register())
+                .addButtonListener((StateDisableListener) button -> unregister());
     }
 }

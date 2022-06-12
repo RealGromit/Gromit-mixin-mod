@@ -11,12 +11,12 @@ public abstract class AbstractButton<T> {
     protected static final GromitMod gromitMod = GromitMod.getInstance();
     protected static final Minecraft minecraft = gromitMod.getMinecraft();
 
-    @Getter @Setter protected int x;
-    @Getter @Setter protected int y;
-    @Getter protected int width;
-    @Getter protected int height;
+    @Getter @Setter protected float x;
+    @Getter @Setter protected float y;
+    @Getter protected float width;
+    @Getter protected float height;
     @Getter protected boolean state;
-    @Getter @Setter protected boolean hovering;
+    @Getter @Setter protected transient boolean hovering;
     @Getter protected boolean enabled = true;
 
     protected transient DrawListener drawListener;
@@ -34,12 +34,12 @@ public abstract class AbstractButton<T> {
     protected transient StateEnableListener stateEnableListener;
     protected transient StateDisableListener stateDisableListener;
 
-    public AbstractButton(int x, int y) {
+    public AbstractButton(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
-    public void drawButton(int mouseX, int mouseY) {
+    public void drawButton(float mouseX, float mouseY) {
         if (drawListener != null) drawListener.onListen(this);
 
         if (!hovering && isMouseOver(mouseX, mouseY)) {
@@ -54,17 +54,11 @@ public abstract class AbstractButton<T> {
         mouseDragged(mouseX, mouseY);
     }
 
-    public boolean mousePressed(int mouseButton, int mouseX, int mouseY) {
+    public boolean mousePressed(float mouseButton, float mouseX, float mouseY) {
         if (!hovering) return false;
         if (mouseButton == 0) {
-            if (state) {
-                state = false;
-                if (stateDisableListener != null) stateDisableListener.onListen(this);
-            }
-            else {
-                state = true;
-                if (stateEnableListener != null) stateEnableListener.onListen(this);
-            }
+            if (state) setState(false);
+            else setState(true);
             if (state && clickEnableListener != null) clickEnableListener.onListen(this);
             else if (!state && clickDisableListener != null) clickDisableListener.onListen(this);
             if (clickListener != null) clickListener.onListen(this);
@@ -81,24 +75,24 @@ public abstract class AbstractButton<T> {
         return false;
     }
 
-    public void mouseDragged(int mouseX, int mouseY) {
+    public void mouseDragged(float mouseX, float mouseY) {
         if (draggedListener != null) draggedListener.onListen(this, mouseX, mouseY);
     }
 
-    public void mouseReleased(int mouseX, int mouseY) {
+    public void mouseReleased(float mouseX, float mouseY) {
         if (releaseListener != null) releaseListener.onListen(this, mouseX, mouseY);
     }
 
-    public void mouseScrolled(int scroll) {
+    public void mouseScrolled(float scroll) {
         if (scrollListener != null) scrollListener.onListen(this, scroll);
     }
 
-    public T setWidth(int width) {
+    public T setWidth(float width) {
         this.width = width;
         return (T) this;
     }
 
-    public T setHeight(int height) {
+    public T setHeight(float height) {
         this.height = height;
         return (T) this;
     }
@@ -110,8 +104,8 @@ public abstract class AbstractButton<T> {
 
     public void setState(boolean state) {
         this.state = state;
-        if (state) if (stateEnableListener != null) stateEnableListener.onListen(this);
-        else if (stateDisableListener != null) stateDisableListener.onListen(this);
+        if (state && stateEnableListener != null) stateEnableListener.onListen(this);
+        else if (!state && stateDisableListener != null) stateDisableListener.onListen(this);
     }
 
     public T addButtonListener(ButtonListener buttonListener) {
@@ -132,7 +126,7 @@ public abstract class AbstractButton<T> {
         return (T) this;
     }
 
-    private boolean isMouseOver(int mouseX, int mouseY) {
+    protected boolean isMouseOver(float mouseX, float mouseY) {
         return mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
     }
 }

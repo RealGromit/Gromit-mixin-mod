@@ -23,7 +23,7 @@ public abstract class AbstractGui extends GuiScreen {
     protected static final GromitMod gromitMod = GromitMod.getInstance();
     protected static final Minecraft minecraft = gromitMod.getMinecraft();
     protected double guiScale;
-    protected int scroll;
+    protected float scroll;
 
     private int eventButton;
     private long lastMouseEvent;

@@ -32,4 +32,12 @@ public class ColorUtils {
     public static int getRGB() {
         return ((0xFF) << 24) | ((red & 0xFF) << 16) | ((green & 0xFF) << 8)  | ((blue & 0xFF));
     }
+
+    public static int RGBA2Integer(int red, int green, int blue, int alpha) {
+        return ((alpha & 0xFF) << 24) | ((red & 0xFF) << 16) | ((green & 0xFF) << 8) | ((blue & 0xFF));
+    }
+
+    public static int RGB2Integer(int red, int green, int blue) {
+        return ((0xFF) << 24) | ((red & 0xFF) << 16) | ((green & 0xFF) << 8) | ((blue & 0xFF));
+    }
 }

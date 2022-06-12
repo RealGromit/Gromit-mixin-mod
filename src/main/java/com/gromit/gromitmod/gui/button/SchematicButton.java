@@ -73,7 +73,7 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
     }
 
     @Override
-    public void drawButton(int mouseX, int mouseY) {
+    public void drawButton(float mouseX, float mouseY) {
         if (!enabled) return;
         super.drawButton(mouseX, mouseY);
 
@@ -85,14 +85,14 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
         fontRenderer.drawString(buttonText, x, y, color);
     }
 
-    private void drawAutoPrintMenu(int mouseX, int mouseY) {
+    private void drawAutoPrintMenu(float mouseX, float mouseY) {
         FontUtil.title.drawString("Packets recorded: " + playerDataList.size(), 367 - FontUtil.title.getStringWidth("Packets recorded: " + playerDataList.size()) / 4, 35, Color.WHITE.getRGB());
         recordButton.drawButton(mouseX, mouseY);
         playButton.drawButton(mouseX, mouseY);
     }
 
     @Override
-    public boolean mousePressed(int mouseButton, int mouseX, int mouseY) {
+    public boolean mousePressed(float mouseButton, float mouseX, float mouseY) {
         super.mousePressed(mouseButton, mouseX, mouseY);
 
         if (state && hovering) {
