@@ -1,5 +1,6 @@
 package com.gromit.gromitmod;
 
+import com.gromit.gromitmod.commands.CannonCalculateCommand;
 import com.gromit.gromitmod.handler.GuiHandler;
 import com.gromit.gromitmod.handler.InputHandler;
 import com.gromit.gromitmod.handler.JsonHandler;
@@ -10,6 +11,7 @@ import com.gromit.gromitmod.network.NetworkManager;
 import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 
@@ -36,6 +38,7 @@ public class GromitMod {
         new ClientTickEvent(this);
         new PlayerInteractEvent(minecraft);
         new InputHandler(minecraft);
+        ClientCommandHandler.instance.registerCommand(new CannonCalculateCommand());
         Runtime.getRuntime().addShutdownHook(new Thread(jsonHandler::writeModules));
     }
 

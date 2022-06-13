@@ -1,5 +1,7 @@
 package com.gromit.gromitmod.utils.primitivewrapper;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.Vec3i;
@@ -8,9 +10,9 @@ import java.util.Arrays;
 
 public class GromitPosDouble {
 
-    private double x;
-    private double y;
-    private double z;
+    @Getter @Setter private double x;
+    @Getter @Setter private double y;
+    @Getter @Setter private double z;
 
     public GromitPosDouble(double x, double y, double z) {
         this.x = x;
@@ -29,16 +31,6 @@ public class GromitPosDouble {
     public GromitPosDouble(Vec3i vec3i) {
         this(vec3i.getX(), vec3i.getY(), vec3i.getZ());
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof GromitPosDouble)) return false;
-        GromitPosDouble gromitPosDouble = (GromitPosDouble) obj;
-        return x == gromitPosDouble.x && y == gromitPosDouble.y && z == gromitPosDouble.z;
-    }
-
-    @Override
-    public int hashCode() {return Arrays.hashCode(new double[] {x, y, z});}
 
     public GromitPosDouble getAbove() {y++; return this;}
 
@@ -64,9 +56,13 @@ public class GromitPosDouble {
 
     public void setEast() {x++;}
 
-    public double getX() {return x;}
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof GromitPosDouble)) return false;
+        GromitPosDouble gromitPosDouble = (GromitPosDouble) obj;
+        return x == gromitPosDouble.x && y == gromitPosDouble.y && z == gromitPosDouble.z;
+    }
 
-    public double getY() {return y;}
-
-    public double getZ() {return z;}
+    @Override
+    public int hashCode() {return Arrays.hashCode(new double[] {x, y, z});}
 }

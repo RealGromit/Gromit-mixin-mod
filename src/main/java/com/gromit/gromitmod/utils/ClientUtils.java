@@ -5,7 +5,19 @@ import net.minecraft.util.ChatComponentText;
 
 public class ClientUtils {
 
-    public static void addClientMessage(Minecraft minecraft, String message) {
+    private static final Minecraft minecraft = Minecraft.getMinecraft();
+
+    public static void addClientMessage(String message) {
         minecraft.thePlayer.addChatMessage(new ChatComponentText("[GromitMod] " + message));
+    }
+
+    public static String getClientMessage(String message) {
+        return "[GromitMod] " + message;
+    }
+
+    public static double isNumeric(String str) {
+        try {
+            return Double.parseDouble(str);
+        } catch (NumberFormatException e) {return -1;}
     }
 }

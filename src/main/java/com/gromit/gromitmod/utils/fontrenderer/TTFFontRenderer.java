@@ -23,7 +23,6 @@ public class TTFFontRenderer {
     private final Font font;
     private boolean fractionalMetrics;
     private CharacterData[] regularData;
-    private final int[] colorCodes;
 
     public TTFFontRenderer(final ExecutorService executorService, final ConcurrentLinkedQueue<TextureData> textureQueue, final Font font) {
         this(executorService, textureQueue, font, 256);
@@ -42,7 +41,6 @@ public class TTFFontRenderer {
 
     public TTFFontRenderer(final ExecutorService executorService, final ConcurrentLinkedQueue<TextureData> textureQueue, final Font font, final int characterCount, final boolean antiAlias) {
         instance = this;
-        this.colorCodes = new int[32];
         this.font = font;
         this.fractionalMetrics = true;
         this.antiAlias = antiAlias;

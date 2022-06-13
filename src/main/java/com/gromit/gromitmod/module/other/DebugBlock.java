@@ -77,9 +77,9 @@ public class DebugBlock extends AbstractModule {
         if (!coordinatesSet) return;
 
         if (checkTime == timeoutSlider.currentValue && entityDetected) {
-            ClientUtils.addClientMessage(minecraft, "");
-            ClientUtils.addClientMessage(minecraft, "DEBUGBLOCK ENTITY DETECTED");
-            ClientUtils.addClientMessage(minecraft, "");
+            ClientUtils.addClientMessage("");
+            ClientUtils.addClientMessage("DEBUGBLOCK ENTITY DETECTED");
+            ClientUtils.addClientMessage("");
             checkTime = timeoutSlider.currentValue;
         }
 
@@ -134,14 +134,14 @@ public class DebugBlock extends AbstractModule {
 
         if (checkTime == 0 && messageList.size() != 0) {
 
-            ClientUtils.addClientMessage(minecraft, "");
-            ClientUtils.addClientMessage(minecraft, "=----DEBUGBLOCK----=");
-            ClientUtils.addClientMessage(minecraft, "TIMEOUT : " + timeoutSlider.currentValue);
+            ClientUtils.addClientMessage("");
+            ClientUtils.addClientMessage("=----DEBUGBLOCK----=");
+            ClientUtils.addClientMessage("TIMEOUT : " + timeoutSlider.currentValue);
             for (String message : messageList) {
-                ClientUtils.addClientMessage(minecraft, message);
+                ClientUtils.addClientMessage(message);
             }
-            ClientUtils.addClientMessage(minecraft, "=------------------=");
-            ClientUtils.addClientMessage(minecraft, "");
+            ClientUtils.addClientMessage("=------------------=");
+            ClientUtils.addClientMessage("");
 
             reset();
 
@@ -154,7 +154,7 @@ public class DebugBlock extends AbstractModule {
         if (event.world.isRemote) return;
         if (event.action != PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) return;
         if (minecraft.thePlayer.getCurrentEquippedItem().getItem() != Items.wooden_shovel) return;
-        if (entityDetected) { ClientUtils.addClientMessage(minecraft, "DebugBlock In Use, Try Again Later"); return; }
+        if (entityDetected) { ClientUtils.addClientMessage("DebugBlock In Use, Try Again Later"); return; }
 
         Block block = event.world.getBlockState(event.pos).getBlock();
         blockBoundingBox = block.getCollisionBoundingBox(event.world, event.pos, event.world.getBlockState(event.pos));
@@ -162,10 +162,10 @@ public class DebugBlock extends AbstractModule {
         coordinatesSet = true;
 
         BlockPos blockCoordinates = event.pos;
-        ClientUtils.addClientMessage(minecraft, "");
-        ClientUtils.addClientMessage(minecraft, "BLOCK: " + block.getRegistryName());
-        ClientUtils.addClientMessage(minecraft, "COORDINATES: " + blockCoordinates.getX() + ", " + blockCoordinates.getY() + ", " + blockCoordinates.getZ());
-        ClientUtils.addClientMessage(minecraft, "");
+        ClientUtils.addClientMessage("");
+        ClientUtils.addClientMessage("BLOCK: " + block.getRegistryName());
+        ClientUtils.addClientMessage("COORDINATES: " + blockCoordinates.getX() + ", " + blockCoordinates.getY() + ", " + blockCoordinates.getZ());
+        ClientUtils.addClientMessage("");
 
         reset();
     }
