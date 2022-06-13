@@ -21,17 +21,11 @@ import java.util.Map;
 public class ExplosionMixin {
 
     @Shadow @Final private float explosionSize;
-
     @Shadow @Final private World worldObj;
-
     @Shadow @Final private double explosionX;
-
     @Shadow @Final private double explosionY;
-
     @Shadow @Final private double explosionZ;
-
     @Shadow @Final private Entity exploder;
-
     @Shadow @Final private Map<EntityPlayer, Vec3> playerKnockbackMap;
 
     /**
