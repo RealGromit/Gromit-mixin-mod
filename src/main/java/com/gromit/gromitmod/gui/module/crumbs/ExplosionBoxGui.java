@@ -18,10 +18,6 @@ public class ExplosionBoxGui extends CrumbsModuleGui {
     private final Slider timeoutSlider = ExplosionBox.getInstance().timeoutSlider;
     private final ToggleButton boxPrecision = ExplosionBox.getInstance().boxPrecision;
 
-    public ExplosionBoxGui() {
-        super();
-    }
-
     @Override
     public void initGui() {
         super.initGui();

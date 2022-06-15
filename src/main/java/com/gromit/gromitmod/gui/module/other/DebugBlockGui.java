@@ -12,10 +12,6 @@ public class DebugBlockGui extends OtherModuleGui {
     private static DebugBlockGui instance;
     private final Slider timeoutSlider = DebugBlock.getInstance().timeoutSlider;
 
-    public DebugBlockGui() {
-        super();
-    }
-
     @Override
     public void initGui() {
         super.initGui();

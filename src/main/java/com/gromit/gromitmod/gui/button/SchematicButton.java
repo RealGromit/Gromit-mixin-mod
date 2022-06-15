@@ -1,40 +1,61 @@
 package com.gromit.gromitmod.gui.button;
 
 import com.github.lunatrius.schematica.Schematica;
+import com.github.lunatrius.schematica.client.world.SchematicWorld;
 import com.github.lunatrius.schematica.proxy.ClientProxy;
+import com.gromit.gromitmod.event.network.OutboundPacket;
 import com.gromit.gromitmod.gui.button.listener.*;
 import com.gromit.gromitmod.gui.schematica.SchematicLoadGui;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import com.gromit.gromitmod.utils.fontrenderer.TTFFontRenderer;
+import com.gromit.gromitmod.utils.primitivewrapper.GromitPosDouble;
 import com.gromit.gromitmod.utils.schematic.PlayerData;
 import lombok.Getter;
 import lombok.Setter;
-import net.minecraft.entity.Entity;
+import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.awt.Color;
 import java.io.File;
 import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class SchematicButton extends AbstractButton<SchematicButton> {
 
     private final SchematicLoadGui schematicLoadGui = SchematicLoadGui.getInstance();
-    @Setter @Getter private List<PlayerData> playerDataList;
+    public static SchematicButton currentSchematicButton;
+    @Setter @Getter private TreeMap<Integer, PlayerData> playerDataMap;
     @Setter @Getter private File file;
     @Getter private final boolean directory;
     private int currentIndex;
+    private SchematicWorld schematic;
+    private List<PlayerData> playerDataList;
+    private int tickCounter;
+    private GromitPosDouble recordPos;
+    private GromitPosDouble playPos;
+    private float oldYaw;
+    private float oldPitch;
+    private double oldX;
+    private double oldY;
+    private double oldZ;
+    private boolean firstPacket = true;
 
     @Getter protected String buttonText;
     @Getter protected int color = Color.WHITE.getRGB();
     @Getter protected TTFFontRenderer fontRenderer;
 
-    @Getter private final TextButton recordButton = new TextButton(FontManager.getTitleSize(), 345 - FontManager.getNormalSize().getWidth("Record") / 2, 60);
-    @Getter private final TextButton playButton = new TextButton(FontManager.getTitleSize(), 390 - FontManager.getNormalSize().getWidth("Play") / 2, 60);
+    @Getter private final TextButton recordButton = new TextButton(FontManager.getTitleSize(), 333.75f - FontManager.getTitleSize().getWidth("Record") / 2, 70);
+    @Getter private final TextButton clearButton = new TextButton(FontManager.getTitleSize(), 367.5f - FontManager.getTitleSize().getWidth("Clear") / 2, 70)
+            .setButtonText("Clear")
+            .addButtonListener((ClickListener) button -> playerDataMap.clear())
+            .addButtonListener((StateEnableListener) button -> button.setState(false));
+
+    @Getter private final TextButton playButton = new TextButton(FontManager.getTitleSize(), 401.25f - FontManager.getTitleSize().getWidth("Play") / 2, 70);
+    @Getter private final ToggleButton autoPlay = new ToggleButton(390 - 2.5f, 50.5f);
 
     public SchematicButton(TTFFontRenderer fontRenderer, int x, int y, File file, boolean directory) {
         super(x, y);
@@ -47,7 +68,11 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
                 .setButtonText("Record")
                 .addButtonListener((StateEnableListener) button -> {
                     playButton.setState(false);
-                    playerDataList.clear();
+                    playerDataMap.clear();
+                    schematic = ClientProxy.schematic;
+                    tickCounter = 0;
+                    firstPacket = true;
+                    recordPos = new GromitPosDouble(minecraft.thePlayer.posX, minecraft.thePlayer.posY, minecraft.thePlayer.posZ);
                     MinecraftForge.EVENT_BUS.register(this);
                 })
                 .addButtonListener((StateDisableListener) button -> MinecraftForge.EVENT_BUS.unregister(this));
@@ -55,6 +80,9 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
                 .setButtonText("Play")
                 .addButtonListener((StateEnableListener) button -> {
                     recordButton.setState(false);
+                    currentIndex = 0;
+                    playerDataList = new ArrayList<>(playerDataMap.values());
+                    playPos = new GromitPosDouble(minecraft.thePlayer.posX, minecraft.thePlayer.posY, minecraft.thePlayer.posZ);
                     MinecraftForge.EVENT_BUS.register(this);
                 })
                 .addButtonListener((StateDisableListener) button -> MinecraftForge.EVENT_BUS.unregister(this));
@@ -62,6 +90,7 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
             Schematica.proxy.loadSchematic(minecraft.thePlayer, file.getParentFile(), file.getName());
             if (ClientProxy.schematic != null) ClientProxy.moveSchematicToPlayer(ClientProxy.schematic);
             minecraft.displayGuiScreen(null);
+            currentSchematicButton = this;
         });
         addButtonListener((EndHoverListener) button -> ((SchematicButton) button).setColor(Color.WHITE.getRGB()));
         if (directory) {
@@ -86,8 +115,11 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
     }
 
     private void drawAutoPrintMenu(float mouseX, float mouseY) {
-        FontManager.getTitleSize().drawString("Packets recorded: " + playerDataList.size(), 367 - FontManager.getTitleSize().getWidth("Packets recorded: " + playerDataList.size()) / 2, 35, Color.WHITE.getRGB());
+        FontManager.getTitleSize().drawString("Schematic replay menu", 367.5f - 35, 35, Color.WHITE.getRGB());
+        FontManager.getNormalSize().drawString("Play on schematic load", 345 - 25, 50, Color.WHITE.getRGB());
+        autoPlay.drawButton(mouseX, mouseY);
         recordButton.drawButton(mouseX, mouseY);
+        clearButton.drawButton(mouseX, mouseY);
         playButton.drawButton(mouseX, mouseY);
     }
 
@@ -107,30 +139,105 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
     }
 
     @SubscribeEvent
+    public void onPlayerPacketSend(OutboundPacket event) {
+        if (!recordButton.isState() || minecraft.currentScreen != null) return;
+        if (firstPacket) {
+            oldYaw = minecraft.thePlayer.rotationYaw;
+            oldPitch = minecraft.thePlayer.rotationPitch;
+            oldX = -(recordPos.getX() - minecraft.thePlayer.posX);
+            oldY = -(recordPos.getY() - minecraft.thePlayer.posY);
+            oldZ = -(recordPos.getZ() - minecraft.thePlayer.posZ);
+            firstPacket = false;
+        }
+        if (event.getPacket() instanceof C03PacketPlayer.C06PacketPlayerPosLook) {
+            C03PacketPlayer.C06PacketPlayerPosLook packet = (C03PacketPlayer.C06PacketPlayerPosLook) event.getPacket();
+            PlayerData playerData = playerDataMap.computeIfAbsent(tickCounter, object -> new PlayerData());
+
+            oldX = playerData.posX = -(recordPos.getX() - packet.getPositionX());
+            oldY = playerData.posY = -(recordPos.getY() - packet.getPositionY());
+            oldZ = playerData.posZ = -(recordPos.getZ() - packet.getPositionZ());
+            oldYaw = playerData.yaw = packet.getYaw();
+            oldPitch = playerData.pitch = packet.getPitch();
+            playerData.jumping = minecraft.thePlayer.movementInput.jump;
+            playerData.sneaking = minecraft.thePlayer.movementInput.sneak;
+        } else if (event.getPacket() instanceof C03PacketPlayer.C04PacketPlayerPosition) {
+            C03PacketPlayer.C04PacketPlayerPosition packet = (C03PacketPlayer.C04PacketPlayerPosition) event.getPacket();
+            PlayerData playerData = playerDataMap.computeIfAbsent(tickCounter, object -> new PlayerData());
+
+            oldX = playerData.posX = -(recordPos.getX() - packet.getPositionX());
+            oldY = playerData.posY = -(recordPos.getY() - packet.getPositionY());
+            oldZ = playerData.posZ = -(recordPos.getZ() - packet.getPositionZ());
+            playerData.yaw = oldYaw;
+            playerData.pitch = oldPitch;
+            playerData.jumping = minecraft.thePlayer.movementInput.jump;
+            playerData.sneaking = minecraft.thePlayer.movementInput.sneak;
+        } else if (event.getPacket() instanceof C03PacketPlayer.C05PacketPlayerLook) {
+            C03PacketPlayer.C05PacketPlayerLook packet = (C03PacketPlayer.C05PacketPlayerLook) event.getPacket();
+            PlayerData playerData = playerDataMap.computeIfAbsent(tickCounter, object -> new PlayerData());
+
+            playerData.posX = oldX;
+            playerData.posY = oldY;
+            playerData.posZ = oldZ;
+            oldYaw = playerData.yaw = packet.getYaw();
+            oldPitch = playerData.pitch = packet.getPitch();
+            playerData.jumping = minecraft.thePlayer.movementInput.jump;
+            playerData.sneaking = minecraft.thePlayer.movementInput.sneak;
+        }
+    }
+
+    @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase == TickEvent.Phase.START) return;
 
-        if (playButton.isState() && minecraft.currentScreen == null) {
+        tickCounter++;
+        if (playButton.isState()) {
             if (currentIndex + 1 > playerDataList.size()) {
                 playButton.setState(false);
                 currentIndex = 0;
                 return;
             }
             PlayerData playerData = playerDataList.get(currentIndex);
-            minecraft.thePlayer.setPosition(playerData.posX, playerData.posY, playerData.posZ);
+            minecraft.thePlayer.setPosition(playPos.getX() + playerData.posX, playPos.getY() + playerData.posY, playPos.getZ() + playerData.posZ);
             minecraft.thePlayer.rotationYaw = playerData.yaw;
             minecraft.thePlayer.rotationPitch = playerData.pitch;
+            if (playerData.jumping) minecraft.thePlayer.jump();
+            minecraft.thePlayer.setJumping(playerData.jumping);
+            minecraft.thePlayer.movementInput.sneak = playerData.sneaking;
+            minecraft.thePlayer.setSneaking(playerData.sneaking);
             currentIndex++;
         }
     }
 
-    @SubscribeEvent
-    public void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-        if (!event.entity.equals(minecraft.thePlayer)) return;
+    public void rotate(EnumFacing enumFacing) {
+        Set<Integer> keySet = playerDataMap.keySet();
+    }
 
-        if (recordButton.isState() && minecraft.currentScreen == null) {
-            Entity player = event.entityLiving;
-            playerDataList.add(new PlayerData(player.posX, player.posY, player.posZ, player.rotationYaw, player.rotationPitch));
+    public void flip(EnumFacing enumFacing) {
+        if (playerDataMap.isEmpty()) return;
+
+        boolean axisX = enumFacing.getAxis().getName().equalsIgnoreCase("x");
+        boolean axisZ = enumFacing.getAxis().getName().equalsIgnoreCase("z");
+        Set<Integer> keySet = playerDataMap.keySet();
+        if (axisX) {
+            for (int key : keySet) {
+                PlayerData playerData = playerDataMap.get(key);
+
+                if (playerData.yaw > 0) playerData.yaw -= 180;
+                else playerData.yaw += 180;
+
+                playerData.posX = -playerData.posX;
+                playerDataMap.put(key, playerData);
+            }
+        } else if (axisZ) {
+            for (int key : keySet) {
+                PlayerData playerData = playerDataMap.get(key);
+
+                if (playerData.yaw > 0) playerData.yaw -= 180;
+                else playerData.yaw += 180;
+
+                playerData.posZ = -playerData.posZ;
+                playerDataMap.put(key, playerData);
+            }
         }
     }
 

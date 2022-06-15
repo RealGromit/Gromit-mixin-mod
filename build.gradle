@@ -108,6 +108,7 @@ reobf {
 jar {
     manifest.attributes(
         'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+        'FMLAT': 'accesstransformer.cfg',
         'TweakOrder': 0,
         'MixinConfigs': 'mixins.gromitmod.json',
         'FMLCorePluginContainsFMLMod': true,

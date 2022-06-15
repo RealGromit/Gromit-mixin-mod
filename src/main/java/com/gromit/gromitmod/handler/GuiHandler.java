@@ -7,6 +7,7 @@ import com.gromit.gromitmod.gui.module.ModsModuleGui;
 import com.gromit.gromitmod.gui.module.OtherModuleGui;
 import com.gromit.gromitmod.gui.module.crumbs.ExplosionBoxGui;
 import com.gromit.gromitmod.gui.module.crumbs.PatchcrumbsGui;
+import com.gromit.gromitmod.gui.module.fps.TntGui;
 import com.gromit.gromitmod.gui.module.other.AutoTickGui;
 import com.gromit.gromitmod.gui.module.other.DebugBlockGui;
 import com.gromit.gromitmod.gui.schematica.SchematicLoadGui;
@@ -24,5 +25,6 @@ public class GuiHandler {
         new DebugBlockGui();
         new PatchcrumbsGui();
         new SchematicLoadGui();
+        new TntGui();
     }
 }

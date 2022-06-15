@@ -54,7 +54,9 @@ public class SchematicLoadGui extends AbstractGui {
             schematicButton.setY(buttonY);
             buttonList.add(schematicButton);
             buttonList.add(schematicButton.getRecordButton());
+            buttonList.add(schematicButton.getClearButton());
             buttonList.add(schematicButton.getPlayButton());
+            buttonList.add(schematicButton.getAutoPlay());
             buttonY += 8;
         }
     }
@@ -72,11 +74,11 @@ public class SchematicLoadGui extends AbstractGui {
         RenderUtils.drawLine(45, 229.7f, 240, 0, 3, false, 255, 255, 255, 255);
         RenderUtils.drawLine(285, 30, 0, 200, 3, false, 255, 255, 255, 255);
 
-        RenderUtils.drawRectangle(300, 30, 135, 150, ColorUtils.RGBA2Integer(0, 0, 0, 60));
+        RenderUtils.drawRectangle(300, 30, 135, 60, ColorUtils.RGBA2Integer(0, 0, 0, 60));
         RenderUtils.drawLine(300, 30.3f, 135, 0, 3, false, 255, 255, 255, 255);
-        RenderUtils.drawLine(300, 30, 0, 150, 3, false, 255, 255, 255, 255);
-        RenderUtils.drawLine(300, 179.7f, 135, 0, 3, false, 255, 255, 255, 255);
-        RenderUtils.drawLine(435, 30, 0, 150, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawLine(300, 30, 0, 60, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawLine(300, 89.7f, 135, 0, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawLine(435, 30, 0, 60, 3, false, 255, 255, 255, 255);
 
         backButton.drawButton(mouseX, mouseY);
         for (SchematicButton schematicButton : schematicButtons) {
@@ -97,7 +99,9 @@ public class SchematicLoadGui extends AbstractGui {
             schematicButton.setY(buttonY);
             buttonList.add(schematicButton);
             buttonList.add(schematicButton.getRecordButton());
+            buttonList.add(schematicButton.getClearButton());
             buttonList.add(schematicButton.getPlayButton());
+            buttonList.add(schematicButton.getAutoPlay());
             buttonY += 8;
         }
     }

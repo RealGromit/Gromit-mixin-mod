@@ -12,10 +12,6 @@ public class AutoTickGui extends OtherModuleGui {
     private static AutoTickGui instance;
     private final Slider tickSlider = AutoTick.getInstance().tickSlider;
 
-    public AutoTickGui() {
-        super();
-    }
-
     @Override
     public void initGui() {
         super.initGui();

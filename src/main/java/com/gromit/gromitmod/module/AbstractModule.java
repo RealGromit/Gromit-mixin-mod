@@ -1,10 +1,12 @@
 package com.gromit.gromitmod.module;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraftforge.common.MinecraftForge;
 
 public abstract class AbstractModule {
 
-    private boolean state;
+    @Getter @Setter private boolean state;
 
     public void register() {
         MinecraftForge.EVENT_BUS.register(this);
@@ -24,8 +26,4 @@ public abstract class AbstractModule {
     protected void onEnable() {}
 
     protected void onDisable() {}
-
-    public boolean isState() {return state;}
-
-    public void setState(boolean state) {this.state = state;}
 }

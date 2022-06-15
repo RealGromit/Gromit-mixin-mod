@@ -147,7 +147,7 @@ public class TTFFontRenderer {
         x *= 4.0f;
         y *= 4.0f;
         x += 0.6f;
-        y += 1.8f;
+        y += 5;
 
         GL11.glColor4d((color >> 16 & 0xFF) / 255f, (color >> 8 & 0xFF) / 255f, (color & 0xFF) / 255f, (color >> 24 & 0xFF) / 255f);
         final int length = text.length();

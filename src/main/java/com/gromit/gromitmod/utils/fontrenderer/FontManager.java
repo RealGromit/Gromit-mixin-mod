@@ -17,6 +17,7 @@ public class FontManager {
     @Getter private static TTFFontRenderer normalSize;
     @Getter private static TTFFontRenderer titleSize;
     @Getter private static TTFFontRenderer biggerTitleSize;
+    @Getter private static TTFFontRenderer tinySize;
 
     private TTFFontRenderer createNewFont(String fontFile, int size, ExecutorService executor, ConcurrentLinkedQueue<TextureData> textureQueue) throws IOException, FontFormatException {
         final InputStream fontInStream = getClass().getResourceAsStream("/assets/astrix/font/" + fontFile + ".otf");
@@ -34,6 +35,7 @@ public class FontManager {
             normalSize = createNewFont("font", 19, executor, textureQueue);
             titleSize = createNewFont("font", 26, executor, textureQueue);
             biggerTitleSize = createNewFont("font", 35, executor, textureQueue);
+            tinySize = createNewFont("font", 1, executor, textureQueue);
         }
         catch (Exception e) {e.printStackTrace(); e.getCause();}
 

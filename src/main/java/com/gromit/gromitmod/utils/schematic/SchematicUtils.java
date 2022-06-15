@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 @Savable(savableName = "SchematicUtils")
 public class SchematicUtils implements Savables {
@@ -20,7 +21,7 @@ public class SchematicUtils implements Savables {
     @Getter private static SchematicUtils instance;
     private transient SchematicLoadGui schematicLoadGui;
     private transient final GromitMod gromitMod = GromitMod.getInstance();
-    private final HashMap<String, List<PlayerData>> recordMap = new HashMap<>();
+    private final HashMap<String, TreeMap<Integer, PlayerData>> recordMap = new HashMap<>();
 
     public SchematicUtils() {
         instance = this;
@@ -71,9 +72,8 @@ public class SchematicUtils implements Savables {
             }
             if (isDirectory) iterateFolders(schematic);
             else {
-                List<PlayerData> playerDataList = new ArrayList<>();
-                recordMap.putIfAbsent(schematic.getName(), playerDataList);
-                if (schematicButton != null) schematicButton.setPlayerDataList(recordMap.get(schematic.getName()));
+                recordMap.putIfAbsent(schematic.getName(), new TreeMap<>());
+                if (schematicButton != null) schematicButton.setPlayerDataMap(recordMap.get(schematic.getName()));
             }
         }
         schematicLoadGui.getDirectoryMap().putIfAbsent(file.getAbsolutePath(), schematicButtons);

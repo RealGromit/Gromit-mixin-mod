@@ -12,10 +12,10 @@ import net.minecraft.util.ChatComponentText;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CannonCalculateCommand implements ICommand {
+public class CannonCalculatorCommand implements ICommand {
 
     private final Minecraft minecraft = Minecraft.getMinecraft();
-    private final String wrongUsage = ClientUtils.getClientMessage("<usage> /calc <barrel/custom> <power amount> <ticks> <power/position1> <position2>");
+    private final String wrongUsage = ClientUtils.getClientMessage("<usage> /calc <barrel/custom> <power amount> <ticks> <position1> <position2>");
 
     @Override
     public String getCommandName() {

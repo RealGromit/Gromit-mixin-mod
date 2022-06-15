@@ -44,7 +44,8 @@ public class CalculatorCommand implements ICommand {
             expression.append(string);
         }
 
-        ClientUtils.addClientMessage(String.valueOf(new Expression(expression.toString()).calculate()));
+        Expression expr = new Expression(expression.toString());
+        ClientUtils.addClientMessage(expr.getExpressionString() + " = " + expr.calculate());
     }
 
     @Override

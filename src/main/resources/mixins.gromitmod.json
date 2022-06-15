@@ -8,7 +8,9 @@
   "mixins": [
     "EntityTntPrimedMixin",
     "ExplosionMixin",
+    "FlipHelperMixin",
     "ForgeHooksClientMixin",
-    "InputHandlerMixin"
+    "InputHandlerMixin",
+    "RotationHelperMixin"
   ]
 }

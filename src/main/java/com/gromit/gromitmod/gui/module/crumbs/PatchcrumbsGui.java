@@ -17,10 +17,6 @@ public class PatchcrumbsGui extends CrumbsModuleGui {
     private final ColorButton lineColorButton = Patchcrumbs.getInstance().lineColorButton;
     private final Slider timeoutSlider = Patchcrumbs.getInstance().timeoutSlider;
 
-    public PatchcrumbsGui() {
-        super();
-    }
-
     @Override
     public void initGui() {
         super.initGui();
