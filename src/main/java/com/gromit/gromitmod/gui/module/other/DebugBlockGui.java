@@ -3,7 +3,6 @@ package com.gromit.gromitmod.gui.module.other;
 import com.gromit.gromitmod.gui.module.OtherModuleGui;
 import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.module.other.DebugBlock;
-import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 
 import java.awt.Color;
 
@@ -25,13 +24,13 @@ public class DebugBlockGui extends OtherModuleGui {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        FontManager.getTitleSize().drawString("Client Side Debug Block", mainGuiPointX + 68, mainGuiPointY + 39, Color.WHITE.getRGB());
-        FontManager.getNormalSize().drawString("Get Info About Entities That Hit Selected Block", mainGuiPointX + 68, mainGuiPointY + 50, Color.WHITE.getRGB());
-        FontManager.getNormalSize().drawString("Use Shovel To Select Block", mainGuiPointX + 68, mainGuiPointY + 57, Color.WHITE.getRGB());
-        FontManager.getNormalSize().drawString("Debugblock Timeout : ", mainGuiPointX + 68, mainGuiPointY + 75, Color.WHITE.getRGB());
+        title.drawString("Client Side Debug Block", mainGuiPointX + 272, mainGuiPointY + 156, Color.WHITE.getRGB());
+        normal.drawString("Get Info About Entities That Hit Selected Block", mainGuiPointX + 272, mainGuiPointY + 200, Color.WHITE.getRGB());
+        normal.drawString("Use Shovel To Select Block", mainGuiPointX + 272, mainGuiPointY + 228, Color.WHITE.getRGB());
+        normal.drawString("Debugblock Timeout : ", mainGuiPointX + 272, mainGuiPointY + 300, Color.WHITE.getRGB());
 
         timeoutSlider.drawButton(mouseX, mouseY);
-        FontManager.getNormalSize().drawString(timeoutSlider.buttonName, mainGuiPointX + 122, mainGuiPointY + 75, Color.WHITE.getRGB());
+        normal.drawString(timeoutSlider.buttonName, mainGuiPointX + 488, mainGuiPointY + 300, Color.WHITE.getRGB());
     }
 
     @Override

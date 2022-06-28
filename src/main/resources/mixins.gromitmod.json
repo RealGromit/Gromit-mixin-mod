@@ -11,6 +11,12 @@
     "FlipHelperMixin",
     "ForgeHooksClientMixin",
     "InputHandlerMixin",
-    "RotationHelperMixin"
+    "RotationHelperMixin",
+    "spawner.MobSpawnerBaseLogicMixin"
+  ],
+  "client": [
+    "MinecraftMixin",
+    "RenderMixin",
+    "spawner.TileEntityMobSpawnerRendererMixin"
   ]
 }

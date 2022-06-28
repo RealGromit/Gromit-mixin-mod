@@ -28,7 +28,7 @@ public class ModsModuleGui extends MainGui {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        RenderUtils.drawLine(mainGuiPointX + 60, mainGuiPointY + 37, 0, 101, 4, false, 255, 255, 255, 255);
+        RenderUtils.drawLine(mainGuiPointX + 240, mainGuiPointY + 148, 0, 404, 4, false, 255, 255, 255, 255);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.gromit.gromitmod.module.crumbs;
 
 import com.gromit.gromitmod.annotation.Module;
-import com.gromit.gromitmod.event.network.InboundPacket;
+import com.gromit.gromitmod.event.network.InboundPacketEvent;
 import com.gromit.gromitmod.gui.MainGui;
 import com.gromit.gromitmod.gui.button.ColorButton;
 import com.gromit.gromitmod.gui.button.ToggleButton;
@@ -31,22 +31,22 @@ public class ExplosionBox extends AbstractModule {
     private transient Set<AxisAlignedBBTime> boxSet = ConcurrentHashMap.newKeySet();
     private transient Minecraft minecraft = Minecraft.getMinecraft();
 
-    public final ColorButton boxColorButton = new ColorButton(MainGui.mainGuiPointX + 130, MainGui.mainGuiPointY + 50.3f, MainGui.mainGuiPointX + MainGui.guiWidth + 5, MainGui.mainGuiPointY, 60, 60)
-            .setWidth(4)
-            .setHeight(4);
+    public final ColorButton boxColorButton = new ColorButton(MainGui.mainGuiPointX + 520, MainGui.mainGuiPointY + 200, MainGui.mainGuiPointX + MainGui.guiWidth + 25, MainGui.mainGuiPointY, 240, 240)
+            .setWidth(16)
+            .setHeight(16);
 
-    public final ColorButton outlineColorButton = new ColorButton(MainGui.mainGuiPointX + 130, MainGui.mainGuiPointY + 57.3f, MainGui.mainGuiPointX + MainGui.guiWidth + 5, MainGui.mainGuiPointY + 71, 60, 60)
-            .setWidth(4)
-            .setHeight(4);
+    public final ColorButton outlineColorButton = new ColorButton(MainGui.mainGuiPointX + 520, MainGui.mainGuiPointY + 228, MainGui.mainGuiPointX + MainGui.guiWidth + 25, MainGui.mainGuiPointY + 284, 240, 240)
+            .setWidth(16)
+            .setHeight(16);
 
-    public final Slider timeoutSlider = new Slider(MainGui.mainGuiPointX + 68, MainGui.mainGuiPointY + 82, false)
-            .setWidth(95)
-            .setHeight(2)
+    public final Slider timeoutSlider = new Slider(MainGui.mainGuiPointX + 272, MainGui.mainGuiPointY + 328, false)
+            .setWidth(380)
+            .setHeight(8)
             .setMinMax(1, 20);
 
-    public final ToggleButton boxPrecision = new ToggleButton(MainGui.mainGuiPointX + 129.5f, MainGui.mainGuiPointY + 64.5f);
+    public final ToggleButton boxPrecision = new ToggleButton(MainGui.mainGuiPointX + 518, MainGui.mainGuiPointY + 258);
 
-    public final ToggleButton stateCheckbox = new ToggleButton(MainGui.mainGuiPointX + 48.5f, MainGui.mainGuiPointY + 39.8f)
+    public final ToggleButton stateCheckbox = new ToggleButton(MainGui.mainGuiPointX + 194, MainGui.mainGuiPointY + 158)
             .addButtonListener((StateEnableListener) button -> register())
             .addButtonListener((StateDisableListener) button -> unregister());
 
@@ -55,7 +55,7 @@ public class ExplosionBox extends AbstractModule {
     }
 
     @SubscribeEvent
-    public void onPacketReceive(InboundPacket event) {
+    public void onPacketReceive(InboundPacketEvent event) {
         if (!(event.getPacket() instanceof S27PacketExplosion)) return;
         S27PacketExplosion explosion = (S27PacketExplosion) event.getPacket();
         AxisAlignedBBTime box;

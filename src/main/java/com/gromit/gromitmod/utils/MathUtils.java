@@ -25,6 +25,13 @@ public class MathUtils {
         return MathHelper.sqrt_double(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
     }
 
+    public static double getDistance(double x, double y, double z, double x1, double y1, double z1) {
+        double deltaX = x - x1;
+        double deltaY = y - y1;
+        double deltaZ = z - z1;
+        return MathHelper.sqrt_double(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+    }
+
     @Nullable
     public static GromitPosDouble getRange(GromitPosDouble power, GromitPosDouble projectile, int powerAmount, int ticks) {
         double d12 = getDistance(power, projectile) / 8;

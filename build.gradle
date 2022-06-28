@@ -1,5 +1,3 @@
-
-// For those who want the bleeding edge
 buildscript {
     repositories {
         jcenter()
@@ -27,12 +25,6 @@ compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
 }
 
-/*
-// for people who want stable - not yet functional for MC 1.8.8 - we require the forgegradle 2.1 snapshot
-plugins {
-    id "net.minecraftforge.gradle.forge" version "2.0.2"
-}
-*/
 version = "1.0"
 group= "com.gromit.gromitmod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "gromitmod"

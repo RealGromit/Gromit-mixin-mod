@@ -16,6 +16,8 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
+import static org.lwjgl.opengl.GL11.*;
+
 public class TTFFontRenderer {
 
     private static TTFFontRenderer instance;
@@ -136,20 +138,14 @@ public class TTFFontRenderer {
     }
 
     private int renderString(final String text, float x, float y, final int color, final boolean shadow) {
-        GL11.glPushMatrix();
-        GlStateManager.scale(0.25, 0.25, 1.0);
-        GlStateManager.enableBlend();
-        GlStateManager.blendFunc(770, 771);
-        x -= 2.0f;
-        y -= 2.0f;
-        x += 0.5f;
-        y += 0.5f;
-        x *= 4.0f;
-        y *= 4.0f;
-        x += 0.6f;
-        y += 5;
+        glPushMatrix();
 
-        GL11.glColor4d((color >> 16 & 0xFF) / 255f, (color >> 8 & 0xFF) / 255f, (color & 0xFF) / 255f, (color >> 24 & 0xFF) / 255f);
+        glEnable(GL_BLEND);
+        glBlendFunc(770, 771);
+        x -= 5;
+        y -= 5;
+        
+        glColor4d((color >> 16 & 0xFF) / 255f, (color >> 8 & 0xFF) / 255f, (color & 0xFF) / 255f, (color >> 24 & 0xFF) / 255f);
         final int length = text.length();
         for (int i = 0; i < length; ++i) {
             char character = text.charAt(i);
@@ -159,15 +155,14 @@ public class TTFFontRenderer {
             x += charData.width - 8.0f;
         }
 
-        GL11.glPopMatrix();
-        GlStateManager.resetColor();
-        GlStateManager.disableBlend();
-        GlStateManager.bindTexture(0);
+        glPopMatrix();
+        glDisable(GL_BLEND);
+        glBindTexture(3553, 0);
         return (int) x;
     }
 
-    public float getWidth(final String text) {
-        float width = 0;
+    public int getWidth(final String text) {
+        int width = 0;
         CharacterData[] characterData = this.regularData;
         int length = text.length();
 
@@ -175,9 +170,9 @@ public class TTFFontRenderer {
             final char character = text.charAt(i);
 
             final CharacterData charData = characterData[character];
-            width += (charData.width - 9.3f) / 2f;
+            width += charData.width - 8.0f;
         }
-        return (width + 2f) / 2;
+        return width;
     }
 
     public float getHeight(final String text) {
@@ -197,16 +192,16 @@ public class TTFFontRenderer {
     private void drawChar(final char character, final CharacterData[] characterData, final float x, final float y) {
         final CharacterData charData = characterData[character];
         charData.bind();
-        GL11.glBegin(7);
-        GL11.glTexCoord2f(0.0f, 0.0f);
-        GL11.glVertex2d(x, y);
-        GL11.glTexCoord2f(0.0f, 1.0f);
-        GL11.glVertex2d(x, y + charData.height);
-        GL11.glTexCoord2f(1.0f, 1.0f);
-        GL11.glVertex2d((x + charData.width), y + charData.height);
-        GL11.glTexCoord2f(1.0f, 0.0f);
-        GL11.glVertex2d(x + charData.width, y);
-        GL11.glEnd();
+        glBegin(7);
+        glTexCoord2f(0.0f, 0.0f);
+        glVertex2d(x, y);
+        glTexCoord2f(0.0f, 1.0f);
+        glVertex2d(x, y + charData.height);
+        glTexCoord2f(1.0f, 1.0f);
+        glVertex2d((x + charData.width), y + charData.height);
+        glTexCoord2f(1.0f, 0.0f);
+        glVertex2d(x + charData.width, y);
+        glEnd();
     }
 
     class CharacterData {

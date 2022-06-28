@@ -44,24 +44,24 @@ public class Patchcrumbs extends AbstractModule {
     private transient RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
     private transient ChunkMapper chunkMapper = ChunkMapper.getInstance();
 
-    public final ColorButton boxColorButton = new ColorButton(MainGui.mainGuiPointX + 130, MainGui.mainGuiPointY + 50.3f, MainGui.mainGuiPointX + MainGui.guiWidth + 5, MainGui.mainGuiPointY, 40, 40)
-            .setWidth(4)
-            .setHeight(4);
+    public final ColorButton boxColorButton = new ColorButton(MainGui.mainGuiPointX + 520, MainGui.mainGuiPointY + 200, MainGui.mainGuiPointX + MainGui.guiWidth + 25, MainGui.mainGuiPointY, 160, 160)
+            .setWidth(16)
+            .setHeight(16);
 
-    public final ColorButton outlineColorButton = new ColorButton(MainGui.mainGuiPointX + 130, MainGui.mainGuiPointY + 57.3f, MainGui.mainGuiPointX + MainGui.guiWidth + 5, MainGui.mainGuiPointY + 51, 40, 40)
-            .setWidth(4)
-            .setHeight(4);
+    public final ColorButton outlineColorButton = new ColorButton(MainGui.mainGuiPointX + 520, MainGui.mainGuiPointY + 228, MainGui.mainGuiPointX + MainGui.guiWidth + 25, MainGui.mainGuiPointY + 204, 160, 160)
+            .setWidth(16)
+            .setHeight(16);
 
-    public final ColorButton lineColorButton = new ColorButton(MainGui.mainGuiPointX + 130, MainGui.mainGuiPointY + 64.3f, MainGui.mainGuiPointX + MainGui.guiWidth + 5, MainGui.mainGuiPointY + 102, 40, 40)
-            .setWidth(4)
-            .setHeight(4);
+    public final ColorButton lineColorButton = new ColorButton(MainGui.mainGuiPointX + 520, MainGui.mainGuiPointY + 256, MainGui.mainGuiPointX + MainGui.guiWidth + 25, MainGui.mainGuiPointY + 408, 160, 160)
+            .setWidth(16)
+            .setHeight(16);
 
-    public final Slider timeoutSlider = new Slider(MainGui.mainGuiPointX + 68, MainGui.mainGuiPointY + 82, false)
-            .setWidth(95)
-            .setHeight(2)
+    public final Slider timeoutSlider = new Slider(MainGui.mainGuiPointX + 272, MainGui.mainGuiPointY + 328, false)
+            .setWidth(380)
+            .setHeight(8)
             .setMinMax(1, 20);
 
-    public final ToggleButton stateCheckbox = new ToggleButton(MainGui.mainGuiPointX + 48.5f, MainGui.mainGuiPointY + 46.8f)
+    public final ToggleButton stateCheckbox = new ToggleButton(MainGui.mainGuiPointX + 194, MainGui.mainGuiPointY + 186)
             .addButtonListener((StateEnableListener) button -> register())
             .addButtonListener((StateDisableListener) button -> unregister());
 

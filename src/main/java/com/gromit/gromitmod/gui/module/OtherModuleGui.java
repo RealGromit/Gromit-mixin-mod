@@ -11,19 +11,18 @@ import com.gromit.gromitmod.module.other.AutoTick;
 import com.gromit.gromitmod.module.other.DebugBlock;
 import com.gromit.gromitmod.utils.GlobalSaver;
 import com.gromit.gromitmod.utils.RenderUtils;
-import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 
 public class OtherModuleGui extends MainGui {
 
     @Getter private static OtherModuleGui instance;
 
-    protected static final TextButton autoTick = new TextButton(FontManager.getNormalSize(), mainGuiPointX + 7, mainGuiPointY + 39)
+    protected static final TextButton autoTick = new TextButton(normal, mainGuiPointX + 28, mainGuiPointY + 156)
             .setButtonText("Auto Tick")
             .addButtonListener((ClickEnableListener) button -> minecraft.displayGuiScreen(AutoTickGui.getInstance()))
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(OtherModuleGui.getInstance()));
 
-    protected static final TextButton debug = new TextButton(FontManager.getNormalSize(), mainGuiPointX + 7, mainGuiPointY + 46)
+    protected static final TextButton debug = new TextButton(normal, mainGuiPointX + 28, mainGuiPointY + 184)
             .setButtonText("Debug Block")
             .addButtonListener((ClickEnableListener) button -> minecraft.displayGuiScreen(DebugBlockGui.getInstance()))
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(OtherModuleGui.getInstance()));
@@ -60,7 +59,7 @@ public class OtherModuleGui extends MainGui {
         debug.drawButton(mouseX, mouseY);
         debugBlockStateButton.drawButton(mouseX, mouseY);
 
-        RenderUtils.drawLine(mainGuiPointX + 60, mainGuiPointY + 37, 0, 101, 4, false, 255, 255, 255, 255);
+        RenderUtils.drawLine(mainGuiPointX + 240, mainGuiPointY + 148, 0, 404, 4, false, 255, 255, 255, 255);
     }
 
     @Override

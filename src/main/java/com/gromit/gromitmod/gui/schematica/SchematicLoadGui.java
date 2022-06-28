@@ -7,7 +7,6 @@ import com.gromit.gromitmod.gui.button.listener.ClickEnableListener;
 import com.gromit.gromitmod.gui.button.listener.ClickListener;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
-import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 
 import java.awt.*;
@@ -24,7 +23,7 @@ public class SchematicLoadGui extends AbstractGui {
     private File lastDirectory;
     private final File schematicFolder = new File(minecraft.mcDataDir.getPath() + "/schematics");
 
-    private final TextButton backButton = new TextButton(FontManager.getNormalSize(), 47, 33)
+    private final TextButton backButton = new TextButton(normal, 188, 132)
             .setButtonText("<- back")
             .addButtonListener((ClickEnableListener) button -> button.setState(false))
             .addButtonListener((ClickListener) button -> changeDirectory(lastDirectory.getParentFile()));
@@ -36,7 +35,7 @@ public class SchematicLoadGui extends AbstractGui {
     @Override
     public void initGui() {
         super.initGui();
-        int buttonY = 41;
+        int buttonY = 164;
         backButton.setEnabled(true);
 
         if (lastDirectory != null) {
@@ -57,7 +56,7 @@ public class SchematicLoadGui extends AbstractGui {
             buttonList.add(schematicButton.getClearButton());
             buttonList.add(schematicButton.getPlayButton());
             buttonList.add(schematicButton.getAutoPlay());
-            buttonY += 8;
+            buttonY += 32;
         }
     }
 
@@ -65,20 +64,20 @@ public class SchematicLoadGui extends AbstractGui {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        FontManager.getBiggerTitleSize().drawString("Load Schematic", 240 - FontManager.getBiggerTitleSize().getWidth("Load schematic") / 2, 10, Color.WHITE.getRGB());
-        RenderUtils.drawLine(30, 20, 420, 0, 4, false, 255, 255, 255, 255);
+        biggerTitle.drawString("Load Schematic", 960 - biggerTitle.getWidth("Load schematic") / 2, 40, Color.WHITE.getRGB());
+        RenderUtils.drawLine(120, 80, 1680, 0, 4, false, 255, 255, 255, 255);
 
-        RenderUtils.drawRectangle(45, 30, 240, 200, ColorUtils.RGBA2Integer(0, 0, 0, 60));
-        RenderUtils.drawLine(45, 30.3f, 240, 0, 3, false, 255, 255, 255, 255);
-        RenderUtils.drawLine(45, 30, 0, 200, 3, false, 255, 255, 255, 255);
-        RenderUtils.drawLine(45, 229.7f, 240, 0, 3, false, 255, 255, 255, 255);
-        RenderUtils.drawLine(285, 30, 0, 200, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawRectangle(180, 120, 960, 800, ColorUtils.RGBA2Integer(0, 0, 0, 60));
+        RenderUtils.drawLine(180, 120, 960, 0, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawLine(180, 120, 0, 800, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawLine(180, 920, 960, 0, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawLine(1140, 120, 0, 800, 3, false, 255, 255, 255, 255);
 
-        RenderUtils.drawRectangle(300, 30, 135, 60, ColorUtils.RGBA2Integer(0, 0, 0, 60));
-        RenderUtils.drawLine(300, 30.3f, 135, 0, 3, false, 255, 255, 255, 255);
-        RenderUtils.drawLine(300, 30, 0, 60, 3, false, 255, 255, 255, 255);
-        RenderUtils.drawLine(300, 89.7f, 135, 0, 3, false, 255, 255, 255, 255);
-        RenderUtils.drawLine(435, 30, 0, 60, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawRectangle(1200, 120, 540, 240, ColorUtils.RGBA2Integer(0, 0, 0, 60));
+        RenderUtils.drawLine(1200, 120, 540, 0, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawLine(1200, 120, 0, 240, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawLine(1200, 360, 540, 0, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawLine(1740, 120, 0, 240, 3, false, 255, 255, 255, 255);
 
         backButton.drawButton(mouseX, mouseY);
         for (SchematicButton schematicButton : schematicButtons) {
@@ -87,7 +86,7 @@ public class SchematicLoadGui extends AbstractGui {
     }
 
     public void changeDirectory(File folderPath) {
-        int buttonY = 41;
+        int buttonY = 164;
         lastDirectory = folderPath;
         schematicButtons = directoryMap.get(folderPath.getAbsolutePath());
         schematicButtons.sort(Comparator.comparing(SchematicButton::getButtonText).thenComparing(SchematicButton::isDirectory));
@@ -102,7 +101,7 @@ public class SchematicLoadGui extends AbstractGui {
             buttonList.add(schematicButton.getClearButton());
             buttonList.add(schematicButton.getPlayButton());
             buttonList.add(schematicButton.getAutoPlay());
-            buttonY += 8;
+            buttonY += 32;
         }
     }
 }

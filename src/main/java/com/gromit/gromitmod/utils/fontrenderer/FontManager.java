@@ -35,7 +35,7 @@ public class FontManager {
             normalSize = createNewFont("font", 19, executor, textureQueue);
             titleSize = createNewFont("font", 26, executor, textureQueue);
             biggerTitleSize = createNewFont("font", 35, executor, textureQueue);
-            tinySize = createNewFont("font", 1, executor, textureQueue);
+            tinySize = createNewFont("font", 8, executor, textureQueue);
         }
         catch (Exception e) {e.printStackTrace(); e.getCause();}
 

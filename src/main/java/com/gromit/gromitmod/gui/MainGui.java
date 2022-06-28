@@ -10,21 +10,21 @@ import com.gromit.gromitmod.gui.module.OtherModuleGui;
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.GlobalSaver;
 import com.gromit.gromitmod.utils.RenderUtils;
-import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.Display;
+
+import java.awt.*;
 
 public class MainGui extends AbstractGui {
 
     @Getter private static MainGui instance;
-    public static final int guiWidth = 270, guiHeight = 150;
-    public static final int mainGuiPointX = (480 - guiWidth) / 2;
-    public static final int mainGuiPointY = (270 - guiHeight) / 2;
+    public static final int guiWidth = 1080, guiHeight = 600;
+    public static final int mainGuiPointX = 420, mainGuiPointY = 240;
 
-    private static final ResourceLocation bounds = new ResourceLocation("astrix", "border.png");
     private static final ResourceLocation gromit = new ResourceLocation("astrix", "gromit.png");
 
-    protected static final TextButton mods = new TextButton(FontManager.getNormalSize(), mainGuiPointX + 65, mainGuiPointY + 16)
+    protected static final TextButton mods = new TextButton(normal, mainGuiPointX + 260, mainGuiPointY + 64)
             .setButtonText("Mods")
             .addButtonListener((ClickEnableListener) button -> {
                 if (GlobalSaver.getModsModuleGui() != null) minecraft.displayGuiScreen(GlobalSaver.getModsModuleGui());
@@ -32,7 +32,7 @@ public class MainGui extends AbstractGui {
             })
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
-    protected static final TextButton fps = new TextButton(FontManager.getNormalSize(), mainGuiPointX + 115, mainGuiPointY + 16)
+    protected static final TextButton fps = new TextButton(normal, mainGuiPointX + 460, mainGuiPointY + 64)
             .setButtonText("Fps")
             .addButtonListener((ClickEnableListener) button -> {
                 if (GlobalSaver.getFpsModuleGui() != null) minecraft.displayGuiScreen(GlobalSaver.getFpsModuleGui());
@@ -40,7 +40,7 @@ public class MainGui extends AbstractGui {
             })
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
-    protected static final TextButton crumbs = new TextButton(FontManager.getNormalSize(), mainGuiPointX + 160, mainGuiPointY + 16)
+    protected static final TextButton crumbs = new TextButton(normal, mainGuiPointX + 640, mainGuiPointY + 64)
             .setButtonText("Crumbs")
             .addButtonListener((ClickEnableListener) button -> {
                 if (GlobalSaver.getCrumbsModuleGui() != null) minecraft.displayGuiScreen(GlobalSaver.getCrumbsModuleGui());
@@ -48,7 +48,7 @@ public class MainGui extends AbstractGui {
             })
             .addButtonListener((ClickDisableListener) button -> minecraft.displayGuiScreen(MainGui.getInstance()));
 
-    protected static final TextButton other = new TextButton(FontManager.getNormalSize(), (int) (mainGuiPointX + 230 - FontManager.getNormalSize().getWidth("Other")), mainGuiPointY + 16)
+    protected static final TextButton other = new TextButton(normal, (int) (mainGuiPointX + 920 - normal.getWidth("Other")), mainGuiPointY + 64)
             .setButtonText("Other")
             .addButtonListener((ClickEnableListener) button -> {
                 if (GlobalSaver.getOtherModuleGui() != null) minecraft.displayGuiScreen(GlobalSaver.getOtherModuleGui());
@@ -74,17 +74,21 @@ public class MainGui extends AbstractGui {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        minecraft.getTextureManager().bindTexture(bounds);
-        RenderUtils.drawTextureColor(mainGuiPointX - 1, mainGuiPointY - 1, guiWidth + 2, guiHeight + 2, 0, 0, 1, 1, ColorUtils.getRed(), ColorUtils.getGreen(), ColorUtils.getBlue(), 255);
-        RenderUtils.drawRectangle(mainGuiPointX, mainGuiPointY, guiWidth, guiHeight, ColorUtils.RGBA2Integer(54, 54, 54, 225));
-        RenderUtils.drawLine(mainGuiPointX + 45, mainGuiPointY + 23, 205, 0, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawRoundedRectangle1(mainGuiPointX, mainGuiPointY, guiWidth, guiHeight, 1, 30, ColorUtils.RGBA2Integer(54, 54, 54, 225));
+        RenderUtils.drawRoundedRectangleOutlineRgb(Display.getWidth() / 2f, Display.getHeight() / 2f, guiWidth, guiHeight, 9, 30, Color.WHITE.getRGB());
+        RenderUtils.drawLine(mainGuiPointX + 180, mainGuiPointY + 92, 820, 0, 3, false, 255, 255, 255, 255);
+        RenderUtils.drawCircleOutlineRgb(511, 315, 48, 7, Color.WHITE.getRGB());
         minecraft.getTextureManager().bindTexture(gromit);
-        RenderUtils.drawCircleOutline(mainGuiPointX + 21, mainGuiPointY + 18, 11, 3, 200, ColorUtils.getRGB(255));
-        RenderUtils.drawTexture(mainGuiPointX + 5, mainGuiPointY + 5, 33, 25, 0, 0, 1, 1);
+        RenderUtils.drawTexture(mainGuiPointX + 17, mainGuiPointY + 23, 150, 100, 0, 0, 1, 1);
         mods.drawButton(mouseX, mouseY);
         fps.drawButton(mouseX, mouseY);
         crumbs.drawButton(mouseX, mouseY);
         other.drawButton(mouseX, mouseY);
+    }
+
+    @Override
+    public void onGuiClosed() {
+        super.onGuiClosed();
     }
 
     protected void setInstance() {instance = this;}

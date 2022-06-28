@@ -1,5 +1,6 @@
 package com.gromit.gromitmod;
 
+import com.gromit.gromitmod.entityrenderer.FallingBlockEntity;
 import com.gromit.gromitmod.entityrenderer.TntEntity;
 import com.gromit.gromitmod.handler.CommandHandler;
 import com.gromit.gromitmod.handler.GuiHandler;
@@ -12,6 +13,7 @@ import com.gromit.gromitmod.network.NetworkManager;
 import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -35,14 +37,15 @@ public class GromitMod {
         new FontManager();
         new ChunkMapper(minecraft);
         JsonHandler jsonHandler = new JsonHandler();
+        RenderingRegistry.registerEntityRenderingHandler(EntityTNTPrimed.class, new TntEntity(Minecraft.getMinecraft().getRenderManager()));
+        RenderingRegistry.registerEntityRenderingHandler(EntityFallingBlock.class, new FallingBlockEntity(Minecraft.getMinecraft().getRenderManager()));
         new GuiHandler();
         new NetworkManager();
-        new ClientTickEvent(this);
+        new ClientTickEvent();
         new PlayerInteractEvent(minecraft);
         new InputHandler(minecraft);
         new CommandHandler();
         Runtime.getRuntime().addShutdownHook(new Thread(jsonHandler::writeModules));
-        RenderingRegistry.registerEntityRenderingHandler(EntityTNTPrimed.class, new TntEntity(Minecraft.getMinecraft().getRenderManager()));
     }
 
     private void createFolder() {

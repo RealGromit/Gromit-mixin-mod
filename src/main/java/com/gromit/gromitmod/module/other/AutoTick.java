@@ -28,12 +28,12 @@ public class AutoTick extends AbstractModule {
     private static AutoTick instance;
     private transient Minecraft minecraft = Minecraft.getMinecraft();
 
-    public final Slider tickSlider = new Slider(MainGui.mainGuiPointX + 68, MainGui.mainGuiPointY + 82, true)
-            .setWidth(95)
-            .setHeight(2)
+    public final Slider tickSlider = new Slider(MainGui.mainGuiPointX + 272, MainGui.mainGuiPointY + 328, true)
+            .setWidth(380)
+            .setHeight(8)
             .setMinMax(1, 4);
 
-    public final ToggleButton stateCheckbox = new ToggleButton(MainGui.mainGuiPointX + 48.5f, MainGui.mainGuiPointY + 39.8f)
+    public final ToggleButton stateCheckbox = new ToggleButton(MainGui.mainGuiPointX + 194, MainGui.mainGuiPointY + 158)
             .addButtonListener((StateEnableListener) button -> register())
             .addButtonListener((StateDisableListener) button -> unregister());
 

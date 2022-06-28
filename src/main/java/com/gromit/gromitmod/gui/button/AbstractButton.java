@@ -2,19 +2,25 @@ package com.gromit.gromitmod.gui.button;
 
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.button.listener.*;
+import com.gromit.gromitmod.utils.fontrenderer.FontManager;
+import com.gromit.gromitmod.utils.fontrenderer.TTFFontRenderer;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 
-public abstract class AbstractButton<T> {
+public abstract class AbstractButton<T extends AbstractButton<?>> {
 
     protected static final GromitMod gromitMod = GromitMod.getInstance();
     protected static final Minecraft minecraft = gromitMod.getMinecraft();
 
+    protected static final TTFFontRenderer normal = FontManager.getNormalSize();
+    protected static final TTFFontRenderer title = FontManager.getTitleSize();
+    protected static final TTFFontRenderer biggerTitle = FontManager.getBiggerTitleSize();
+
     @Getter @Setter protected float x;
     @Getter @Setter protected float y;
-    @Getter protected float width;
-    @Getter protected float height;
+    @Getter protected int width;
+    @Getter protected int height;
     @Getter protected boolean state;
     @Getter @Setter protected transient boolean hovering;
     @Getter protected boolean enabled = true;
@@ -34,12 +40,12 @@ public abstract class AbstractButton<T> {
     protected transient StateEnableListener stateEnableListener;
     protected transient StateDisableListener stateDisableListener;
 
-    public AbstractButton(float x, float y) {
+    public AbstractButton(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public void drawButton(float mouseX, float mouseY) {
+    public void drawButton(int mouseX, int mouseY) {
         if (drawListener != null) drawListener.onListen(this);
 
         if (!hovering && isMouseOver(mouseX, mouseY)) {
@@ -54,7 +60,7 @@ public abstract class AbstractButton<T> {
         mouseDragged(mouseX, mouseY);
     }
 
-    public boolean mousePressed(float mouseButton, float mouseX, float mouseY) {
+    public boolean mousePressed(int mouseButton, int mouseX, int mouseY) {
         if (!hovering) return false;
         if (mouseButton == 0) {
             if (state) setState(false);
@@ -87,12 +93,12 @@ public abstract class AbstractButton<T> {
         if (scrollListener != null) scrollListener.onListen(this, scroll);
     }
 
-    public T setWidth(float width) {
+    public T setWidth(int width) {
         this.width = width;
         return (T) this;
     }
 
-    public T setHeight(float height) {
+    public T setHeight(int height) {
         this.height = height;
         return (T) this;
     }

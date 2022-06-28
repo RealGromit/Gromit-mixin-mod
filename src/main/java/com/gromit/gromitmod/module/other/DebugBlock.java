@@ -36,12 +36,12 @@ public class DebugBlock extends AbstractModule {
     private transient RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
     private transient Minecraft minecraft = Minecraft.getMinecraft();
 
-    public final Slider timeoutSlider = new Slider(MainGui.mainGuiPointX + 68, MainGui.mainGuiPointY + 82, false)
-            .setWidth(84)
-            .setHeight(2)
+    public final Slider timeoutSlider = new Slider(MainGui.mainGuiPointX + 272, MainGui.mainGuiPointY + 328, false)
+            .setWidth(336)
+            .setHeight(8)
             .setMinMax(1, 85);
 
-    public final ToggleButton stateCheckbox = new ToggleButton(MainGui.mainGuiPointX + 48.5f, MainGui.mainGuiPointY + 46.8f)
+    public final ToggleButton stateCheckbox = new ToggleButton(MainGui.mainGuiPointX + 194, MainGui.mainGuiPointY + 186)
             .addButtonListener((StateEnableListener) button -> register())
             .addButtonListener((StateDisableListener) button -> unregister());
 

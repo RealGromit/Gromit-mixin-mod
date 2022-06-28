@@ -3,6 +3,8 @@ package com.gromit.gromitmod.gui;
 import com.gromit.gromitmod.GromitMod;
 import com.gromit.gromitmod.gui.button.AbstractButton;
 import com.gromit.gromitmod.utils.GlobalSaver;
+import com.gromit.gromitmod.utils.fontrenderer.FontManager;
+import com.gromit.gromitmod.utils.fontrenderer.TTFFontRenderer;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -22,8 +24,13 @@ public abstract class AbstractGui extends GuiScreen {
 
     protected static final GromitMod gromitMod = GromitMod.getInstance();
     protected static final Minecraft minecraft = gromitMod.getMinecraft();
+    public static float tickCounter;
     protected double guiScale;
     protected float scroll;
+
+    protected static final TTFFontRenderer normal = FontManager.getNormalSize();
+    protected static final TTFFontRenderer title = FontManager.getTitleSize();
+    protected static final TTFFontRenderer biggerTitle = FontManager.getBiggerTitleSize();
 
     private int eventButton;
     private long lastMouseEvent;
@@ -81,8 +88,8 @@ public abstract class AbstractGui extends GuiScreen {
 
     @Override
     public void handleMouseInput() {
-        int i = (int) (Mouse.getEventX() * width / mc.displayWidth / guiScale);
-        int j = (int) ((height - Mouse.getEventY() * height / mc.displayHeight - 1) / guiScale);
+        int i = Mouse.getEventX();
+        int j = 1080 - Mouse.getEventY();
         int k = Mouse.getEventButton();
         if (Mouse.getEventButtonState()) {
             eventButton = k;
@@ -96,7 +103,7 @@ public abstract class AbstractGui extends GuiScreen {
             mouseClickMove(i, j, eventButton, l);
         }
         if (Mouse.getEventDWheel() != 0) {
-            scroll = Mouse.getEventDWheel() / 60;
+            scroll = Mouse.getEventDWheel() / 60f;
             for (AbstractButton button : buttonList) {
                 button.mouseScrolled(scroll);
             }
@@ -145,7 +152,7 @@ public abstract class AbstractGui extends GuiScreen {
 
     @Override
     public void initGui() {
-        guiScale = width / 480.0;
+        guiScale = width / 1920.0;
         buttonList.clear();
     }
 

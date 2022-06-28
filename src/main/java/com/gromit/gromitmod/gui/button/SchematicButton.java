@@ -3,11 +3,10 @@ package com.gromit.gromitmod.gui.button;
 import com.github.lunatrius.schematica.Schematica;
 import com.github.lunatrius.schematica.client.world.SchematicWorld;
 import com.github.lunatrius.schematica.proxy.ClientProxy;
-import com.gromit.gromitmod.event.network.OutboundPacket;
+import com.gromit.gromitmod.event.network.OutboundPacketEvent;
 import com.gromit.gromitmod.gui.button.listener.*;
 import com.gromit.gromitmod.gui.schematica.SchematicLoadGui;
 import com.gromit.gromitmod.utils.ColorUtils;
-import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import com.gromit.gromitmod.utils.fontrenderer.TTFFontRenderer;
 import com.gromit.gromitmod.utils.primitivewrapper.GromitPosDouble;
 import com.gromit.gromitmod.utils.schematic.PlayerData;
@@ -45,23 +44,23 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
     private boolean firstPacket = true;
 
     @Getter protected String buttonText;
-    @Getter protected int color = Color.WHITE.getRGB();
-    @Getter protected TTFFontRenderer fontRenderer;
+    protected int color = Color.WHITE.getRGB();
+    protected TTFFontRenderer fontRenderer;
 
-    @Getter private final TextButton recordButton = new TextButton(FontManager.getTitleSize(), 333.75f - FontManager.getTitleSize().getWidth("Record") / 2, 70);
-    @Getter private final TextButton clearButton = new TextButton(FontManager.getTitleSize(), 367.5f - FontManager.getTitleSize().getWidth("Clear") / 2, 70)
+    @Getter private final TextButton recordButton = new TextButton(title, 1335 - title.getWidth("Record") / 2, 280);
+    @Getter private final TextButton clearButton = new TextButton(title, 1470 - title.getWidth("Clear") / 2, 280)
             .setButtonText("Clear")
             .addButtonListener((ClickListener) button -> playerDataMap.clear())
             .addButtonListener((StateEnableListener) button -> button.setState(false));
 
-    @Getter private final TextButton playButton = new TextButton(FontManager.getTitleSize(), 401.25f - FontManager.getTitleSize().getWidth("Play") / 2, 70);
-    @Getter private final ToggleButton autoPlay = new ToggleButton(390 - 2.5f, 50.5f);
+    @Getter private final TextButton playButton = new TextButton(title, 1605 - title.getWidth("Play") / 2, 280);
+    @Getter private final ToggleButton autoPlay = new ToggleButton(1550, 202);
 
     public SchematicButton(TTFFontRenderer fontRenderer, int x, int y, File file, boolean directory) {
         super(x, y);
         this.fontRenderer = fontRenderer;
-        if (fontRenderer.equals(FontManager.getNormalSize())) height = 4;
-        else if (fontRenderer.equals(FontManager.getTitleSize())) height = 6;
+        if (fontRenderer.equals(normal)) height = 16;
+        else if (fontRenderer.equals(title)) height = 24;
         this.file = file;
         this.directory = directory;
         recordButton
@@ -102,7 +101,7 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
     }
 
     @Override
-    public void drawButton(float mouseX, float mouseY) {
+    public void drawButton(int mouseX, int mouseY) {
         if (!enabled) return;
         super.drawButton(mouseX, mouseY);
 
@@ -114,9 +113,9 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
         fontRenderer.drawString(buttonText, x, y, color);
     }
 
-    private void drawAutoPrintMenu(float mouseX, float mouseY) {
-        FontManager.getTitleSize().drawString("Schematic replay menu", 367.5f - 35, 35, Color.WHITE.getRGB());
-        FontManager.getNormalSize().drawString("Play on schematic load", 345 - 25, 50, Color.WHITE.getRGB());
+    private void drawAutoPrintMenu(int mouseX, int mouseY) {
+        title.drawString("Schematic replay menu", 1330, 140, Color.WHITE.getRGB());
+        normal.drawString("Play on schematic load", 1280, 200, Color.WHITE.getRGB());
         autoPlay.drawButton(mouseX, mouseY);
         recordButton.drawButton(mouseX, mouseY);
         clearButton.drawButton(mouseX, mouseY);
@@ -124,7 +123,7 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
     }
 
     @Override
-    public boolean mousePressed(float mouseButton, float mouseX, float mouseY) {
+    public boolean mousePressed(int mouseButton, int mouseX, int mouseY) {
         super.mousePressed(mouseButton, mouseX, mouseY);
 
         if (state && hovering) {
@@ -139,7 +138,7 @@ public class SchematicButton extends AbstractButton<SchematicButton> {
     }
 
     @SubscribeEvent
-    public void onPlayerPacketSend(OutboundPacket event) {
+    public void onPlayerPacketSend(OutboundPacketEvent event) {
         if (!recordButton.isState() || minecraft.currentScreen != null) return;
         if (firstPacket) {
             oldYaw = minecraft.thePlayer.rotationYaw;

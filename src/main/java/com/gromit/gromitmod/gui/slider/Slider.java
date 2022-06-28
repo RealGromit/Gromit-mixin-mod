@@ -26,11 +26,11 @@ public class Slider extends AbstractButton<Slider> {
     }
 
     @Override
-    public void drawButton(float mouseX, float mouseY) {
+    public void drawButton(int mouseX, int mouseY) {
         super.drawButton(mouseX, mouseY);
 
-        RenderUtils.drawRoundedRectangle(x, y, width, height, Color.WHITE.getRGB(), 1);
-        RenderUtils.drawRoundedRectangle(x + currentProgress, y, 6, height, ColorUtils.getRGB(), 1);
+        RenderUtils.drawRoundedRectangle1(x, y, width, height, 0.9f, height / 2f, Color.WHITE.getRGB());
+        RenderUtils.drawRoundedRectangle1(x + currentProgress, y, 24, height, 0.9f, height / 2f, ColorUtils.getRGB());
         if (moving) {
             currentProgress += delta / Minecraft.getDebugFPS() * 10;
             if (delta < 0 && currentProgress <= neededCurrentProgress) {
@@ -48,21 +48,21 @@ public class Slider extends AbstractButton<Slider> {
     }
 
     @Override
-    public boolean mousePressed(float mouseButton, float mouseX, float mouseY) {
+    public boolean mousePressed(int mouseButton, int mouseX, int mouseY) {
         super.mousePressed(mouseButton, mouseX, mouseY);
 
         if (isMouseOver(mouseX, mouseY)) {
-            currentProgress = mouseX - x - 3;
+            currentProgress = mouseX - x - 12;
             dragging = true;
             return true;
         }
-        if (mouseX >= x && mouseY >= y && mouseX < x + 3 && mouseY < y + height) {
+        if (mouseX >= x && mouseY >= y && mouseX < x + 12 && mouseY < y + height) {
             currentProgress = 0;
             dragging = true;
             return true;
         }
-        if (mouseX >= x + width - 3 && mouseY >= y && mouseX < x + width && mouseY < y + height) {
-            currentProgress = width - 6;
+        if (mouseX >= x + width - 12 && mouseY >= y && mouseX < x + width && mouseY < y + height) {
+            currentProgress = width - 24;
             dragging = true;
             return true;
         }
@@ -73,8 +73,8 @@ public class Slider extends AbstractButton<Slider> {
     public void mouseDragged(float mouseX, float mouseY) {
         super.mouseDragged(mouseX, mouseY);
 
-        if (dragging && mouseX >= x + 3 && mouseX <= (x + width - 3)) {
-            currentProgress = mouseX - x - 3;
+        if (dragging && mouseX >= x + 12 && mouseX <= (x + width - 12)) {
+            currentProgress = mouseX - x - 12;
         }
     }
 
@@ -93,18 +93,18 @@ public class Slider extends AbstractButton<Slider> {
 
     @Override
     protected boolean isMouseOver(float mouseX, float mouseY) {
-        return mouseX >= x + 3 && mouseY >= y && mouseX < x + width - 3 && mouseY < y + height;
+        return mouseX >= x + 12 && mouseY >= y && mouseX < x + width - 12 && mouseY < y + height;
     }
 
     @Override
-    public Slider setWidth(float width) {
-        this.width = width + 6;
+    public Slider setWidth(int width) {
+        this.width = width + 24;
         return this;
     }
 
     public Slider setMinMax(int minValue, int maxValue) {
         this.minValue = minValue;
-        steps = (width - 6) / (maxValue - minValue);
+        steps = (width - 24f) / (maxValue - minValue);
         return this;
     }
 

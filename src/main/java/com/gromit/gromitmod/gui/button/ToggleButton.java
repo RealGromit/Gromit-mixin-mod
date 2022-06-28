@@ -8,43 +8,42 @@ import java.awt.Color;
 
 public class ToggleButton extends AbstractButton<ToggleButton> {
 
-    private final float rectangleX;
-    private final float rectangleY;
+    private final int rectangleX;
+    private final int rectangleY;
     private int red = 255, green;
     private transient boolean moving;
 
-    public ToggleButton(float x, float y) {
-        super(x - 3, y - 1);
-        width = 5;
-        height = 4;
+    public ToggleButton(int x, int y) {
+        super(x - 8, y - 2);
+        width = 16;
+        height = 16;
         rectangleX = x;
         rectangleY = y;
     }
 
     @Override
-    public void drawButton(float mouseX, float mouseY) {
+    public void drawButton(int mouseX, int mouseY) {
         super.drawButton(mouseX, mouseY);
 
-        RenderUtils.drawRoundedRectangleOutline(rectangleX, rectangleY, 5, 3, 1, 25, 0.15f, Color.WHITE.getRGB(), 0.55f);
         if (state && moving) {
-            x += 5f / Minecraft.getDebugFPS() * 5;
-            if (x >= rectangleX + 5 - 3) {
-                x = rectangleX + 5 - 3;
+            x += 100f / Minecraft.getDebugFPS();
+            if (x >= rectangleX + 14) {
+                x = rectangleX + 14;
                 red = 0;
                 green = 255;
                 moving = false;
             }
         } else if (!state && moving) {
-            x -= 5f / Minecraft.getDebugFPS() * 5;
-            if (x <= rectangleX - 3) {
-                x = rectangleX - 3;
+            x -= 100f / Minecraft.getDebugFPS();
+            if (x <= rectangleX - 8) {
+                x = rectangleX - 8;
                 red = 255;
                 green = 0;
                 moving = false;
             }
         }
-        RenderUtils.drawCircleFilled(x + 3, y + 1 + 3 / 2f, 16, Color.WHITE.getRGB());
-        RenderUtils.drawCircleFilled(x + 3, y + 1 + 3 / 2f, 12, ColorUtils.RGBA2Integer(red, green, 0, 255));
+        RenderUtils.drawRoundedRectangleOutline(rectangleX, rectangleY, 20, 12, 6, 1, 1, Color.WHITE.getRGB());
+        RenderUtils.drawCircleFilledOutline(x, y, 8, 1.3f, 1.6f, ColorUtils.RGB2Integer(red, green, 0), Color.WHITE.getRGB());
     }
 
     @Override

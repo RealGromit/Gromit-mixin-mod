@@ -2,7 +2,6 @@ package com.gromit.gromitmod.gui.button;
 
 import com.gromit.gromitmod.utils.ColorUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
-import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.util.MathHelper;
@@ -11,9 +10,9 @@ import java.awt.Color;
 
 public class ColorButton extends AbstractButton<ColorButton> {
 
-    @Getter protected float boxX;
-    @Getter protected float boxY;
-    @Getter protected float boxWidth, boxHeight, sectionX, sectionY, deltaSectionX, deltaSectionY;
+    @Getter protected int boxX;
+    @Getter protected int boxY;
+    @Getter protected int boxWidth, boxHeight, sectionX, sectionY, deltaSectionX, deltaSectionY;
     @Getter protected int red = 255, green, blue, alpha = 255, satRed = 255, satGreen, satBlue;
     @Getter @Setter protected transient boolean hueHovered;
     @Getter @Setter protected transient boolean saturationHovered;
@@ -25,7 +24,7 @@ public class ColorButton extends AbstractButton<ColorButton> {
 
     @Getter private final ToggleButton chroma;
 
-    public ColorButton(float x, float y, float boxX, float boxY, float boxWidth, float boxHeight) {
+    public ColorButton(int x, int y, int boxX, int boxY, int boxWidth, int boxHeight) {
         super(x, y);
         this.boxX = boxX;
         this.boxY = boxY;
@@ -35,51 +34,45 @@ public class ColorButton extends AbstractButton<ColorButton> {
         sectionY = (int) (boxHeight * 0.8);
         deltaSectionX = boxWidth - sectionX;
         deltaSectionY = boxHeight - sectionY;
-        chroma = new ToggleButton(boxX + FontManager.getNormalSize().getWidth("Chroma rgb") + 7, boxY + boxHeight + 3.8f);
+        chroma = new ToggleButton(boxX + normal.getWidth("Chroma rgb") + 16, boxY + boxHeight + 14);
     }
 
     @Override
-    public void drawButton(float mouseX, float mouseY) {
+    public void drawButton(int mouseX, int mouseY) {
         if (!enabled) return;
         super.drawButton(mouseX, mouseY);
 
         RenderUtils.drawRectangle(x, y, width, height, ColorUtils.RGBA2Integer(red, green, blue, alpha));
-        RenderUtils.drawLine(x, y, width, 0, 2, true, 255, 255, 255, 255);
-        RenderUtils.drawLine(x, y + height, width, 0, 2, true, 255, 255, 255, 255);
-        RenderUtils.drawLine(x, y, 0, height, 2, true, 255, 255, 255, 255);
-        RenderUtils.drawLine(x + width, y, 0, height, 2, true, 255, 255, 255, 255);
+        RenderUtils.drawRoundedRectangleOutline(x, y, width, height, 3, 1, 1, Color.WHITE.getRGB());
         drawColorPicker(mouseX, mouseY);
     }
 
-    private void drawColorPicker(float mouseX, float mouseY) {
+    private void drawColorPicker(int mouseX, int mouseY) {
         if (!state) return;
-        saturationHovered = mouseX >= boxX && mouseY >= boxY && mouseX <= boxX + sectionX - 1.4 && mouseY <= boxY + sectionY - 1.4;
-        hueHovered = mouseX >= boxX + sectionX && mouseY >= boxY && mouseX < boxX + sectionX + deltaSectionX - 1 && mouseY < boxY + sectionY - 1;
-        alphaHovered = mouseX >= boxX && mouseY >= boxY + sectionY && mouseX < boxX + boxWidth - 1 && mouseY < boxY + sectionY + deltaSectionY - 1;
+        saturationHovered = mouseX >= boxX && mouseY >= boxY && mouseX < boxX + sectionX && mouseY < boxY + sectionY;
+        hueHovered = mouseX >= boxX + sectionX && mouseY >= boxY && mouseX < boxX + boxWidth && mouseY < boxY + sectionY;
+        alphaHovered = mouseX >= boxX && mouseY >= boxY + sectionY && mouseX < boxX + boxWidth && mouseY < boxY + boxHeight;
         if (chroma.isState()) updateRGB(Color.RGBtoHSB(ColorUtils.getRed(), ColorUtils.getGreen(), ColorUtils.getBlue(), null));
-        RenderUtils.drawLine(boxX, boxY, boxWidth, 0, 2, true, 255, 255, 255, 255);
-        RenderUtils.drawLine(boxX, boxY + boxHeight, boxWidth, 0, 2, true, 255, 255, 255, 255);
-        RenderUtils.drawLine(boxX, boxY, 0, boxHeight, 2, true, 255, 255, 255, 255);
-        RenderUtils.drawLine(boxX + boxWidth, boxY, 0, boxHeight, 2, true, 255, 255, 255, 255);
+
+        float hsbSection = sectionY / 7f - 0.3f;
+        RenderUtils.drawShadingRectangle(boxX + 1, boxY + 1, sectionX - 2, sectionY - 2, satRed, satGreen, satBlue, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 1, boxY + 1, deltaSectionX - 2, hsbSection, 255, 0, 0, 255, 255, 165, 0, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 1, boxY + 1 + hsbSection, deltaSectionX - 2, hsbSection, 255, 165, 0, 255, 255, 255, 0, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 1, boxY + 1 + hsbSection * 2, deltaSectionX - 2, hsbSection, 255, 255, 0, 255, 0, 255, 0, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 1, boxY + 1 + hsbSection * 3, deltaSectionX - 2, hsbSection, 0, 255, 0, 255, 0, 0, 255, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 1, boxY + 1 + hsbSection * 4, deltaSectionX - 2, hsbSection, 0, 0, 255, 255, 255, 0, 255, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 1, boxY + 1 + hsbSection * 5, deltaSectionX - 2, hsbSection, 255, 0, 255, 255, 255, 20, 147, 255);
+        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 1, boxY + 1 + hsbSection * 6, deltaSectionX - 2, hsbSection, 255, 20, 147, 255, 255, 0, 0, 255);
+        RenderUtils.drawShadingRectangleHeightGradient(boxX + 1, boxY + sectionY + 1, boxWidth - 2, deltaSectionY - 2, 0, 0, 0, 0, red, green, blue, 255);
+        RenderUtils.drawRoundedRectangleOutline(boxX, boxY, boxWidth, boxHeight, 4, 2, 1, Color.WHITE.getRGB());
         RenderUtils.drawLine(boxX + sectionX, boxY, 0, sectionY, 2, true, 255, 255, 255, 255);
         RenderUtils.drawLine(boxX, boxY + sectionY, boxWidth, 0, 2, true, 255, 255, 255, 255);
-
-        float hsbSection = sectionY / 7f;
-        RenderUtils.drawShadingRectangle(boxX + 0.3f, boxY + 0.3f, sectionX - 0.6f, sectionY - 0.6f, satRed, satGreen, satBlue, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3f, boxY + 0.3f, deltaSectionX - 0.6f, hsbSection - 0.1f, 255, 0, 0, 255, 255, 165, 0, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3f, boxY + 0.3f + hsbSection - 0.1f, deltaSectionX - 0.6f, hsbSection - 0.1f, 255, 165, 0, 255, 255, 255, 0, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3f, boxY + 0.3f + hsbSection * 2 - 0.2f, deltaSectionX - 0.6f, hsbSection - 0.1f, 255, 255, 0, 255, 0, 255, 0, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3f, boxY + 0.3f + hsbSection * 3 - 0.3f, deltaSectionX - 0.6f, hsbSection - 0.1f, 0, 255, 0, 255, 0, 0, 255, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3f, boxY + 0.3f + hsbSection * 4 - 0.4f, deltaSectionX - 0.6f, hsbSection - 0.1f, 0, 0, 255, 255, 255, 0, 255, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3f, boxY + 0.3f + hsbSection * 5 - 0.5f, deltaSectionX - 0.6f, hsbSection - 0.1f, 255, 0, 255, 255, 255, 20, 147, 255);
-        RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 0.3f, boxY + 0.3f + hsbSection * 6 - 0.6f, deltaSectionX - 0.6f, hsbSection, 255, 20, 147, 255, 255, 0, 0, 255);
-        RenderUtils.drawShadingRectangleHeightGradient(boxX + 0.3f, boxY + sectionY + 0.3f, boxWidth - 0.6f, deltaSectionY - 0.6f, 0, 0, 0, 0, red, green, blue, 255);
-        FontManager.getNormalSize().drawString("Chroma rgb", boxX + 1, boxY + boxHeight + 3, Color.WHITE.getRGB());
+        normal.drawString("Chroma rgb", boxX + 4, boxY + boxHeight + 12, Color.WHITE.getRGB());
         chroma.drawButton(mouseX, mouseY);
     }
 
     @Override
-    public boolean mousePressed(float mouseButton, float mouseX, float mouseY) {
+    public boolean mousePressed(int mouseButton, int mouseX, int mouseY) {
         super.mousePressed(mouseButton, mouseX, mouseY);
 
         if (hueHovered) {
@@ -121,7 +114,7 @@ public class ColorButton extends AbstractButton<ColorButton> {
     }
 
     private void setHue(float mouseY) {
-        hue = MathHelper.clamp_float((mouseY - boxY) / (sectionY - 2f), 0, 1);
+        hue = MathHelper.clamp_float((mouseY - boxY) / sectionY, 0, 1);
         int color = Color.HSBtoRGB(hue, 1, 1);
         satRed = color >> 16 & 255;
         satGreen = color >> 8 & 255;
@@ -130,14 +123,13 @@ public class ColorButton extends AbstractButton<ColorButton> {
     }
 
     private void setSaturation(float mouseX, float mouseY) {
-        float sectionX = sectionY - 2f;
         saturation = MathHelper.clamp_float((mouseX - boxX) / sectionX, 0, 1);
         brightness = MathHelper.clamp_float((boxY - mouseY + sectionX) / sectionX, 0, 1);
         updateColor();
     }
 
     private void setAlpha(float mouseX) {
-        alpha = (int) (MathHelper.clamp_float((mouseX - boxX) / (boxWidth - 2f), 0, 1) * 255);
+        alpha = (int) (MathHelper.clamp_float((mouseX - boxX) / boxWidth, 0, 1) * 255);
         updateColor();
     }
 

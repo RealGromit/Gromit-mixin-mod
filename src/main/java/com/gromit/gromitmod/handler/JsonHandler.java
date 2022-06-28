@@ -44,6 +44,11 @@ public class JsonHandler {
                     AbstractModule module = (AbstractModule) clazz.newInstance();
                     modules.add(module);
                 } catch (InstantiationException | IllegalAccessException | IOException e) {throw new RuntimeException(e);}
+            } else if (moduleFile.length() == 0) {
+                try {
+                    AbstractModule module = (AbstractModule) clazz.newInstance();
+                    modules.add(module);
+                } catch (InstantiationException | IllegalAccessException e) {throw new RuntimeException(e);}
             } else {
                 try {
                     FileReader fileReader = new FileReader(moduleFile);
@@ -66,6 +71,11 @@ public class JsonHandler {
                     Savables savables = (Savables) clazz.newInstance();
                     this.savables.add(savables);
                 } catch (InstantiationException | IllegalAccessException | IOException e) {throw new RuntimeException(e);}
+            } else if (savable.length() == 0) {
+                try {
+                    Savables savables = (Savables) clazz.newInstance();
+                    this.savables.add(savables);
+                } catch (InstantiationException | IllegalAccessException e) {throw new RuntimeException(e);}
             } else {
                 try {
                     FileReader fileReader = new FileReader(savable);

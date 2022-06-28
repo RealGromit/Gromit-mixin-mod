@@ -1,7 +1,7 @@
 package com.gromit.gromitmod.network;
 
-import com.gromit.gromitmod.event.network.InboundPacket;
-import com.gromit.gromitmod.event.network.OutboundPacket;
+import com.gromit.gromitmod.event.network.InboundPacketEvent;
+import com.gromit.gromitmod.event.network.OutboundPacketEvent;
 import io.netty.channel.*;
 import net.minecraft.network.Packet;
 import net.minecraftforge.common.MinecraftForge;
@@ -37,21 +37,21 @@ public class NetworkManager extends ChannelDuplexHandler {
     public void write(ChannelHandlerContext ctx, Object packet, ChannelPromise promise) throws Exception {
         if (!(packet instanceof Packet<?>)) return;
 
-        OutboundPacket outboundPacket = new OutboundPacket((Packet<?>) packet);
-        MinecraftForge.EVENT_BUS.post(outboundPacket);
+        OutboundPacketEvent outboundPacketEvent = new OutboundPacketEvent((Packet<?>) packet);
+        MinecraftForge.EVENT_BUS.post(outboundPacketEvent);
 
-        if (outboundPacket.isCanceled()) return;
-        super.write(ctx, outboundPacket.getPacket(), promise);
+        if (outboundPacketEvent.isCanceled()) return;
+        super.write(ctx, outboundPacketEvent.getPacket(), promise);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object packet) throws Exception {
         if (!(packet instanceof Packet<?>)) return;
 
-        InboundPacket inboundPacket = new InboundPacket((Packet<?>) packet);
-        MinecraftForge.EVENT_BUS.post(inboundPacket);
+        InboundPacketEvent inboundPacketEvent = new InboundPacketEvent((Packet<?>) packet);
+        MinecraftForge.EVENT_BUS.post(inboundPacketEvent);
 
-        if (inboundPacket.isCanceled()) return;
-        super.channelRead(ctx, inboundPacket.getPacket());
+        if (inboundPacketEvent.isCanceled()) return;
+        super.channelRead(ctx, inboundPacketEvent.getPacket());
     }
 }

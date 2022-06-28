@@ -2,7 +2,6 @@ package com.gromit.gromitmod.gui.button;
 
 import com.gromit.gromitmod.gui.button.listener.EndHoverListener;
 import com.gromit.gromitmod.utils.ColorUtils;
-import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import com.gromit.gromitmod.utils.fontrenderer.TTFFontRenderer;
 import lombok.Getter;
 
@@ -14,16 +13,16 @@ public class TextButton extends AbstractButton<TextButton> {
     @Getter protected int color = Color.WHITE.getRGB();
     @Getter protected TTFFontRenderer fontRenderer;
 
-    public TextButton(TTFFontRenderer fontRenderer, float x, float y) {
+    public TextButton(TTFFontRenderer fontRenderer, int x, int y) {
         super(x, y);
         this.fontRenderer = fontRenderer;
-        if (fontRenderer.equals(FontManager.getNormalSize())) height = 4;
-        else if (fontRenderer.equals(FontManager.getTitleSize())) height = 6;
+        if (fontRenderer.equals(normal)) height = 16;
+        else if (fontRenderer.equals(title)) height = 24;
         addButtonListener((EndHoverListener) button -> ((TextButton) button).setColor(Color.WHITE.getRGB()));
     }
 
     @Override
-    public void drawButton(float mouseX, float mouseY) {
+    public void drawButton(int mouseX, int mouseY) {
         if (!enabled) return;
         super.drawButton(mouseX, mouseY);
 
