@@ -43,6 +43,7 @@ public class OtherModuleGui extends MainGui {
         crumbs.setState(false);
         fps.setState(false);
         mods.setState(false);
+        settings.setState(false);
 
         buttonList.add(autoTick);
         buttonList.add(autoTickStateButton);

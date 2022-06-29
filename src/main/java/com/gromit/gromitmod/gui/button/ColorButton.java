@@ -43,7 +43,7 @@ public class ColorButton extends AbstractButton<ColorButton> {
         super.drawButton(mouseX, mouseY);
 
         RenderUtils.drawRectangle(x, y, width, height, ColorUtils.RGBA2Integer(red, green, blue, alpha));
-        RenderUtils.drawRoundedRectangleOutline(x, y, width, height, 3, 1, 1, Color.WHITE.getRGB());
+        RenderUtils.drawRoundedRectangleOutline(x, y, width, height, 3, 1, 1, Color.WHITE.getRGB(), false);
         drawColorPicker(mouseX, mouseY);
     }
 
@@ -64,7 +64,7 @@ public class ColorButton extends AbstractButton<ColorButton> {
         RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 1, boxY + 1 + hsbSection * 5, deltaSectionX - 2, hsbSection, 255, 0, 255, 255, 255, 20, 147, 255);
         RenderUtils.drawShadingRectangleWidthGradient(boxX + sectionX + 1, boxY + 1 + hsbSection * 6, deltaSectionX - 2, hsbSection, 255, 20, 147, 255, 255, 0, 0, 255);
         RenderUtils.drawShadingRectangleHeightGradient(boxX + 1, boxY + sectionY + 1, boxWidth - 2, deltaSectionY - 2, 0, 0, 0, 0, red, green, blue, 255);
-        RenderUtils.drawRoundedRectangleOutline(boxX, boxY, boxWidth, boxHeight, 4, 2, 1, Color.WHITE.getRGB());
+        RenderUtils.drawRoundedRectangleOutline(boxX, boxY, boxWidth, boxHeight, 4, 2, 1, Color.WHITE.getRGB(), false);
         RenderUtils.drawLine(boxX + sectionX, boxY, 0, sectionY, 2, true, 255, 255, 255, 255);
         RenderUtils.drawLine(boxX, boxY + sectionY, boxWidth, 0, 2, true, 255, 255, 255, 255);
         normal.drawString("Chroma rgb", boxX + 4, boxY + boxHeight + 12, Color.WHITE.getRGB());
@@ -150,6 +150,10 @@ public class ColorButton extends AbstractButton<ColorButton> {
         satRed = red;
         satGreen = green;
         satBlue = blue;
+    }
+
+    public int getColor() {
+        return ((alpha & 0xFF) << 24) | ((red & 0xFF) << 16) | ((green & 0xFF) << 8) | ((blue & 0xFF));
     }
 
     public ColorButton setBoxWidth(int boxWidth) {

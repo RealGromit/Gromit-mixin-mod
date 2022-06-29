@@ -47,6 +47,7 @@ public class CrumbsModuleGui extends MainGui {
         fps.setState(false);
         other.setState(false);
         mods.setState(false);
+        settings.setState(false);
     }
 
     @Override

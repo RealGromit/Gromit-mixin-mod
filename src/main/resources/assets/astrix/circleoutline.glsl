@@ -1,7 +1,6 @@
 #version 110
 
-uniform vec2 position;
-uniform vec2 size;
+uniform vec2 center;
 uniform float radius;
 uniform float linewidth;
 uniform float feather;
@@ -10,10 +9,7 @@ uniform vec4 color;
 uniform bool rgb;
 
 void main() {
-    vec2 center = vec2(position.x + size.x / 2.0, position.y - size.y / 2.0);
-
-    float distance = length(max(abs(gl_FragCoord.xy - center) - size / 2.0 + radius, 0.0)) - radius;
-    float step = 1.0 - smoothstep(-feather, feather, abs(distance) - linewidth);
+    float step = 1.0 - smoothstep(-feather, feather, abs(distance(gl_FragCoord.xy, center) - radius) - linewidth);
 
     if (rgb) {
         vec2 p = (gl_FragCoord.xy - center) / vec2(1080, 1920);
@@ -37,6 +33,7 @@ void main() {
             horColour.b += 1.0 - xCol;
             horColour.r += xCol;
         }
+
         gl_FragColor = vec4(mix(horColour * 5.0, color.rgb, step), color.a * step);
     } else {
         gl_FragColor = vec4(color.rgb, color.a * step);

@@ -29,8 +29,8 @@ public class Slider extends AbstractButton<Slider> {
     public void drawButton(int mouseX, int mouseY) {
         super.drawButton(mouseX, mouseY);
 
-        RenderUtils.drawRoundedRectangle1(x, y, width, height, 0.9f, height / 2f, Color.WHITE.getRGB());
-        RenderUtils.drawRoundedRectangle1(x + currentProgress, y, 24, height, 0.9f, height / 2f, ColorUtils.getRGB());
+        RenderUtils.drawRoundedRectangle(x, y, width, height, 0.9f, height / 2f, Color.WHITE.getRGB());
+        RenderUtils.drawRoundedRectangle(x + currentProgress, y, 24, height, 0.9f, height / 2f, ColorUtils.getRGB());
         if (moving) {
             currentProgress += delta / Minecraft.getDebugFPS() * 10;
             if (delta < 0 && currentProgress <= neededCurrentProgress) {

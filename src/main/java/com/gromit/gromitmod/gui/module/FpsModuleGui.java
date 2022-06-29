@@ -57,6 +57,7 @@ public class FpsModuleGui extends MainGui {
         crumbs.setState(false);
         other.setState(false);
         mods.setState(false);
+        settings.setState(false);
     }
 
     @Override

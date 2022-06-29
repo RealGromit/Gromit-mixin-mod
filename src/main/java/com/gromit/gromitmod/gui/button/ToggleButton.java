@@ -42,7 +42,7 @@ public class ToggleButton extends AbstractButton<ToggleButton> {
                 moving = false;
             }
         }
-        RenderUtils.drawRoundedRectangleOutline(rectangleX, rectangleY, 20, 12, 6, 1, 1, Color.WHITE.getRGB());
+        RenderUtils.drawRoundedRectangleOutline(rectangleX, rectangleY, 20, 12, 6, 1, 1, Color.WHITE.getRGB(), false);
         RenderUtils.drawCircleFilledOutline(x, y, 8, 1.3f, 1.6f, ColorUtils.RGB2Integer(red, green, 0), Color.WHITE.getRGB());
     }
 
