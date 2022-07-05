@@ -15,6 +15,7 @@
     "spawner.MobSpawnerBaseLogicMixin"
   ],
   "client": [
+    "ClippingHelperImplMixin",
     "MinecraftMixin",
     "RenderMixin",
     "spawner.TileEntityMobSpawnerRendererMixin"

@@ -29,7 +29,7 @@ public class Shader {
             vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
             glShaderSource(vertexShaderID, vertexShader);
             glCompileShader(vertexShaderID);
-            if (glGetShaderi(vertexShaderID, GL_COMPILE_STATUS) == GL_FALSE || glGetShaderi(vertexShaderID, GL_LINK_STATUS) == GL_FALSE) {
+            if (glGetShaderi(vertexShaderID, GL_COMPILE_STATUS) == GL_FALSE) {
                 System.out.println(glGetShaderInfoLog(vertexShaderID, 500));
                 glDeleteShader(vertexShaderID);
             }
@@ -42,7 +42,7 @@ public class Shader {
             fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
             glShaderSource(fragmentShaderID, fragmentShader);
             glCompileShader(fragmentShaderID);
-            if (glGetShaderi(fragmentShaderID, GL_COMPILE_STATUS) == GL_FALSE || glGetShaderi(fragmentShaderID, GL_LINK_STATUS) == GL_FALSE) {
+            if (glGetShaderi(fragmentShaderID, GL_COMPILE_STATUS) == GL_FALSE) {
                 System.out.println(glGetShaderInfoLog(fragmentShaderID, 500));
                 glDeleteShader(fragmentShaderID);
             }

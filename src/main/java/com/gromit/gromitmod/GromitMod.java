@@ -9,7 +9,6 @@ import com.gromit.gromitmod.handler.JsonHandler;
 import com.gromit.gromitmod.listener.ChunkMapper;
 import com.gromit.gromitmod.listener.ClientTickEvent;
 import com.gromit.gromitmod.listener.PlayerInteractEvent;
-import com.gromit.gromitmod.network.NetworkManager;
 import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
@@ -40,7 +39,6 @@ public class GromitMod {
         RenderingRegistry.registerEntityRenderingHandler(EntityTNTPrimed.class, new TntEntity(Minecraft.getMinecraft().getRenderManager()));
         RenderingRegistry.registerEntityRenderingHandler(EntityFallingBlock.class, new FallingBlockEntity(Minecraft.getMinecraft().getRenderManager()));
         new GuiHandler();
-        new NetworkManager();
         new ClientTickEvent();
         new PlayerInteractEvent(minecraft);
         new InputHandler(minecraft);

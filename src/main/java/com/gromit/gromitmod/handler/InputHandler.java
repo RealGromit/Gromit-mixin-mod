@@ -1,6 +1,7 @@
 package com.gromit.gromitmod.handler;
 
 import com.gromit.gromitmod.gui.MainGui;
+import com.gromit.gromitmod.gui.TestGui;
 import com.gromit.gromitmod.utils.GlobalSaver;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -34,8 +35,9 @@ public class InputHandler {
     public void onKeyInput(InputEvent event) {
         if (minecraft.currentScreen == null) {
             if (KEY_BINDING_GUI.isPressed()) {
-                if (GlobalSaver.getLastAbstractGuiScreen() != null) minecraft.displayGuiScreen(GlobalSaver.getLastAbstractGuiScreen());
-                else minecraft.displayGuiScreen(MainGui.getInstance());
+                minecraft.displayGuiScreen(TestGui.getInstance());
+                //if (GlobalSaver.getLastAbstractGuiScreen() != null) minecraft.displayGuiScreen(GlobalSaver.getLastAbstractGuiScreen());
+                //else minecraft.displayGuiScreen(MainGui.getInstance());
             }
         }
     }
