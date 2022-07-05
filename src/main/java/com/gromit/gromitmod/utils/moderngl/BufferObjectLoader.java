@@ -29,7 +29,7 @@ import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
 // WIP :pray:
 public class BufferObjectLoader {
 
-    private VAO vao;
+    private GLObject instancedQuads;
     public static FloatBuffer projectionMatrix;
     public static FloatBuffer modelMatrix;
     private final Shader triangle = new Shader(new ResourceLocation("astrix", "triangle.glsl"),
@@ -88,9 +88,6 @@ public class BufferObjectLoader {
                 0.05f, -0.05f,
                 0.05f, 0.05f,
                 1, 0, 0,
-                0, 1, 0,
-                0, 0, 1,
-                1, 1, 1
         };
 
         float[] finalVertices = new float[220];
@@ -102,24 +99,22 @@ public class BufferObjectLoader {
             finalVertices[index1++] = offsetss;
         }
 
-        VBO vbo = new VBO();
-        vao = new VAO()
-                .bind()
-                .addVbo(vbo
-                        .bind(GL_ARRAY_BUFFER)
-                        .populateVBO(finalVertices, GL_STATIC_DRAW,
-                                new BufferArrayInfo(0, 2, GL_FLOAT, 0, 0),
-                                new BufferArrayInfo(1, 3, GL_FLOAT, 0, 32),
-                                new BufferArrayInfo(2, 2, GL_FLOAT, 0, 80)))
-                .addAttributePointers();
-        glVertexAttribDivisor(2, 1);
-        vao.unbind();
-        vbo.unbind();
+        instancedQuads = new GLObject()
+                .bindVao()
+                .addVbo("poscol", new VBO())
+                .addVbo("offsets", new VBO())
+                .populateVbo("poscol", quadVertices, GL_STATIC_DRAW,
+                        new BufferArrayInfo(0, 2, GL_FLOAT, 0, 0, null),
+                        new BufferArrayInfo(1, 3, GL_FLOAT, 0, 32, buffer -> glVertexAttribDivisor(1, 78)))
+                .populateVbo("offsets", offsets, GL_STATIC_DRAW,
+                        new BufferArrayInfo(2, 2, GL_FLOAT, 0, 0, buffer -> glVertexAttribDivisor(2, 1)))
+                .unbindVbo()
+                .unbindVao();
     }
 
     public void renderVAO() {
         glUseProgram(triangle.getShaderProgram());
-        vao.renderInstanced(GL_QUADS, 0, 4, 100);
+        instancedQuads.renderInstanced(GL_QUADS, 0, 4, 100);
         glUseProgram(0);
     }
 
