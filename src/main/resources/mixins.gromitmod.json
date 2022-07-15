@@ -17,6 +17,7 @@
   "client": [
     "ClippingHelperImplMixin",
     "MinecraftMixin",
+    "RenderManagerMixin",
     "RenderMixin",
     "spawner.TileEntityMobSpawnerRendererMixin"
   ]

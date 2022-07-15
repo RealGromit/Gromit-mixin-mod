@@ -9,7 +9,7 @@ import com.gromit.gromitmod.gui.button.listener.StateDisableListener;
 import com.gromit.gromitmod.gui.button.listener.StateEnableListener;
 import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.module.AbstractModule;
-import com.gromit.gromitmod.utils.AxisAlignedBBTime;
+import com.gromit.gromitmod.utils.aabb.AxisAlignedBBTime;
 import com.gromit.gromitmod.utils.RenderUtils;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;

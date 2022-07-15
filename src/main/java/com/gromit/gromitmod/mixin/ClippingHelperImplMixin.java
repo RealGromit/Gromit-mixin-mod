@@ -1,6 +1,6 @@
 package com.gromit.gromitmod.mixin;
 
-import com.gromit.gromitmod.utils.moderngl.BufferObjectLoader;
+import com.gromit.gromitmod.utils.moderngl.WorldMatrices;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.renderer.culling.ClippingHelperImpl;
@@ -86,7 +86,6 @@ public abstract class ClippingHelperImplMixin extends ClippingHelper {
         lvt_8_1_[2] = clippingMatrix[11] + clippingMatrix[10];
         lvt_8_1_[3] = clippingMatrix[15] + clippingMatrix[14];
         normalize(lvt_8_1_);
-        BufferObjectLoader.projectionMatrix = projectionMatrixBuffer;
-        BufferObjectLoader.modelMatrix = modelviewMatrixBuffer;
+        WorldMatrices.updateMatrices(projectionMatrixBuffer, modelviewMatrixBuffer);
     }
 }

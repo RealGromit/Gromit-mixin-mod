@@ -5,7 +5,6 @@ import com.gromit.gromitmod.module.fps.Tnt;
 import com.gromit.gromitmod.utils.ClientUtils;
 import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import com.gromit.gromitmod.utils.fontrenderer.TTFFontRenderer;
-import com.gromit.gromitmod.utils.moderngl.BufferObjectLoader;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -15,8 +14,6 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
@@ -31,12 +28,11 @@ public class TntEntity extends Render<EntityTNTPrimed> {
     private final BlockRendererDispatcher blockRendererDispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
     private final TTFFontRenderer normal = FontManager.getNormalSize();
     public final HashSet<EntityTNTPrimed> blacklistedTnt = new HashSet<>();
-    public static BufferObjectLoader tnt;
 
     public TntEntity(RenderManager renderManager) {
         super(renderManager);
         instance = this;
-        shadowSize = 0.5F;
+        shadowSize = 0;
     }
 
     @Override

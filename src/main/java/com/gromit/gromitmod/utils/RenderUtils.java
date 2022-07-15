@@ -2,6 +2,7 @@ package com.gromit.gromitmod.utils;
 
 import com.gromit.gromitmod.gui.AbstractGui;
 import com.gromit.gromitmod.module.settings.Customizations;
+import com.gromit.gromitmod.utils.aabb.AxisAlignedBBTime;
 import com.gromit.gromitmod.utils.moderngl.Shader;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -20,16 +21,16 @@ public class RenderUtils {
     private static final WorldRenderer worldRenderer;
     private static final float PI = (float) Math.PI;
 
-    private static final Shader roundedRectangle = new Shader(null, new ResourceLocation("astrix", "roundedquad.glsl"),
+    private static final Shader roundedRectangle = new Shader(null, new ResourceLocation("astrix", "shaders/roundedquad.glsl"),
             "position", "size", "radius", "feather", "color");
 
-    private static final Shader circleOutline = new Shader(null, new ResourceLocation("astrix", "circleoutline.glsl"),
+    private static final Shader circleOutline = new Shader(null, new ResourceLocation("astrix", "shaders/circleoutline.glsl"),
             "center", "radius", "linewidth", "feather", "iframe", "color", "rgb");
 
-    private static final Shader roundedRectangleOutline = new Shader(null, new ResourceLocation("astrix", "roundedquadoutline.glsl"),
+    private static final Shader roundedRectangleOutline = new Shader(null, new ResourceLocation("astrix", "shaders/roundedquadoutline.glsl"),
             "position", "size", "radius", "linewidth", "feather", "iframe", "color", "rgb");
 
-    private static final Shader circleOutlineFilled = new Shader(null, new ResourceLocation("astrix", "circleoutlinefilled.glsl"),
+    private static final Shader circleOutlineFilled = new Shader(null, new ResourceLocation("astrix", "shaders/circleoutlinefilled.glsl"),
             "position", "radius", "linewidth", "feather", "innercolor", "outercolor");
 
     static {

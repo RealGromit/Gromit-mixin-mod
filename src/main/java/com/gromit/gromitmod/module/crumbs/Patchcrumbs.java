@@ -10,7 +10,7 @@ import com.gromit.gromitmod.gui.button.listener.StateEnableListener;
 import com.gromit.gromitmod.gui.slider.Slider;
 import com.gromit.gromitmod.listener.ChunkMapper;
 import com.gromit.gromitmod.module.AbstractModule;
-import com.gromit.gromitmod.utils.AxisAlignedBBTime;
+import com.gromit.gromitmod.utils.aabb.AxisAlignedBBTime;
 import com.gromit.gromitmod.utils.MathUtils;
 import com.gromit.gromitmod.utils.RenderUtils;
 import it.unimi.dsi.fastutil.longs.Long2LongMap;

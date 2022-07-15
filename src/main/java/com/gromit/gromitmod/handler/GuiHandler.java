@@ -1,7 +1,6 @@
 package com.gromit.gromitmod.handler;
 
 import com.gromit.gromitmod.gui.MainGui;
-import com.gromit.gromitmod.gui.TestGui;
 import com.gromit.gromitmod.gui.module.*;
 import com.gromit.gromitmod.gui.module.crumbs.ExplosionBoxGui;
 import com.gromit.gromitmod.gui.module.crumbs.PatchcrumbsGui;
@@ -31,6 +30,5 @@ public class GuiHandler {
         new SpawnerGui();
         new SettingsGui();
         new CustomizationGui();
-        new TestGui();
     }
 }

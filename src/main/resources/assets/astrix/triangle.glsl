@@ -1,11 +1,13 @@
 #version 330 core
-layout (location = 0) in vec2 aPos;
-layout (location = 1) in vec3 aColor;
-layout (location = 2) in vec2 offset;
+layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec3 aOffset;
+layout (location = 2) in vec2 aTexCoord;
 
-out vec4 color;
+out vec2 texCoord;
+
+uniform mat4 projection;
 
 void main() {
-    gl_Position = vec4(aPos + offset, 0, 1);
-    color = vec4(aColor, 1);
+    gl_Position = projection * vec4(aPos + aOffset, 1);
+    texCoord = aTexCoord;
 }
