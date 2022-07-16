@@ -3,6 +3,7 @@ package com.gromit.gromitmod.listener;
 import com.gromit.gromitmod.entityrenderer.TntEntity;
 import com.gromit.gromitmod.gui.AbstractGui;
 import com.gromit.gromitmod.utils.ColorUtils;
+import net.minecraft.block.BlockSand;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityFallingBlock;
@@ -21,6 +22,7 @@ public class ClientTickEvent {
     public static List<Entity> cachedEntityList;
     public static List<EntityTNTPrimed> cachedTntList = new ArrayList<>();
     public static List<EntityFallingBlock> cachedFallingBlockList = new ArrayList<>();
+    public static List<EntityFallingBlock> cachedSandList = new ArrayList<>();
 
     public ClientTickEvent() {
         MinecraftForge.EVENT_BUS.register(this);
@@ -36,10 +38,15 @@ public class ClientTickEvent {
         cachedEntityList = minecraft.theWorld.getLoadedEntityList();
         cachedTntList.clear();
         cachedFallingBlockList.clear();
+        cachedSandList.clear();
         tntEntityRenderer.blacklistedTnt.clear();
         for (Entity entity : cachedEntityList) {
             if (entity instanceof EntityTNTPrimed) cachedTntList.add((EntityTNTPrimed) entity);
-            if (entity instanceof EntityFallingBlock) cachedFallingBlockList.add((EntityFallingBlock) entity);
+            if (entity instanceof EntityFallingBlock) {
+                EntityFallingBlock fallingBlock = (EntityFallingBlock) entity;
+                cachedFallingBlockList.add(fallingBlock);
+                if (fallingBlock.getBlock().getBlock() instanceof BlockSand) cachedSandList.add(fallingBlock);
+            }
         }
     }
 }
