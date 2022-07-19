@@ -2,10 +2,8 @@ package com.gromit.gromitmod.utils.moderngl;
 
 public class FloatArrayBuilder {
 
-    private float[] finalArray;
-    private float[] uvCoords;
-
-    public static void AABB2Floats(float[] data, float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+    public static float[] AABB2Floats(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
+        float[] data = new float[72];
         int index = 0;
         data[index++] = minX;
         data[index++] = minY;
@@ -79,15 +77,6 @@ public class FloatArrayBuilder {
         data[index++] = minX;
         data[index++] = minY;
         data[index] = minZ;
-    }
-
-    public FloatArrayBuilder UV2Floats(float minX, float minY, float maxX, float maxY) {
-        uvCoords = new float[] {
-                minX, minY,
-                minX, maxY,
-                maxX, maxY,
-                maxX, minY
-        };
-        return this;
+        return data;
     }
 }

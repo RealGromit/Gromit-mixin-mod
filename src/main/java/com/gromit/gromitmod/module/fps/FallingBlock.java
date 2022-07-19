@@ -22,7 +22,8 @@ public class FallingBlock extends AbstractModule {
 
     public final ToggleButton fallingBlockXRay = new ToggleButton(MainGui.mainGuiPointX + 518, MainGui.mainGuiPointY + 201);
     public final ToggleButton fallingBlockDropShadow = new ToggleButton(MainGui.mainGuiPointX + 518, MainGui.mainGuiPointY + 229);
-    public final ToggleButton fallingBlockDisable = new ToggleButton(MainGui.mainGuiPointX + 518, MainGui.mainGuiPointY + 257);
+    public final ToggleButton fallingBlockOptimize = new ToggleButton(MainGui.mainGuiPointX + 518, MainGui.mainGuiPointY + 257);
+    public final ToggleButton fallingBlockDisable = new ToggleButton(MainGui.mainGuiPointX + 518, MainGui.mainGuiPointY + 285);
 
     public FallingBlock() {
         instance = this;

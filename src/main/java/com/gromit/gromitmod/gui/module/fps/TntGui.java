@@ -19,7 +19,7 @@ public class TntGui extends FpsModuleGui {
     private final ToggleButton tntDropShadow = Tnt.getInstance().tntDropShadow;
     private final ToggleButton tntSmokeParticle = Tnt.getInstance().tntSmokeParticle;
     private final ToggleButton tntDisable = Tnt.getInstance().tntDisable;
-    private final ToggleButton tntMinimal = Tnt.getInstance().tntMinimal;
+    private final ToggleButton tntOptimize = Tnt.getInstance().tntOptimize;
     private final Slider tntLimiter = Tnt.getInstance().tntLimiter;
     private final ToggleButton tntLimiterState = Tnt.getInstance().tntLimiterState;
 
@@ -34,7 +34,7 @@ public class TntGui extends FpsModuleGui {
         buttonList.add(tntDropShadow);
         buttonList.add(tntSmokeParticle);
         buttonList.add(tntDisable);
-        buttonList.add(tntMinimal);
+        buttonList.add(tntOptimize);
         buttonList.add(tntLimiter);
         buttonList.add(tntLimiterState);
         tnt.setState(true);
@@ -51,7 +51,7 @@ public class TntGui extends FpsModuleGui {
         normal.drawString("Fuse Label", mainGuiPointX + 272, mainGuiPointY + 284, Color.WHITE.getRGB());
         normal.drawString("Drop Shadow", mainGuiPointX + 272, mainGuiPointY + 312, Color.WHITE.getRGB());
         normal.drawString("Smoke Particle", mainGuiPointX + 272, mainGuiPointY + 340, Color.WHITE.getRGB());
-        normal.drawString("Minimal Tnt", mainGuiPointX + 272, mainGuiPointY + 368, Color.WHITE.getRGB());
+        normal.drawString("Optimize Tnt", mainGuiPointX + 272, mainGuiPointY + 368, Color.WHITE.getRGB());
         normal.drawString("Disable Tnt", mainGuiPointX + 272, mainGuiPointY + 396, Color.WHITE.getRGB());
         normal.drawString("Tnt Limiter:", mainGuiPointX + 272, mainGuiPointY + 424, Color.WHITE.getRGB());
         tntLimiter.drawButton(mouseX, mouseY);
@@ -63,7 +63,7 @@ public class TntGui extends FpsModuleGui {
         tntDropShadow.drawButton(mouseX, mouseY);
         tntSmokeParticle.drawButton(mouseX, mouseY);
         tntDisable.drawButton(mouseX, mouseY);
-        tntMinimal.drawButton(mouseX, mouseY);
+        tntOptimize.drawButton(mouseX, mouseY);
         tntLimiterState.drawButton(mouseX, mouseY);
     }
 

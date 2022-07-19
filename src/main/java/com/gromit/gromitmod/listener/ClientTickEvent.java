@@ -1,6 +1,5 @@
 package com.gromit.gromitmod.listener;
 
-import com.gromit.gromitmod.entityrenderer.TntEntity;
 import com.gromit.gromitmod.gui.AbstractGui;
 import com.gromit.gromitmod.utils.ColorUtils;
 import net.minecraft.block.BlockSand;
@@ -17,7 +16,6 @@ import java.util.List;
 
 public class ClientTickEvent {
 
-    private final TntEntity tntEntityRenderer = TntEntity.getInstance();
     private final Minecraft minecraft = Minecraft.getMinecraft();
     public static List<Entity> cachedEntityList;
     public static List<EntityTNTPrimed> cachedTntList = new ArrayList<>();
@@ -39,9 +37,10 @@ public class ClientTickEvent {
         cachedTntList.clear();
         cachedFallingBlockList.clear();
         cachedSandList.clear();
-        tntEntityRenderer.blacklistedTnt.clear();
         for (Entity entity : cachedEntityList) {
-            if (entity instanceof EntityTNTPrimed) cachedTntList.add((EntityTNTPrimed) entity);
+            if (entity instanceof EntityTNTPrimed) {
+                cachedTntList.add((EntityTNTPrimed) entity);
+            }
             if (entity instanceof EntityFallingBlock) {
                 EntityFallingBlock fallingBlock = (EntityFallingBlock) entity;
                 cachedFallingBlockList.add(fallingBlock);

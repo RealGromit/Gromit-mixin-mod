@@ -63,4 +63,12 @@ public class MathUtils {
         }
         return null;
     }
+
+    public static float interpolate(float currentPos, float lastTickPos, float partialTicks) {
+        return lastTickPos + (currentPos - lastTickPos) * partialTicks;
+    }
+
+    public static float interpolateCameraDelta(float currentPos, float lastTickPos, float partialTicks, float camera) {
+        return lastTickPos + (currentPos - lastTickPos) * partialTicks - camera;
+    }
 }

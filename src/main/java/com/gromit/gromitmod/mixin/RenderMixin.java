@@ -32,16 +32,13 @@ public abstract class RenderMixin {
     @Shadow protected abstract World getWorldFromRenderManager();
     @Shadow protected float shadowSize;
     @Shadow protected abstract void func_180549_a(Block p_180549_1_, double p_180549_2_, double p_180549_4_, double p_180549_4_2, BlockPos p_180549_6_, float p_180549_6_2, float p_180549_8_, double p_180549_8_2, double p_180549_9_, double p_180549_10_);
-
-    private final Tnt tntModule = Tnt.getInstance();
-    private final FallingBlock fallingBlockModule = FallingBlock.getInstance();
     /**
      * @author Gromit
      */
     @Overwrite
     private void renderShadow(Entity entity, double x, double y, double z, float entityYaw, float partialTicks) {
-        if (entity instanceof EntityTNTPrimed && !tntModule.tntDropShadow.isState() && tntModule.isState()) return;
-        if (entity instanceof EntityFallingBlock && !fallingBlockModule.fallingBlockDropShadow.isState() && fallingBlockModule.isState()) return;
+        if (entity instanceof EntityTNTPrimed && !Tnt.getInstance().tntDropShadow.isState() && Tnt.getInstance().isState()) return;
+        if (entity instanceof EntityFallingBlock && !FallingBlock.getInstance().fallingBlockDropShadow.isState() && FallingBlock.getInstance().isState()) return;
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(770, 771);
         renderManager.renderEngine.bindTexture(shadowTextures);

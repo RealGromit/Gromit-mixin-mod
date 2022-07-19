@@ -27,7 +27,7 @@ public class Tnt extends AbstractModule {
     public final ToggleButton tntFuseLabel = new ToggleButton(MainGui.mainGuiPointX + 518, MainGui.mainGuiPointY + 285);
     public final ToggleButton tntDropShadow = new ToggleButton(MainGui.mainGuiPointX + 518, MainGui.mainGuiPointY + 313);
     public final ToggleButton tntSmokeParticle = new ToggleButton(MainGui.mainGuiPointX + 518, MainGui.mainGuiPointY + 341);
-    public final ToggleButton tntMinimal = new ToggleButton(MainGui.mainGuiPointX + 518, MainGui.mainGuiPointY + 369);
+    public final ToggleButton tntOptimize = new ToggleButton(MainGui.mainGuiPointX + 518, MainGui.mainGuiPointY + 369);
     public final ToggleButton tntDisable = new ToggleButton(MainGui.mainGuiPointX + 518, MainGui.mainGuiPointY + 397);
     public final Slider tntLimiter = new Slider(MainGui.mainGuiPointX + 272, MainGui.mainGuiPointY + 452, false)
             .setWidth(396)

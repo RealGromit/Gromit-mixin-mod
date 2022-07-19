@@ -1,7 +1,5 @@
 package com.gromit.gromitmod;
 
-import com.gromit.gromitmod.entityrenderer.FallingBlockEntity;
-import com.gromit.gromitmod.entityrenderer.TntEntity;
 import com.gromit.gromitmod.event.client.AfterScreenCreationEvent;
 import com.gromit.gromitmod.handler.CommandHandler;
 import com.gromit.gromitmod.handler.GuiHandler;
@@ -10,6 +8,9 @@ import com.gromit.gromitmod.handler.JsonHandler;
 import com.gromit.gromitmod.listener.ChunkMapper;
 import com.gromit.gromitmod.listener.ClientTickEvent;
 import com.gromit.gromitmod.listener.PlayerInteractEvent;
+import com.gromit.gromitmod.renderer.GravelRendererInstanced;
+import com.gromit.gromitmod.renderer.SandRendererInstanced;
+import com.gromit.gromitmod.renderer.TntRendererInstanced;
 import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import com.gromit.gromitmod.utils.moderngl.GlobalRenderManager;
 import lombok.Getter;
@@ -17,7 +18,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -41,8 +41,6 @@ public class GromitMod {
         new FontManager();
         new ChunkMapper(minecraft);
         JsonHandler jsonHandler = new JsonHandler();
-        RenderingRegistry.registerEntityRenderingHandler(EntityTNTPrimed.class, new TntEntity(Minecraft.getMinecraft().getRenderManager()));
-        RenderingRegistry.registerEntityRenderingHandler(EntityFallingBlock.class, new FallingBlockEntity(Minecraft.getMinecraft().getRenderManager()));
         new GuiHandler();
         new ClientTickEvent();
         new PlayerInteractEvent(minecraft);
@@ -53,7 +51,10 @@ public class GromitMod {
 
     @SubscribeEvent
     public void onWindowCreation(AfterScreenCreationEvent event) {
-        new GlobalRenderManager();
+        MinecraftForge.EVENT_BUS.register(new GlobalRenderManager());
+        new TntRendererInstanced(EntityTNTPrimed.class);
+        new SandRendererInstanced(EntityFallingBlock.class);
+        new GravelRendererInstanced(EntityFallingBlock.class);
     }
 
     private void createFolder() {
