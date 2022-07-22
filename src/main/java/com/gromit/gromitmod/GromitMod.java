@@ -7,16 +7,10 @@ import com.gromit.gromitmod.handler.InputHandler;
 import com.gromit.gromitmod.handler.JsonHandler;
 import com.gromit.gromitmod.listener.ChunkMapper;
 import com.gromit.gromitmod.listener.ClientTickEvent;
-import com.gromit.gromitmod.listener.PlayerInteractEvent;
-import com.gromit.gromitmod.renderer.GravelRendererInstanced;
-import com.gromit.gromitmod.renderer.SandRendererInstanced;
-import com.gromit.gromitmod.renderer.TntRendererInstanced;
 import com.gromit.gromitmod.utils.fontrenderer.FontManager;
 import com.gromit.gromitmod.utils.moderngl.GlobalRenderManager;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.item.EntityFallingBlock;
-import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -43,7 +37,6 @@ public class GromitMod {
         JsonHandler jsonHandler = new JsonHandler();
         new GuiHandler();
         new ClientTickEvent();
-        new PlayerInteractEvent(minecraft);
         new InputHandler(minecraft);
         new CommandHandler();
         Runtime.getRuntime().addShutdownHook(new Thread(jsonHandler::writeModules));
@@ -51,10 +44,7 @@ public class GromitMod {
 
     @SubscribeEvent
     public void onWindowCreation(AfterScreenCreationEvent event) {
-        MinecraftForge.EVENT_BUS.register(new GlobalRenderManager());
-        new TntRendererInstanced(EntityTNTPrimed.class);
-        new SandRendererInstanced(EntityFallingBlock.class);
-        new GravelRendererInstanced(EntityFallingBlock.class);
+        new GlobalRenderManager();
     }
 
     private void createFolder() {

@@ -1,6 +1,8 @@
 package com.gromit.gromitmod.utils.moderngl;
 
-public class FloatArrayBuilder {
+public class CommonShapeCoords {
+
+    public static final float[] cubeCoords = AABB2Floats(0, 0, 0, 1, 1, 1);
 
     public static float[] AABB2Floats(float minX, float minY, float minZ, float maxX, float maxY, float maxZ) {
         float[] data = new float[72];

@@ -2,6 +2,7 @@ package com.gromit.gromitmod.utils;
 
 import com.gromit.gromitmod.utils.primitivewrapper.GromitPosDouble;
 import jline.internal.Nullable;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
 public class MathUtils {
@@ -62,6 +63,14 @@ public class MathUtils {
             }
         }
         return null;
+    }
+
+    public static float[] entity2Coords(Entity entity, float partialTicks) {
+        return new float[] {
+                interpolate((float) entity.posX, (float) entity.lastTickPosX, partialTicks),
+                interpolate((float) entity.posY, (float) entity.lastTickPosY, partialTicks),
+                interpolate((float) entity.posZ, (float) entity.lastTickPosZ, partialTicks)
+        };
     }
 
     public static float interpolate(float currentPos, float lastTickPos, float partialTicks) {

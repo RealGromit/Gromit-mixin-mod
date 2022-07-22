@@ -86,6 +86,6 @@ public abstract class ClippingHelperImplMixin extends ClippingHelper {
         lvt_8_1_[2] = clippingMatrix[11] + clippingMatrix[10];
         lvt_8_1_[3] = clippingMatrix[15] + clippingMatrix[14];
         normalize(lvt_8_1_);
-        WorldMatrices.updateMatrices(projectionMatrixBuffer, modelviewMatrixBuffer);
+        WorldMatrices.updateMatrices(projectionMatrix, modelviewMatrix);
     }
 }

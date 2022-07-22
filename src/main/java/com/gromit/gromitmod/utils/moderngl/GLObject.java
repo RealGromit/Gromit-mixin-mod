@@ -4,21 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glDrawElements;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL31.glDrawArraysInstanced;
-import static org.lwjgl.opengl.GL31.glDrawElementsInstanced;
 import static org.lwjgl.opengl.GL33.glVertexAttribDivisor;
 
 public class GLObject {
 
     private final VAO vao;
     private final List<VBO> vbos = new ArrayList<>();
-
-    public GLObject() {
+    private final int primitive, first, last;
+    public GLObject(int primitive, int first, int last) {
         vao = new VAO();
+        this.primitive = primitive;
+        this.first = first;
+        this.last = last;
     }
 
     public GLObject addVbo(int bufferTarget) {
@@ -49,28 +50,14 @@ public class GLObject {
         return this;
     }
 
-    public void render(int primitive, int first, int last) {
+    public void render() {
         vao.bind();
         glDrawArrays(primitive, first, last);
-        vao.unbind();
     }
 
-    public void renderElements(int primitive, int indices, int type, int first) {
-        vao.bind();
-        glDrawElements(primitive, indices, type, first);
-        vao.unbind();
-    }
-
-    public void renderInstanced(int primitive, int first, int last, int count) {
+    public void renderInstanced(int count) {
         vao.bind();
         glDrawArraysInstanced(primitive, first, last, count);
-        vao.unbind();
-    }
-
-    public void renderElementsInstanced(int primitive, int indices, int type, int first, int count) {
-        vao.bind();
-        glDrawElementsInstanced(primitive, indices, type, first, count);
-        vao.unbind();
     }
 
     public GLObject bindVao() {

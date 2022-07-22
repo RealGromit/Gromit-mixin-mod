@@ -40,4 +40,14 @@ public class ClientUtils {
         }
         return array;
     }
+
+    public static float[] list2FloatArray(List<Float> floats) {
+        float[] array = new float[floats.size()];
+
+        int index = 0;
+        for (float number : floats) {
+            array[index++] = number;
+        }
+        return array;
+    }
 }
